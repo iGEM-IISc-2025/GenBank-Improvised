@@ -1,0 +1,111 @@
+<!-- begin post -->
+{% assign authors = post.authors | default: post.author %}
+{% assign authors_list = authors | split: ',' %}
+
+<div class="col-lg-4 col-md-6 mb-30px card-group">
+    <div class="card h-100">
+        <div class="maxthumb">
+            <a href="{{ site.baseurl }}{{ post.url }}">
+                {% if post.image %}
+                    {% if site.lazyimages == "enabled" %}
+                        <img class="img-fluid lazyimg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAQAAAA3fa6RAAAADklEQVR42mNkAANGCAUAACMAA2w/AMgAAAAASUVORK5CYII=" data-src="{% if post.image contains "://" %}{{ post.image }}{% else %}{{ site.baseurl }}/{{ post.image }}{% endif %}" alt="{{ post.title }}">
+                    {% else %}
+                        <img class="img-fluid" src="{% if post.image contains "://" %}{{ post.image }}{% else %}{{ site.baseurl }}/{{ post.image }}{% endif %}" alt="{{ post.title }}">
+                    {% endif %}
+                    {% if post.tags %}
+                        <div class="post-tag">
+                            {% for tag in post.tags %}
+                                <span class="badge badge-secondary">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </a>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">
+                <a class="text-dark" href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            </h2>
+            
+            <!-- Moved the excerpt just below the title -->
+            <h4 class="card-text">
+                {% if post.excerpt %}
+                    {{ post.excerpt }}
+                {% else %}
+                    No excerpt available.
+                {% endif %}
+            </h4>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="wrapfooter">
+                {% if post.author %}
+                    <!-- Check if post.author contains multiple authors separated by commas -->
+                    {% if post.author contains "," %}
+                        <!-- Split the authors into a list -->
+                        {% assign authors_list = post.author | split: "," %}
+                        <div class="author-meta">
+                            <div class="post-name">
+                                <!-- Loop through the authors and display them -->
+                                {% for author_name in authors_list %}
+                                    {% if forloop.first %}
+                                        {{ author_name | strip }}
+                                    {% else %}
+                                        , {{ author_name | strip }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Display a single author -->
+                        <div class="author-meta">
+                            <div class="post-name">{{ post.author | strip }}</div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <!-- Display "Unknown Author" if no author is provided -->
+                    <div class="author-meta">
+                        <div class="post-name">Unknown Author</div>
+                    </div>
+                {% endif %}
+                <!-- {% if authors_list.size > 0 %}
+                    Commenting out the profile icon section -->
+                    <!--
+                    <span class="meta-footer-thumb">
+                        {% for author in authors_list %}
+                            {% assign author = author | strip %}
+                            {% assign author_data = site.authors[author] %}
+                            {% if author_data and author_data.avatar %}
+                                <img class="author-thumb" src="{{ site.baseurl }}/{{ author_data.avatar }}" alt="{{ author }}">
+                            {% else %}
+                                <img class="author-thumb" src="https://www.gravatar.com/avatar/{{ author | downcase | slugify }}?s=250&d=mm&r=x" alt="{{ author }}">
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <span class="author-meta">
+                        <span class="post-name">
+                            {% for author in authors_list %}
+                                {% if forloop.first %}
+                                    {{ author | strip }}
+                                {% else %}
+                                    , {{ author | strip }}
+                                {% endif %}
+                            {% endfor %}
+                        </span><br/>
+                    </span>
+                {% else %}
+                    <span class="author-meta">
+                        <span class="post-name">Unknown Author</span><br/>
+                    </span>
+                {% endif %} -->
+
+                <!-- Display post date below the author name -->
+                <span class="post-date">{{ post.date | date_to_string }}</span>
+                
+                <!-- Read More link -->
+                <!-- <span class="post-read-more"><a href="{{ site.baseurl }}{{ post.url }}" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
+                <div class="clearfix"></div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end post -->

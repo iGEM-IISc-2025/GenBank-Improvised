@@ -1,0 +1,1599 @@
+/* 
+Template Name: Mediumish 
+Copyright: Sal, WowThemes.net, https://www.wowthemes.net 
+License: https://www.wowthemes.net/freebies-license/ 
+
+*/
+@media screen and (min-width:1500px) {
+    html { font-size:18px; } /* Increase the font size on higher resolutions */
+    .container {max-width:80%;}
+}
+.mainheading {
+    padding: 1rem 0rem;
+}
+
+a {
+    color: #00ab6b;
+    transition: all 0.2s;
+}
+
+a:hover {
+    color: #038252;
+    text-decoration: none;
+}
+
+pre {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: #E3EDF3 1px solid;
+    width: 100%;
+    padding: 7px;
+    font-family: monospace, sans-serif;
+    font-size: .9rem;
+    white-space: pre;
+    overflow: auto;
+    background: #fff;
+    border-radius: 0px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: -rem;
+}
+
+.mediumnavigation {
+    background: rgba(255, 255, 255, .97);
+    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .15);
+    transition: top 0.2s ease-in-out;
+}
+
+.main-content {
+    min-height: 300px;
+}
+
+.site-content {
+    min-height: 60vh;
+    padding-top: 1.5rem;
+    margin-top: 57px;
+    transition: all 0.4s;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+section.recent-posts {
+    margin-bottom: 0;
+}
+
+.section-title h2 {
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+    margin-bottom: 25px;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 27px;
+}
+
+.section-title span {
+    border-bottom: 1px solid rgba(0, 0, 0, .44);
+    display: inline-block;
+    padding-bottom: 20px;
+    margin-bottom: -1px;
+}
+
+.article-post ol,
+.article-post ul {
+    margin-bottom: 1.5rem;
+}
+
+.article-post ol ol,
+.article-post ul ul {
+    list-style: disc;
+    margin-bottom: 0rem;
+}
+
+@media (min-width:576px) {
+    .card-columns.listfeaturedtag {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width:992px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 0.8rem;
+        padding-left: 0.8rem;
+    }
+}
+
+.listfeaturedtag {
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.listfeaturedtag .wrapthumbnail {
+    height: 290px;
+    flex: 0 0 auto;
+    height: 100%;
+}
+
+.maxthumb {
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.listfeaturedtag .card,
+.card-footer {
+    border: 0;
+}
+
+.listfeaturedtag .thumbnail {
+    background-size: cover;
+    height: 100%;
+    display: block;
+    background-position: 38% 22% !important;
+    background-origin: border-box !important;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
+.listfeaturedtag .card-block {
+    padding-left: 0;
+}
+
+.listfeaturedtag h2.card-title,
+.listrecent h2.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.listfeaturedtag h4.card-text,
+.listrecent h4.card-text {
+    color: rgba(0, 0, 0, .44);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.featured-box-img-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+@media (max-width:991px) {
+    .featured-box-img-cover {
+        height: auto;
+        width: 100%;
+    }
+}
+
+.wrapfooter {
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.author-thumb {
+    width: 40px;
+    height: 40px;
+    margin-right: 13px;
+    border-radius: 100%;
+}
+
+.post-top-meta {
+    margin-bottom: 2rem;
+}
+
+.post-top-meta .author-thumb {
+    width: 72px;
+    height: 72px;
+}
+
+.post-top-meta.authorpage .author-thumb {
+    margin-top: 40px;
+}
+
+.post-top-meta span {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, .44);
+    display: inline-block;
+}
+
+.post-top-meta .author-description {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 0.95rem;
+}
+
+.toc ul {
+    list-style: decimal;
+    font-weight: 400;
+}
+
+/*
+.author-meta {
+    flex: 1 1 auto;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+
+*/
+
+.author-meta {
+    flex: 1 1 auto;
+    white-space: normal; /* Allow wrapping for multiple authors */
+    overflow: visible; /* Remove truncation to show full content */
+    text-overflow: clip; /* Ensure text doesn't get clipped */
+    word-wrap: break-word; /* Handle long words gracefully */
+    margin-top: 5px; /* Add some spacing if needed */
+    line-height: 1.5; /* Improve readability */
+}
+
+.author-meta .post-name {
+    font-size: 15px; /* Adjust the font size */
+    color: #4d4a4a95;  /* Change the color to any desired value */
+}
+
+
+span.post-name,
+span.post-date,
+span.author-meta {
+    display: inline-block;
+}
+
+span.post-date,
+span.post-read {
+    color: rgba(0, 0, 0, .44);
+}
+
+span.post-read-more {
+    align-items: center;
+    display: inline-block;
+    float: right;
+    margin-top: 8px;
+}
+
+span.post-read-more a {
+    color: rgba(0, 0, 0, .44);
+}
+
+span.post-name a,
+span.post-read-more a:hover {
+    color: rgba(0, 0, 0, .8);
+}
+
+.dot:after {
+    content: "·";
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.mediumnavigation .form-control {
+    font-size: 0.8rem;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    min-width: 180px;
+}
+
+.mediumnavigation .form-inline {
+    margin-left: 15px;
+}
+
+.mediumnavigation .form-inline .btn {
+    margin-left: -50px;
+    border: 0;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.mediumnavigation .form-inline .btn:hover,
+.mediumnavigation .form-inline .btn:active {
+    background: transparent;
+    color: green;
+}
+
+.mediumnavigation .navbar-brand {
+    font-weight: 500;
+}
+
+.mediumnavigation .dropdown-menu {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    margin: .5rem 0 0;
+}
+
+.mediumnavigation .nav-item,
+.dropdown-menu {
+    font-size: 0.9rem;
+}
+
+.mediumnavigation .search-icon {
+    margin-left: -40px;
+    display: inline-block;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.mediumnavigation .navbar-brand img {
+    max-height: 30px;
+    margin-right: 5px;
+}
+
+.mainheading h1.sitetitle {
+    font-family: Righteous;
+}
+
+.mainheading h1.posttitle {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.footer {
+    border-top: 1px solid rgba(0, 0, 0, .05) !important;
+    padding-top: 15px;
+    padding-bottom: 12px;
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, .44);
+    margin-top: 50px;
+    margin-bottom: 62px;
+    position: relative;
+    background: #fff;
+}
+
+.link-dark {
+    color: rgba(0, 0, 0, .8);
+}
+
+.article-post {
+    font-family: Merriweather;
+    font-size: 1.1rem;
+    line-height: 1.84;
+    color: rgba(0, 0, 0, .8);
+}
+
+blockquote {
+    border-left: 4px solid #00ab6b;
+    padding: 0 20px;
+    font-style: italic;
+    color: rgba(0, 0, 0, .5);
+}
+
+.article-post p,
+.article-post blockquote {
+    margin: 0 0 1.5rem 0;
+}
+
+.featured-image {
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.share {
+    text-align: center;
+}
+
+.share p {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.share ul li {
+    display: inline-block;
+    margin-bottom: 9px;
+}
+
+.share ul {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.share ul li i.fa {
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.svgIcon {
+    vertical-align: middle;
+}
+
+.sticky-top-offset {
+    top: 100px;
+}
+
+@media (min-width:1024px) {
+    .share ul li {
+        display: block;
+    }
+}
+
+@media (max-width:999px) {
+    .featured-box-img-cover {
+        height: 359px;
+    }
+
+    .alertbar {
+        position: relative !Important;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        box-shadow: none !Important;
+        padding-right: 14px !Important;
+    }
+
+    #comments {
+        margin-right: 15px;
+    }
+
+    .jumbotron.fortags {
+        margin-bottom: 0 !Important;
+    }
+
+    .alertbar form {
+        margin-top: 20px;
+    }
+
+    .alertbar span,
+    .alertbar form {
+        display: block;
+    }
+
+    .alertbar input[type="submit"] {
+        border-radius: 3px !Important;
+    }
+
+    .alertbar input[type="email"] {
+        margin-right: 0px !Important;
+        display: block;
+        border-right: 1px solid #ddd !Important;
+        margin-bottom: 10px;
+    }
+
+    .jumbotron {
+        margin-bottom: 0;
+        border-radius: 0;
+    }
+
+    .listfeaturedtag .card {
+        height: auto; /* Keep auto if content height should adjust dynamically */
+        max-height: 250px; /* Set a maximum height for the boxes */
+        overflow: hidden;
+    }
+
+    .listfeaturedtag .wrapfooter {
+        position: relative;
+        margin-top: 30px;
+    }
+
+    .listfeaturedtag .card-block {
+        padding: 20px;
+    }
+
+    .footer {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}
+
+@media (max-width:1024px) {
+    .post-top-meta .col-md-10 {
+        text-align: center;
+    }
+}
+
+@media (max-width:767px) {
+    .post-top-meta.authorpage {
+        text-align: center;
+    }
+}
+
+.share,
+.share a {
+    color: rgba(0, 0, 0, .44);
+    fill: rgba(0, 0, 0, .44);
+}
+
+.graybg {
+    background-color: #fafafa;
+    padding: 40px 0 46px;
+    position: relative;
+}
+
+.listrelated .card {
+    box-shadow: 0 1px 7px rgba(0, 0, 0, .05);
+    border: 0;
+}
+
+ul.tags {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 3rem 0;
+}
+
+ul.tags li {
+    display: inline-block;
+    font-size: 0.9rem;
+}
+
+ul.tags li a {
+    background: rgba(0, 0, 0, .05);
+    color: rgba(0, 0, 0, .6);
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+ul.tags li a:hover {
+    background: rgba(0, 0, 0, .07);
+    text-decoration: none;
+}
+
+.margtop3rem {
+    margin-top: 3rem;
+}
+
+.sep {
+    height: 1px;
+    width: 20px;
+    background: #999;
+    margin: 0px auto;
+    margin-bottom: 1.2rem;
+}
+
+.btn.follow {
+    border-color: #02B875;
+    color: #1C9963;
+    padding: 3px 10px;
+    text-align: center;
+    border-radius: 999em;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.btn.subscribe {
+    background-color: #1C9963;
+    border-color: #1C9963;
+    color: rgba(255, 255, 255, 1);
+    fill: rgba(255, 255, 255, 1);
+    border-radius: 30px;
+    font-size: 0.85rem;
+    margin-left: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.post-top-meta .btn.follow {
+    margin-left: 5px;
+    margin-top: -4px;
+}
+
+.alertbar {
+    box-shadow: 0 -3px 10px 0 rgba(0, 0, 0, .0785);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    width: 100%;
+    padding: 14px 0;
+    z-index: 1;
+    display: none;
+}
+
+.alertbar form {
+    display: inline-block;
+}
+
+.alertbar input[type="email"] {
+    font-size: 0.85rem;
+    padding: 3px 5px 3px 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border: 1px solid #ddd;
+    border-right: 0;
+    margin-right: -10px;
+    height: 34px;
+    letter-spacing: 0.5px;
+    margin-left: 5px;
+}
+
+.alertbar input[type="submit"] {
+    background-color: #1C9963;
+    border: 1px solid #1C9963;
+    color: rgba(255, 255, 255, 1);
+    fill: rgba(255, 255, 255, 1);
+    font-size: 0.85rem;
+    border-radius: 0;
+    padding: 4px 10px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    font-weight: 600;
+    height: 34px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, .5);
+}
+
+.form-control:-moz-placeholder {
+    color: rgba(0, 0, 0, .5);
+}
+
+.form-control::-moz-placeholder {
+    color: rgba(0, 0, 0, .5);
+}
+
+.form-control:-ms-input-placeholder {
+    color: rgba(0, 0, 0, .5);
+}
+
+.form-control::-ms-input-placeholder {
+    color: rgba(0, 0, 0, .5);
+}
+
+.authorpage h1 {
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.post-top-meta.authorpage .author-thumb {
+    float: none;
+}
+
+.authorpage .author-description {
+    font-size: 1rem;
+    color: rgba(0, 0, 0, .6);
+}
+
+.post-top-meta.authorpage .btn.follow {
+    padding: 7px 20px;
+    margin-top: 10px;
+    margin-left: 0;
+    font-size: 0.9rem;
+}
+
+.graybg.authorpage {
+    border-top: 1px solid #f0f0f0;
+}
+
+.authorpostbox {
+    width: 760px;
+    margin: 0px auto;
+    margin-bottom: 1.5rem;
+    max-width: 100%;
+}
+
+.authorpostbox .img-thumb {
+    width: 100%;
+}
+
+.sociallinks {
+    margin: 1rem 0;
+}
+
+.sociallinks a {
+    background: #666;
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    text-align: center;
+    line-height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+#comments {
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.article-post .h1,
+.article-post .h2,
+.article-post .h3,
+.article-post .h4,
+.article-post .h5,
+.article-post .h6,
+.article-post h1,
+.article-post h2,
+.article-post h3,
+.article-post h4,
+.article-post h5,
+.article-post h6 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.article-post img.shadow {
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.30);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.30);
+}
+
+.layout-page .article-post {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+}
+
+.layout-page .article-post p {
+    margin-bottom: 1rem;
+}
+
+img {
+    max-width: 100%;
+}
+
+.bottompagination span.navigation {
+    display: block;
+    font-size: 0.93rem;
+    padding: 15px 0 0 0;
+    text-align: center;
+    margin-bottom: 0rem;
+    color: #999;
+    border-top: 1px solid #ddd;
+}
+
+.pointerup {
+    margin-bottom: -17px;
+    margin-left: 49%;
+    font-size: 30px;
+}
+
+.pointerup i.fa {
+    color: #eaeaea;
+}
+
+.bottompagination span.navigation i {
+    display: inline-block;
+}
+
+span.navigation {
+    display: inline-block;
+    font-size: 0.93rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pagination {
+    display: block;
+}
+
+iframe {
+    max-width: 100%;
+}
+
+/* BlackBox
+
+.transpdark {
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+}
+
+*/
+
+@media (min-width:768px) {
+    .jumbotron.fortags {
+        margin-bottom: -50px;
+        margin-top: 3rem;
+        padding: 0;
+        height: 350px;
+        border-radius: 0;
+        background-image: url(../images/jumbotron.jpg);
+        background-size: cover;
+    }
+
+    .jumbotron.fortags .col-md-4 {
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+    }
+
+    .jumbotron.fortags .row {
+        margin: 0;
+    }
+}
+
+.jumbotron.fortags {
+    margin-top: 3rem;
+    padding: 0;
+    border-radius: 0;
+    background-image: url(../images/jumbotron.jpg);
+    background-size: cover;
+}
+
+.jumbotron.fortags a {
+    padding: 5px 10px 7px;
+    background: #222;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 500;
+    text-transform: lowercase;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.layout-page .jumbotron.fortags {
+    display: none;
+}
+
+.mb-30px {
+    margin-bottom: 30px;
+}
+
+.flex-first {
+    -webkit-box-ordinal-group: 0;
+    -webkit-order: -1;
+    -ms-flex-order: -1;
+    order: -1;
+}
+
+@media (min-width: 768px) {
+    .flex-md-unordered {
+        -webkit-box-ordinal-group: 1;
+        -webkit-order: 1;
+        -ms-flex-order: 1;
+        order: 1;
+    }
+
+    .flex-first {
+        -webkit-box-ordinal-group: 0;
+        -webkit-order: 1;
+        -ms-flex-order: 1;
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .share {
+        margin-top: 30px;
+    }
+}
+
+.card .img-fluid {
+    width: 100%;
+}
+
+.sticky-top-80 {
+    top: 80px;
+}
+
+.spoiler {
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    transition: all .4s;
+    cursor: pointer;
+    position: relative;
+}
+
+.spoiler:after {
+    position: absolute;
+    opacity: 0;
+    content: 'Click to reveal spoiler';
+    top: 45%;
+    left: calc(50% - 100px);
+    text-shadow: none;
+    background: #222;
+    color: #fff;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1;
+    padding: 2px 3px;
+    width: 150px;
+    font-family: Arial;
+    text-align: center;
+    border-radius: 3px;
+    transition: all .4s;
+}
+
+.spoiler:hover:after {
+    opacity: 1;
+}
+
+/** Lazy img **/
+.lazyimg {
+    display: block;
+    border: 0 none;
+    opacity: 1;
+    transition: opacity .25s;
+    background: #f2f2f2;
+    outline: 0 none;
+}
+
+.lazyimg[data-src],
+.lazyimg[data-srcset] {
+    opacity: 0;
+    transition: opacity .25s;
+}
+
+/* We need to add display:inline in order to align the '>>' of the 'read more' link */
+.post-excerpt p {
+    display: inline;
+}
+
+/* Custom Styles for Navigation Layout */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .navbar-brand {
+    margin-right: 20px; /* Adjust if needed */
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item {
+    margin-left: 20px; /* Adjust space between menu items */
+}
+
+.navbar-toggler {
+    display: none; /* Hides the toggle button (hamburger menu) */
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        display: block;
+    }
+
+    .navbar {
+        flex-direction: column;
+    }
+
+    .navbar-nav .nav-item {
+        margin-left: 0;
+    }
+}
+
+.mainheading h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.mainheading .lead {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+}
+
+/* Featured + Latest Style */
+.section-title h2 {
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+    margin-bottom: 25px;
+    font-weight: 700;
+    font-size: 1.4rem;
+    display: flex; /* Use flexbox for horizontal alignment */
+    justify-content: center; /* Center the tabs horizontally */
+    gap: 30px; /* Add horizontal space between the tabs */
+}
+
+.section-title h2 span {
+    border-bottom: 1px solid rgba(0, 0, 0, .44); /* Add border for underline */
+    display: inline-block;
+    padding-bottom: 20px;
+    margin-bottom: -1px;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
+}
+
+/* Active Tab (Featured or Latest) */
+.section-title h2 span.active-tab {
+    font-weight: bold;
+    border-color: rgba(0, 0, 0, .44); /* Darker border for active tab */
+}
+
+.section-title h2 span.inactive-tab {
+    font-weight: normal;
+    border-color: transparent; /* Remove the underline for inactive tabs */
+}
+
+/* Tabs Section */
+.tab-content {
+    margin-top: 20px;
+    display: none; /* Hide all sections by default */
+}
+
+/* Featured Section is visible by default */
+#featured-section {
+    display: block; 
+}
+
+/* Styling to ensure smooth transitions for the tabs */
+.tab-content {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Editor-specific styles (for larger photos) */
+/* Editor Image Style: Adjusting height and width, with added margins */
+.editor-image {
+    width: 55%;  /* Decrease the width to make the image narrower */
+    height: 250px;  /* Increase height to make the image taller */
+    object-fit: cover;  /* Ensure the image covers the space without stretching */
+    border-radius: 5px;
+    margin: 10px auto;  /* Center the image and add space on left and right */
+}
+
+/* Styling for editor names */
+.editor-name {
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-weight: normal;
+    color: #333;
+}
+
+/* Editor Inner Rectangle Styling */
+.editor-inner-rectangle {
+    background-color: #fff;
+    padding: 2px;  /* Decreased padding to bring image closer to the box */
+    border-radius: 10px;
+    border: 1px solid #000;
+    text-align: center;
+    width: 60%; /* Decreased width to make the box more narrow */
+    height: 320px; /* Increased height to accommodate the image and name */
+    margin: 0 auto 30px; /* Center the editor boxes horizontally */
+}
+
+/* Team member-specific styles */
+.team-member-inner-rectangle {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #000000;  /* Black border around the inner rectangle */
+    text-align: center;
+    width: 100%;  /* Ensure the inner box fills the space */
+    height: 230px; /* Set height for team member's images */
+}
+
+.team-member-image {
+    width: 100%;  /* Ensure the image takes up the full width of the inner rectangle */
+    height: 150px;  /* Fixed height for team member's images */
+    object-fit: cover;  /* Ensure the image covers the area */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.team-member-name {
+    font-size: 1rem;  /* Standard font size for team member's name */
+    margin-top: 10px;
+    font-weight: normal;
+    color: #333;
+}
+
+/* Reduce space between editor photos */
+.editors-note .row .col-md-6 {
+    margin-bottom: 20px;
+}
+
+/* Editor's Note Section Margin */
+.editors-note {
+    margin-bottom: 40px; /* Increased space below the editor images and note */
+}
+
+/* Add a little more space between team member photos */
+.the-team .row .col-md-3 {
+    margin-bottom: 20px;
+}
+
+/* The Team Section Margin */
+.the-team {
+    margin-top: 80px; /* Increased space between the note and the team section */
+}
+
+/* Style for the Editor's Note content (improving Lorem Ipsum appearance) */
+.editors-note-content blockquote {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #555;
+    background-color: #f9f9f9;  /* Light gray background */
+    padding: 15px;
+    border-left: 5px solid #000;  /* Bold left border to make it stand out */
+    margin-top: 30px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    text-align: left; /* Align the text left for better readability */
+    border-radius: 8px;
+}
+
+/* Improved styling for the paragraph in the editor's note */
+.editors-note-content p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #333;
+    padding: 20px;
+    background-color: #f4f4f4; /* Slight background color to distinguish from other sections */
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Increase space below the intro paragraph */
+.intro-text {
+    font-size: 1.4rem; /* Slightly larger font for the paragraph */
+    font-weight: 400; /* Regular weight for readability */
+    color: #666; /* Softer gray for the text */
+    text-align: center; /* Center align the text */
+    line-height: 1.8; /* Add spacing between lines */
+    margin: 0 auto 70px; /* Increased bottom margin for more space */
+    max-width: 1500px; /* Limit width for better readability */
+}
+
+/* Optional: Add space above the Featured and Latest section */
+.featured-posts {
+    margin-top: 40px; /* Add extra space above the section */
+}
+
+
+/* Pictures Post Format */
+
+.pictures-image {
+    width: 100%;  /* Decrease the width to make the image narrower */
+    height: 250px;  /* Increase height to make the image taller */
+    object-fit: cover;  /* Ensure the image covers the space without stretching */
+    border-radius: 5px;
+    margin: 10px auto;  /* Center the image and add space on left and right */
+}
+
+.pictures-name {
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-weight: normal;
+    color: #333333;
+}
+
+.pictures-author {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-weight: normal;
+    color: #333333;
+    text-align: left;
+}
+
+.pictures-desc {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-weight: normal !important;;
+    color: #646363;
+    text-align: left;
+}
+
+/* Editor Inner Rectangle Styling */
+
+.UNDOpicture-inner-rectangle {
+    background-color: #fff;
+    padding: 5px;  /* Decreased padding to bring image closer to the box */
+    border-radius: 10px;
+    border: 1px solid #626060;
+    text-align: center;
+    width: 350px; /* Decreased width to make the box more narrow */
+    height: 450px; /* Increased height to accommodate the image and name */
+    margin: 20px; /* Center the editor boxes horizontally */
+}
+
+/* Container wrapping all posts */
+.pictures-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: center; /* Center items */
+    gap: 20px; /* Space between posts */
+    padding: 10px; /* Padding inside the container */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in width calculations */
+}
+
+/* Individual post */
+.picture-inner-rectangle {
+    flex: 1 1 calc(30% - 20px); /* Flexible width: 30% minus gap */
+    max-width: calc(30% - 20px); /* Prevent growing too large */
+    background-color: #f0f0f0; /* Optional background */
+    padding: 15px; /* Internal padding */
+    text-align: center; /* Center align text */
+    border: 1px solid #ccc; /* Optional border */
+    box-sizing: border-box; /* Include padding in size calculations */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .picture-inner-rectangle {
+        flex: 1 1 calc(45% - 20px); /* Two items per row */
+        max-width: calc(45% - 20px);
+    }
+}
+
+@media (max-width: 800px) {
+    .picture-inner-rectangle {
+        flex: 1 1 calc(100% - 20px); /* One item per row */
+        max-width: calc(100% - 20px);
+    }
+}
+
+
+
+
+
+/*
+.pictures-container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+*/
+
+
+/* Target the feature box specifically */
+.feature-box .wrapthumbnail img {
+    height: 200px; /* Set a fixed height for images inside feature boxes */
+    object-fit: cover; /* Ensure the image fits without distortion */
+}
+
+.feature-box .listfeaturedtag {
+    height: auto; /* Auto height for the feature box */
+    min-height: 300px; /* Optional: Set a minimum height */
+}
+
+.feature-box .card-body {
+    padding: 10px; /* Less padding inside the card */
+}
+
+.feature-box .card-footer {
+    padding: 5px 10px; /* Reduce padding */
+    margin-top: 10px;
+}
+
+.feature-box .card-title {
+    font-size: 1.2rem; /* Adjust title size */
+}
+
+.feature-box .card-text {
+    font-size: 0.9rem; /* Adjust description font size */
+    margin-bottom: 10px;
+}
+
+.feature-box .col-md-6, .feature-box .col-12 {
+    height: auto; /* Remove any fixed height */
+}
+
+.feature-box .wrapthumbnail img {
+    height: 100px; /* Reduce image height further */
+    object-fit: cover; /* Ensure the image fills the space */
+}
+
+/*
+.edition-text {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.edition-list {
+    list-style-type: none; 
+    padding: 0;
+}
+
+.edition-list li {
+    margin-bottom: 8px; 
+}
+
+.edition-list a {
+    text-decoration: none; 
+    color: #007bff;
+    font-weight: bold;
+}
+
+.edition-list a:hover {
+    color: #0056b3; 
+    text-decoration: underline; 
+}
+*/
+
+.edition-container {
+    display: flex;
+    flex-wrap: wrap; /* Wrap items to the next row if needed */
+    gap: 15px; /* Space between cards */
+    margin-top: 20px; /* Space above the section */
+    justify-content: center; /* Center the grid on the page */
+}
+
+.edition-card {
+    background-color: #f8f9fa; /* Light background for the card */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Internal spacing */
+    text-align: center; /* Center-align text */
+    flex: 1 1 calc(30% - 15px); /* Cards take up 30% of the row minus gap */
+    max-width: calc(30% - 15px); /* Prevent cards from exceeding this size */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effect */
+}
+
+.edition-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.edition-card a {
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Primary link color */
+    font-size: 1.1rem; /* Adjust font size */
+    font-weight: bold;
+}
+
+.edition-card a:hover {
+    color: #0056b3; /* Darker blue on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+.edition-card p {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #555; /* Secondary text color */
+}
+
+@media (max-width: 768px) {
+    .edition-card {
+        flex: 1 1 calc(45% - 15px); /* Two cards per row on smaller screens */
+        max-width: calc(45% - 15px);
+    }
+}
+
+@media (max-width: 480px) {
+    .edition-card {
+        flex: 1 1 calc(100% - 15px); /* One card per row on mobile screens */
+        max-width: calc(100% - 15px);
+    }
+}
+
+
+
+/* HOVER */
+
+/* Featured Box Hover */
+.listfeaturedtag {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Default shadow */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensure no child elements overflow */
+}
+
+.listfeaturedtag:hover {
+    transform: translateY(-8px); /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Thumbnail Hover Effect */
+.wrapthumbnail img {
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.wrapthumbnail img:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    filter: brightness(1.2); /* Brighten the image */
+}
+
+/* Card Hover Effect */
+.card {
+    transition: color 0.3s ease;
+}
+
+.card-body:hover {
+    color: #0056b3; /* Change text color on hover */
+}
+
+/* Title Link Hover Effect */
+.card-title a {
+    text-decoration: none; /* Remove underline by default */
+    color: #333; /* Default color */
+    transition: color 0.3s ease;
+}
+
+.card-title a:hover {
+    color: #007bff; /* Blue color on hover */
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Footer Hover Effect (Optional) */
+.card-footer {
+    background-color: #f8f9fa; /* Light background */
+    transition: background-color 0.3s ease;
+}
+
+.card-footer:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+}
+
+
+/* Card Container */
+.card-group .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Default shadow */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Clip child elements */
+}
+
+.card-group .card:hover {
+    transform: translateY(-8px); /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+/* Thumbnail Hover Effect */
+.maxthumb img {
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 8px 8px 0 0; /* Round top corners */
+}
+
+.maxthumb img:hover {
+    transform: scale(1.05); /* Slight zoom */
+    filter: brightness(1.2); /* Brighten image */
+}
+
+/* Card Body Text */
+.card-body {
+    transition: color 0.3s ease;
+}
+
+.card-body:hover {
+    color: #333; /* Slight change for hover feedback */
+}
+
+/* Title Link Hover Effect */
+.card-title a {
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Default color */
+    transition: color 0.3s ease;
+}
+
+.card-title a:hover {
+    color: #0056b3; /* Darker blue on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Excerpt Hover Effect */
+.card-text {
+    color: #666; /* Default excerpt color */
+    transition: color 0.3s ease;
+}
+
+.card-text:hover {
+    color: #444; /* Slightly darker on hover */
+}
+
+/* Footer */
+.card-footer {
+    background-color: #f8f9fa; /* Default light background */
+    transition: background-color 0.3s ease;
+}
+
+.card-footer:hover {
+    background-color: #e9ecef; /* Slightly darker background */
+}
+
+/* Post Date Hover Effect */
+.post-date {
+    color: #999; /* Default date color */
+    transition: color 0.3s ease;
+}
+
+.post-date:hover {
+    color: #666; /* Slightly darker on hover */
+}
+
+
+/* Toggle Button */
+
+
+.navbar-toggler {
+    border: none;
+    background-color: transparent;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.navbar-toggler-icon {
+    width: 30px;
+    height: 3px;
+    background-color: #333;
+    display: block;
+    position: relative;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 3px;
+    background-color: #333;
+    transition: transform 0.2s ease-in-out;
+}
+
+.navbar-toggler-icon::before {
+    top: -8px;
+}
+
+.navbar-toggler-icon::after {
+    top: 8px;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background-color: transparent;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
+
+@media (max-width: 992px) {
+    .navbar-collapse {
+        background-color: rgba(255, 255, 255, 0.9); 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.navbar-toggler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-collapse {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.collapse {
+    transition: all 0.4s ease;
+}
+
+/* Custom Styles */
+
+/* tags on posts */
+.wrapthumbnail, .maxthumb {
+    position: relative;
+}
+.post-tag {
+    display: none;
+    position: absolute;
+    margin: 0 5px;
+    top: 0;
+    left: 0;
+}
+img:hover+.post-tag {
+    display: block;
+}
+
