@@ -1,8 +1,19 @@
 ---
 layout: file_viewer
 title: Example FASTA view
-data_file: assets/data/example.fasta
+data_file: /example.fasta
 file_type: fasta
 ---
 
-<p>This page shows an example FASTA file.</p>
+{% include navbar.html %}
+
+<section class="max-w-5xl mx-auto my-6 px-4">
+  <h1 class="text-2xl font-semibold mb-2">Example FASTA View</h1>
+  <p class="text-gray-600 mb-4">
+    This page shows an example FASTA file rendered using the <code>file_viewer</code> layout.
+  </p>
+
+  <p class="text-sm text-gray-500">
+    File path: <code>{{ page.data_file }}</code>
+  </p>
+</section>
