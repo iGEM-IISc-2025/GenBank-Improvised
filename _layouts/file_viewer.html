@@ -16,6 +16,8 @@
     .xml-text { color: #334155; }
     .search-highlight { background: #fde68a; }
   </style>
+
+  <link rel="icon" href="{{ '/assets/favicon.ico' | relative_url }}" type="image/x-icon">
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
 
@@ -23,7 +25,9 @@
     <div class="max-w-5xl mx-auto px-4 py-4 flex items-center gap-4">
       <div class="text-xl font-semibold text-gray-900">File Viewer</div>
       <div class="text-sm text-gray-500">FASTA &amp; XML static viewer</div>
-      <div class="ml-auto text-xs text-gray-500">File: <strong id="file-path">{{ page.data_file }}</strong></div>
+      <div class="ml-auto text-xs text-gray-500">
+        File: <strong id="file-path">{{ page.data_file }}</strong>
+      </div>
     </div>
   </header>
 
@@ -53,7 +57,7 @@
 
   <script>
     window.__FILE_VIEWER_CONFIG = {
-      data_file: {{ page.data_file | jsonify }},
+      data_file: "{{ page.data_file | relative_url }}",
       file_type: {{ page.file_type | jsonify }},    // "fasta" or "xml" or "auto"
       display_name: {{ page.title | jsonify }}
     };
