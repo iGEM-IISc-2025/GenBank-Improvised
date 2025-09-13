@@ -1,6 +1,8 @@
 ---
 layout: file_viewer
-title: Example FASTA view 
+title: Example FASTA View
+data_file: "https://igem-iisc-2025.github.io/GenBank-Improvised/example.fasta"
+file_type: fasta
 ---
 
 {% include navbar.html %}
@@ -12,14 +14,6 @@ title: Example FASTA view
   </p>
 
   <p class="text-sm text-gray-500">
-    File path: <code>https://igem-iisc-2025.github.io/GenBank-Improvised/example.fasta</code>
+    File path: <code>{{ page.data_file }}</code>
   </p>
 </section>
-
-<script>
-  window.__FILE_VIEWER_CONFIG = {
-    data_file: 'https://igem-iisc-2025.github.io/GenBank-Improvised/example.fasta',
-    file_type: 'fasta',
-    display_name: 'Example FASTA view'
-  };
-</script>
