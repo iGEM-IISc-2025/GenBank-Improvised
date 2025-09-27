@@ -1,0 +1,461 @@
+---
+layout: default
+title: Docs
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offset for sticky navbar */
+}
+
+body {
+    background-color: #ffffff;
+}
+
+.docs-layout {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+}
+
+.docs-sidebar {
+    position: sticky;
+    top: 80px; /* Adjusted for navbar height */
+    width: 256px;
+    height: calc(100vh - 120px);
+    flex-shrink: 0;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+}
+
+.docs-sidebar nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.docs-sidebar nav a:hover {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* This is the class for the main section link highlight */
+.active-section-link {
+    background-color: #eef2ff;
+    color: #4338ca;
+    font-weight: 600;
+}
+
+/* This is for the specific subsection link */
+.active-subsection-link {
+    color: #4338ca;
+    font-weight: 600;
+}
+
+
+.sub-list {
+    padding-left: 12px;
+    margin-left: 8px;
+    border-left: 1px solid #e5e7eb;
+    overflow: hidden;
+    max-height: 1000px; /* Should be large enough to not clip content */
+    transition: max-height 0.4s ease-in-out;
+}
+
+.sub-list.collapsed { max-height: 0; }
+
+.collapse-icon {
+    transition: transform 0.3s ease;
+    width: 1rem;
+    height: 1rem;
+    color: #9ca3af;
+}
+
+a[aria-expanded="false"] .collapse-icon { transform: rotate(-90deg); }
+
+/* Main Content Typography */
+main {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+main article h1 { font-size: 2.25rem; font-weight: 800; color: #111827; }
+main article .lead { font-size: 1.125rem; color: #4b5563; margin-top: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; }
+main article h2 { font-size: 1.5rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
+main article h3 { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-top: 2rem; margin-bottom: 0.75rem; }
+main article h4 { font-size: 1.1rem; font-weight: 600; color: #374151; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+main article p { font-size: 1rem; line-height: 1.75rem; color: #374151; margin-bottom: 1rem; }
+main article pre { background-color: #1f2937; color: #d1d5db; padding: 1rem; margin: 1.25rem 0 1.5rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.875rem; }
+
+.callout {
+    padding: 1rem;
+    margin: 1.25rem 0;
+    border-radius: 0.5rem;
+    border-left-width: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.callout-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+.callout-header svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+.callout p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Note Style (Blue) */
+.callout-note { background-color: #eff6ff; border-color: #3b82f6; }
+.callout-note .callout-header { color: #1e40af; }
+.callout-note p { color: #1c3d8e; }
+
+/* Caution Style (Yellow) */
+.callout-caution { background-color: #fefce8; border-color: #f59e0b; }
+.callout-caution .callout-header { color: #854d0e; }
+.callout-caution p { color: #85560e; }
+
+/* Trivia Style (Green) */
+.callout-trivia { background-color: #f0fdf4; border-color: #22c55e; }
+.callout-trivia .callout-header { color: #15803d; }
+.callout-trivia p { color: #166534; }
+
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .docs-sidebar { display: none; }
+}
+
+
+    /* Underline effect for links in the article */
+/* Background highlight effect for links in the article */
+main article a {
+    color: #b859dd; /* Makes links stand out with the theme color */
+    font-weight: 500;
+    text-decoration: none;
+    background-color: transparent; /* Start with no background */
+    padding: 2px 6px; /* Adds space around the text for the background */
+    margin: -2px -6px; /* Prevents padding from affecting line spacing */
+    border-radius: 6px; /* Gives the background rounded corners */
+    transition: all 0.2s ease-in-out;
+}
+
+main article a:hover,
+main article a:focus {
+    background-color: #eef2ff; /* The same light purple as the active sidebar link */
+    color: #7a40d1; /* A slightly darker purple for better contrast on hover */
+}
+
+    /* Custom Scrollbar for Webkit browsers (Chrome, Safari) */
+.docs-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+.docs-sidebar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+.docs-sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+.docs-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Code Block Styling */
+main article pre {
+    position: relative; /* Needed for the copy button */
+    padding-top: 2.5rem; /* Make space for header */
+}
+
+.code-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #374151; /* A slightly lighter shade */
+    color: #9ca3af;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.copy-button {
+    background-color: transparent;
+    color: #9ca3af;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.copy-button:hover {
+    background-color: #4b5563;
+    color: #e5e7eb;
+}
+</style>
+
+
+</head>
+<body class="bg-white">
+
+<div id="progress-bar"></div>
+
+<div class="docs-layout">
+    <aside class="docs-sidebar">
+        <nav id="docs-nav" class="w-full"></nav>
+    </aside>
+
+    <main class="lg:pl-8">
+        <article>
+            <header id="top">
+                <h1>Wet Lab: System Implementation</h1>
+                <p class="lead">Detailed protocols and characterization data for our engineered organism.</p>
+            </header>
+
+            <section id="project-overview" data-aos="fade-up">
+                <h2>Project Overview</h2>
+                <p>Our work focuses on engineering <i>Pseudomonas putida</i> KT2440 to express a novel enzyme pathway for plastic degradation. This pathway is contained within the pSEVA231 backbone.</p>
+                <div class="callout callout-note">
+                    <div class="callout-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
+                        <strong>Theoretical Note</strong>
+                    </div>
+                    <p><i>P. putida</i> was chosen for its robust metabolic capabilities and biosafety profile.</p>
+                </div>
+            </section>
+
+            <section id="gene-design" data-aos="fade-up">
+                <h2>Gene Synthesis & Assembly</h2>
+                <h3 id="gene-assembly-design">Gene Assembly Design</h3>
+                <p>The gene cassette (BBa_KXXXXXXX) was synthesized with flanking BioBrick prefix/suffix sites.</p>
+                <div class="callout callout-trivia">
+                    <div class="callout-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
+                        <strong>Did you know?</strong>
+                    </div>
+                    <p>The BioBrick standard was developed to make synthetic biology parts interchangeable and easier to assemble.</p>
+                </div>
+                <h3 id="gene-assembly-protocol">Assembly Protocol</h3>
+                <h4 id="gibson-mix">Gibson Mix Preparation</h4>
+                <pre><code># Prepare Master Mix (20 µL Total Volume)
+Plasmid backbone (50 ng)      : 2 µL
+Insert fragment (100 ng)      : 4 µL
+Gibson Assembly Mix (2X)      : 10 µL
+Nuclease-free water           : 4 µL</code></pre>
+                <h4 id="pcr-verification">PCR Verification</h4>
+                <p>Colony PCR was performed using VF2 and VR primers on selected colonies.</p>
+            </section>
+
+            <section id="bacterial-transformation" data-aos="fade-up">
+                <h2>Bacterial Transformation</h2>
+                <h3 id="transform-e-coli">E. coli DH5a (Initial Cloning)</h3>
+                <p>A heat shock protocol was performed on chemically competent cells.</p>
+                <div class="callout callout-caution">
+                     <div class="callout-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+                        <strong>Protocol Caution</strong>
+                    </div>
+                    <p>Ensure cells remain on ice until the 42°C heat shock step to maintain cell viability.</p>
+                </div>
+                <h3 id="transform-p-putida">P. putida KT2440 (Final Host)</h3>
+                <p>Transformation of <i>P. putida</i> required electroporation due to its rigid cell wall.</p>
+            </section>
+
+            <section id="analysis-methods" data-aos="fade-up">
+                <h2>Analysis & Characterization</h2>
+                <p>Successful transformation was verified via Colony PCR and restriction digest.</p>
+            </section>
+
+            <section id="safety-notes" data-aos="fade-up">
+                <h2>Safety & Biosafety Notes</h2>
+                <p>All work was conducted under Biosafety Level 1 (BSL-1) containment.</p>
+                <p>Successful transformation was verified via <a href="#">Colony PCR</a> and restriction digest.</p>
+            </section>
+        </article>
+    </main>
+</div>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // --- FEATURE 2: CODE BLOCK COPY BUTTON ---
+    document.querySelectorAll('main article pre').forEach(block => {
+        const code = block.querySelector('code');
+        if (!code) return; // Skip if no <code> tag found
+        
+        const header = document.createElement('div');
+        header.className = 'code-header';
+        const title = document.createElement('span');
+        title.textContent = 'Protocol';
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+        
+        header.appendChild(title);
+        header.appendChild(copyButton);
+        block.prepend(header);
+
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(code.innerText).then(() => {
+                copyButton.innerHTML = `<span>Copied!</span>`;
+                setTimeout(() => {
+                    copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+                }, 2000);
+            });
+        });
+    });
+
+    // --- FEATURE 3: DYNAMIC SIDEBAR & SCROLLSPY ---
+    const navStructure = [
+        { id: 'project-overview', title: 'Project Overview' },
+        { id: 'gene-design', title: 'Gene Synthesis & Assembly', children: [
+            { id: 'gene-assembly-design', title: 'Gene Assembly Design' },
+            { id: 'gene-assembly-protocol', title: 'Assembly Protocol', children: [
+                { id: 'gibson-mix', title: 'Gibson Mix' },
+                { id: 'pcr-verification', title: 'PCR Verification' }
+            ]}
+        ]},
+        { id: 'bacterial-transformation', title: 'Bacterial Transformation', children: [
+            { id: 'transform-e-coli', title: 'E. coli DH5a' },
+            { id: 'transform-p-putida', title: 'P. putida KT2440' }
+        ]},
+        { id: 'analysis-methods', title: 'Analysis & Characterization' },
+        { id: 'safety-notes', title: 'Safety & Biosafety Notes' }
+    ];
+
+    const navContainer = document.getElementById('docs-nav');
+    function createNav(items, isSubList = false) {
+        const list = document.createElement('ul');
+        list.className = isSubList ? 'sub-list collapsed' : 'space-y-1 mt-4';
+        items.forEach(item => {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${item.id}`;
+            if (item.children) {
+                const subListId = `sublist-${item.id}`;
+                link.setAttribute('data-toggle', 'collapse');
+                link.setAttribute('aria-expanded', 'false');
+                link.setAttribute('aria-controls', subListId);
+                link.innerHTML = `<span>${item.title}</span><svg class="collapse-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
+                listItem.appendChild(link);
+                const subList = createNav(item.children, true);
+                subList.id = subListId;
+                listItem.appendChild(subList);
+            } else {
+                link.textContent = item.title;
+                listItem.appendChild(link);
+            }
+            list.appendChild(listItem);
+        });
+        return list;
+    }
+    const mainNavList = createNav(navStructure);
+    const title = document.createElement('h2');
+    title.className = 'text-lg font-bold text-gray-900';
+    title.textContent = 'Protocol Sections';
+    navContainer.appendChild(title);
+    navContainer.appendChild(mainNavList);
+    
+    document.querySelectorAll('.docs-sidebar nav a[data-toggle]').forEach(toggle => {
+        toggle.addEventListener('click', e => {
+            e.preventDefault();
+            const targetElement = document.getElementById(toggle.getAttribute('aria-controls'));
+            const isCollapsed = targetElement.classList.toggle('collapsed');
+            toggle.setAttribute('aria-expanded', !isCollapsed);
+        });
+    });
+
+    const allLinks = document.querySelectorAll('.docs-sidebar nav a');
+    const sections = document.querySelectorAll("main section, main h3, main h4");
+    const observer = new IntersectionObserver(entries => {
+        let topmostVisibleEntry = null;
+        for (const entry of entries) {
+            if (entry.isIntersecting && (!topmostVisibleEntry || entry.boundingClientRect.top < topmostVisibleEntry.boundingClientRect.top)) {
+                topmostVisibleEntry = entry;
+            }
+        }
+        if (topmostVisibleEntry) {
+            const parentSection = topmostVisibleEntry.target.closest('section');
+            if (parentSection) {
+                const specificLink = document.querySelector(`.docs-sidebar nav a[href="#${topmostVisibleEntry.target.id}"]`);
+                document.querySelectorAll('.sub-list').forEach(sublist => {
+                    if (!sublist.contains(specificLink)) {
+                        sublist.classList.add('collapsed');
+                        const toggle = document.querySelector(`[aria-controls="${sublist.id}"]`);
+                        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                allLinks.forEach(l => l.classList.remove('active-section-link', 'active-subsection-link'));
+                const mainLink = document.querySelector(`.docs-sidebar nav a[href="#${parentSection.id}"]`);
+                if (mainLink) mainLink.classList.add('active-section-link');
+                if (specificLink && specificLink !== mainLink) specificLink.classList.add('active-subsection-link');
+                let parent = specificLink ? specificLink.closest('.sub-list') : null;
+                while (parent) {
+                    if (parent.classList.contains('collapsed')) {
+                        parent.classList.remove('collapsed');
+                        const parentToggle = document.querySelector(`[aria-controls="${parent.id}"]`);
+                        if (parentToggle) parentToggle.setAttribute('aria-expanded', 'true');
+                    }
+                    parent = parent.parentElement.closest('.sub-list');
+                }
+            }
+        }
+    }, { rootMargin: "-40% 0px -59% 0px", threshold: [0, 1] });
+    sections.forEach(section => { if (section.id) observer.observe(section); });
+
+    // --- FEATURE 4: INITIALIZE ANIMATE ON SCROLL ---
+    AOS.init({
+        duration: 600,
+        once: true,
+        offset: 50,
+    });
+
+});
+</script>
+
+</body>
+</html>
+<!-- Pagination
+================================================== -->
+<div class="bottompagination">
+<div class="pointerup"><i class="fa fa-caret-up"></i></div>
+<span class="navigation" role="navigation">
+    {% include pagination.html %}
+</span>
+</div>
+
