@@ -11,7 +11,8 @@ title: Docs
         display: flex;
         flex-direction: row;
         max-width: 1400px;
-        margin: 2rem auto 4rem auto;
+        /* CHANGE: Removed top margin to reduce gap below navbar */
+        margin: 0 auto 4rem auto;
         padding: 0 2rem;
     }
 
@@ -23,6 +24,12 @@ title: Docs
         flex-shrink: 0;
         overflow-y: auto;
         padding-right: 1.5rem;
+        /* CHANGE: Hide the scrollbar */
+        scrollbar-width: none; /* For Firefox */
+    }
+    /* CHANGE: Hide scrollbar for Chrome, Safari, and Edge */
+    .docs-sidebar::-webkit-scrollbar {
+        display: none;
     }
 
     /* Hide sidebar on smaller screens */
@@ -83,7 +90,12 @@ title: Docs
     a[aria-expanded="false"] .collapse-icon { transform: rotate(-90deg); }
 
     /* Main Content Typography */
-    .docs-main { flex-grow: 1; min-width: 0; }
+    .docs-main { 
+        flex-grow: 1; 
+        min-width: 0;
+        /* CHANGE: Added left padding to create a gap */
+        padding-left: 2rem;
+    }
     .docs-article h1 { font-size: 2.25rem; font-weight: 800; color: #111827; }
     .docs-article .lead { font-size: 1.125rem; color: #4b5563; margin-top: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; }
     .docs-article h2 { font-size: 1.5rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
@@ -278,7 +290,9 @@ Nuclease-free water           : 4 µL</code></pre>
         });
 
         const allLinks = document.querySelectorAll('.docs-sidebar nav a');
+        const allSubLists = document.querySelectorAll('.docs-sidebar .sub-list');
         const sections = document.querySelectorAll("main section, main h3, main h4");
+        
         const observer = new IntersectionObserver(entries => {
             let topmostVisibleEntry = null;
             for (const entry of entries) {
@@ -287,25 +301,58 @@ Nuclease-free water           : 4 µL</code></pre>
                 }
             }
             if (topmostVisibleEntry) {
-                const parentSection = topmostVisibleEntry.target.closest('section');
-                if (parentSection) {
-                    const specificLink = document.querySelector(`.docs-sidebar nav a[href="#${topmostVisibleEntry.target.id}"]`);
-                    allLinks.forEach(l => l.classList.remove('active-section-link', 'active-subsection-link'));
-                    const mainLink = document.querySelector(`.docs-sidebar nav a[href="#${parentSection.id}"]`);
-                    if (mainLink) mainLink.classList.add('active-section-link');
-                    if (specificLink && specificLink !== mainLink) specificLink.classList.add('active-subsection-link');
-                    let parent = specificLink ? specificLink.closest('.sub-list') : null;
-                    while (parent) {
-                        if (parent.classList.contains('collapsed')) {
-                            parent.classList.remove('collapsed');
-                            const parentToggle = document.querySelector(`[aria-controls="${parent.id}"]`);
-                            if (parentToggle) parentToggle.setAttribute('aria-expanded', 'true');
+                const activeId = topmostVisibleEntry.target.id;
+                const activeLink = document.querySelector(`.docs-sidebar nav a[href="#${activeId}"]`);
+
+                // Deactivate all links first
+                allLinks.forEach(l => l.classList.remove('active-section-link', 'active-subsection-link'));
+                
+                if (activeLink) {
+                    // CHANGE: New logic to collapse inactive sections
+                    allSubLists.forEach(list => {
+                        // If this list does not contain the active link, collapse it
+                        if (!list.contains(activeLink)) {
+                            list.classList.add('collapsed');
+                            const parentToggle = list.previousElementSibling;
+                            if (parentToggle && parentToggle.matches('[data-toggle]')) {
+                                parentToggle.setAttribute('aria-expanded', 'false');
+                            }
                         }
-                        parent = parent.parentElement.closest('.sub-list');
+                    });
+
+                    // Activate the path to the current link
+                    let parent = activeLink;
+                    while(parent && parent.closest('.docs-sidebar')) {
+                        if (parent.matches('a')) {
+                             // Check if it's a main section link or sub-section
+                            if(parent.nextElementSibling && parent.nextElementSibling.matches('.sub-list')) {
+                                parent.classList.add('active-section-link');
+                            } else if (parent.closest('.sub-list')) {
+                                parent.classList.add('active-subsection-link');
+                            }
+                        }
+                        
+                        // Expand the parent list if it's collapsed
+                        const parentList = parent.closest('.sub-list.collapsed');
+                        if(parentList) {
+                            parentList.classList.remove('collapsed');
+                            const parentToggle = parentList.previousElementSibling;
+                            if (parentToggle) {
+                                parentToggle.setAttribute('aria-expanded', 'true');
+                            }
+                        }
+                        parent = parent.parentElement;
+                    }
+
+                    // Highlight the top-level parent section link
+                    const topParentLink = activeLink.closest('ul:not(.sub-list) > li > a');
+                    if (topParentLink) {
+                        topParentLink.classList.add('active-section-link');
                     }
                 }
             }
         }, { rootMargin: "-40% 0px -59% 0px", threshold: [0, 1] });
+
         sections.forEach(section => { if (section.id) observer.observe(section); });
 
         // --- INITIALIZE ANIMATE ON SCROLL ---
