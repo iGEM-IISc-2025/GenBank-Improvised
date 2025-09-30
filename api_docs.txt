@@ -1,0 +1,147 @@
+This document provides comprehensive documentation for the "backend" of the whole operation.
+
+The Javascript code embedded is a module designed to interact with the NCBI API.
+It provides functions to fetch and process biological data in various formats such as
+FASTA, GenBank, and GenBank XML. This file is essential for handling API requests
+and processing the responses efficiently.
+
+One of the key features of Javascript code is its ability to fetch data directly from the
+API without requiring a backend server. This is achieved using the Fetch API,
+which allows the browser to make HTTP requests directly to the NCBI API endpoints.
+By leveraging the Fetch API, the JavaScript code can retrieve data in real-time and
+process it on the client side. This approach eliminates the need for a backend server,
+reducing complexity and improving performance for lightweight applications.
+
+Diving into the Javascript file:
+
+Functions:
+
+getInfo(reqString): Fetches XML data from the NCBI ESearch API based on the provided query string.
+This function constructs the API URL dynamically.
+– Input: A query string (e.g., human insulin gene).
+– Output: Raw XML data as a string (maximum of 20 IDs).
+
+Code:
+async function getInfo(reqString) {
+  const urlEsearch = `${baseUrl}esearch.fcgi?db=nuccore&term=${reqString}&api_key=${apiKey}`;
+  try {
+    const response = await fetch(urlEsearch);
+    if (response.ok) {
+      return await response.text();
+    } else {
+      throw new Error(`Esearch error, error code: ${response.status}`);
+    }
+  } catch (error) {
+    throw new Error("Error fetching data from ESearch API: " + error.message);
+  }
+}
+
+
+parseEsearchXml(xmlData): Parses the XML data returned by getInfo to
+extract IDs. It uses the DOMParser API to convert XML strings into a DOM object
+for easier data extraction.
+– Input: Raw XML data as a string.
+– Output: An array of IDs extracted from the XML.
+– Error Handling: Throws an error if the XML parsing fails.
+
+Code:
+
+async function parseEsearchXml(xmlData) {
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlData, "application/xml");
+    const idElements = xmlDoc.getElementsByTagName("Id");
+    const ids = Array.from(idElements).map((el) => el.textContent);
+    return ids;
+  } catch (error) {
+    throw new Error("Error parsing XML data: " + error.message);
+  }
+}
+
+esummary(idArray): Fetches summary information for an array of IDs using the ESummary API.
+This function processes the XML response to extract metadata such as title 😯, organism, and topology.
+– Input: An array of IDs (e.g., [12345, 67890]).
+– Output: An array of summary objects containing metadata.
+
+Code:
+async function esummary(idArray) {
+  // Join the array of IDs into a single comma-separated string for the API call
+  const idString = idArray.join(",");
+  const urlEsummary = `${baseUrl}esummary.fcgi?db=nuccore&id=${idString}&version=2.0&api_key=${apiKey}`;
+
+  try {
+    const response = await fetch(urlEsummary);
+    if (!response.ok) {
+      throw new Error(`ESummary error, error code: ${response.status}`);
+    }
+
+    const xmlData = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlData, "application/xml");
+    const docSummaries = xmlDoc.getElementsByTagName("DocumentSummary");
+
+    // This array will hold all the summary objects
+    const summaries = [];
+
+    // Loop through each <DocumentSummary> tag in the response
+    Array.from(docSummaries).forEach((docSummary) => {
+      const summary = {
+        // We add the Uid (the ID) to each summary object for later reference
+        Uid: docSummary.getAttribute("uid"),
+      };
+
+      const tags = [
+        "Title",
+        "CreateDate",
+        "UpdateDate",
+        "Biomol",
+        "MolType",
+        "Length",
+        "TaxId",
+        "Organism",
+        "Topology",
+        "Genome",
+        "SubType",
+        "SubName",
+      ];
+
+      tags.forEach((tag) => {
+        const element = docSummary.getElementsByTagName(tag)[0];
+        if (element) {
+          summary[tag] = element.textContent;
+        }
+      });
+      summaries.push(summary);
+    });
+
+    return summaries;
+  } catch (error) {
+    throw new Error("Error fetching data from ESummary API: " + error.message);
+  }
+}
+
+
+
+
+Key Features:
+XML Parsing: Utilizes the DOMParser API to parse XML responses, enabling structured data extraction.
+
+Browser Integration: Opens a new browser tab to display fetched data in a user-friendly format, enhancing the user experience.
+
+Performance Considerations: The use of asynchronous functions ensures non-blocking API calls, improving performance and responsiveness. Batch requests (e.g., esummary) minimize the number of API calls.
+
+Dependencies: Utilizes DOMParser for XML parsing and the Fetch API for HTTP requests.
+
+
+
+
+User’s Perspective:
+
+The user can input query strings or IDs into the provided fields.
+Input validation ensures that the user provides appropriate data.
+
+Once the user enters a search query, there are about 20 results displayed.
+Every search result is clickable, and also has three buttons to download the respective files (FASTA/Genbank/Genbank XML).
+When the user clicks on a result, he is redirected to a new page which contains the results from the intelligent feature search and also the raw sequence and raw genbank files.
+
+The layout is fully responsive, ensuring usability across devices of various screen sizes. Buttons and input fields adjust dynamically for smaller screens.
