@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BioSearch | NCBI Nucleotide Explorer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 2. Define a modern color palette and basic styles */
+      :root {
+        --primary-color: #005a9c;
+        --primary-hover: #00477a;
+        --background-color: #f4f7f9;
+        --card-background: #ffffff;
+        --text-color: #333333;
+        --secondary-text-color: #666666;
+        --border-color: #e0e0e0;
+        --shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      /* 3. Create a centered, responsive main container */
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2em;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2.5em;
+      }
+
+      h1 {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.25em;
+      }
+
+      header p {
+        font-size: 1.1em;
+        color: var(--secondary-text-color);
+      }
+
+      /* 4. Style the search controls to look modern and cohesive */
+      .search-controls {
+        display: flex;
+        gap: 1em;
+        margin-bottom: 2.5em;
+      }
+
+      #searchTerm {
+        flex-grow: 1;
+        font-size: 1rem;
+        padding: 0.75em 1em;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      #searchTerm:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.2);
+      }
+
+      #searchButton {
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.75em 1.5em;
+        border-radius: 8px;
+        border: none;
+        background-color: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      #searchButton:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* 5. Style each result as an interactive "card" */
+      #summary-list ul {
+        list-style-type: none;
+      }
+
+      #summary-list li {
+        background-color: var(--card-background);
+        padding: 1.5em;
+        border: 1px solid var(--border-color);
+        margin-bottom: 1em;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      #summary-list li:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      .result-info strong {
+        font-weight: 600;
+        font-size: 1.1em;
+        color: #222;
+      }
+
+      .result-details {
+        font-size: 0.9em;
+        color: var(--secondary-text-color);
+        background-color: var(--background-color);
+        padding: 0.75em;
+        border-radius: 8px;
+        margin-top: 0.5em;
+      }
+
+      .result-details strong {
+        font-weight: 500;
+        color: #444;
+        font-size: 1em;
+      }
+
+      .result-actions button {
+        font-size: 0.9em;
+        padding: 0.5em 1em;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background-color: #fdfdfd;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        margin-right: 0.5em;
+      }
+      .result-actions button:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+      .result-actions button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        color: #fff;
+      }
+
+      /* 6. Add a CSS loading spinner for better feedback */
+      .loader {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 2em auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* 7. Add responsiveness for mobile devices */
+      @media (max-width: 600px) {
+        .container {
+          padding: 1em;
+        }
+        .search-controls {
+          flex-direction: column;
+        }
+        header {
+          margin-bottom: 1.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>BioSearch</h1>
+        <p>An intuitive interface to the NCBI Nucleotide Database.</p>
+      </header>
+
+      <div class="search-controls">
+        <input
+          type="text"
+          id="searchTerm"
+          value="human insulin gene"
+          placeholder="Enter search term..."
+        />
+        <button id="searchButton">Search</button>
+      </div>
+
+      <div id="summary-list"></div>
+    </div>
+
+    <script src="ncbi_api.js"></script>
+    <script>
+      const searchButton = document.getElementById("searchButton");
+      const searchTermInput = document.getElementById("searchTerm");
+      const summaryListDiv = document.getElementById("summary-list");
+
+      async function handleSearch() {
+        const query = searchTermInput.value;
+        if (!query) {
+          summaryListDiv.innerHTML = "<p>Please enter a search term.</p>";
+          return;
+        }
+        // USE THE CSS LOADER instead of text
+        summaryListDiv.innerHTML = `<div class="loader"></div>`;
+
+        try {
+          const esearchXml = await getInfo(query);
+          const ids = await parseEsearchXml(esearchXml);
+          if (ids.length === 0) {
+            summaryListDiv.innerHTML =
+              "<p>No results found for your query.</p>";
+            return;
+          }
+
+          const summaries = await esummary(ids);
+          summaryListDiv.innerHTML = "";
+          const ul = document.createElement("ul");
+
+          summaries.forEach((summary) => {
+            const li = document.createElement("li");
+            li.dataset.uid = summary.Uid;
+
+            const infoDiv = document.createElement("div");
+            infoDiv.className = "result-info";
+            infoDiv.innerHTML = `
+                        <strong>${summary.Title}</strong>
+                        <div class="result-details">
+                            <strong>Accession:</strong> ${
+                              summary.AccessionVersion || "N/A"
+                            } | 
+                            <strong>Type:</strong> ${
+                              summary.Biomol || "N/A"
+                            } <br>
+                            <strong>Organism:</strong> ${
+                              summary.Organism || "N/A"
+                            } | 
+                            <strong>Length:</strong> ${
+                              summary.Length ? summary.Length + "bp" : "N/A"
+                            } | 
+                            <strong>Updated:</strong> ${
+                              summary.UpdateDate
+                                ? summary.UpdateDate.split(" ")[0]
+                                : "N/A"
+                            }
+                        </div>
+                    `;
+
+            const actionsDiv = document.createElement("div");
+            actionsDiv.className = "result-actions";
+            const formats = [
+              { label: "GenBank", format: "gb" },
+              { label: "FASTA", format: "fasta" },
+              { label: "GenBank XML", format: "gbseq" },
+            ];
+            formats.forEach((item) => {
+              const button = document.createElement("button");
+              button.textContent = item.label;
+              button.dataset.format = item.format;
+              actionsDiv.appendChild(button);
+            });
+
+            li.appendChild(infoDiv);
+            li.appendChild(actionsDiv);
+            ul.appendChild(li);
+          });
+
+          summaryListDiv.appendChild(ul);
+        } catch (error) {
+          console.error(error);
+          summaryListDiv.innerHTML = `<p style="color: red; text-align: center;">An error occurred: ${error.message}</p>`;
+        }
+      }
+
+      // handleResultClick function remains unchanged
+      async function handleResultClick(event) {
+        const clickedButton = event.target.closest("button[data-format]");
+        if (!clickedButton) return;
+        const parentLi = clickedButton.closest("li[data-uid]");
+        const uid = parentLi.dataset.uid;
+        const format = clickedButton.dataset.format;
+        const originalButtonText = clickedButton.textContent;
+        clickedButton.textContent = "Loading...";
+        clickedButton.disabled = true;
+        try {
+          const recordData = await efetch(uid, format);
+          const mimeType =
+            format === "gbseq" ? "application/xml" : "text/plain";
+          const blob = new Blob([recordData], { type: mimeType });
+          const url = URL.createObjectURL(blob);
+          window.open(url, "_blank");
+          URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error(error);
+          alert(
+            `Error fetching ${format.toUpperCase()} for ID ${uid}: ${
+              error.message
+            }`
+          );
+        } finally {
+          clickedButton.textContent = originalButtonText;
+          clickedButton.disabled = false;
+        }
+      }
+
+      searchButton.addEventListener("click", handleSearch);
+      summaryListDiv.addEventListener("click", handleResultClick);
+    </script>
+  </body>
+</html>
