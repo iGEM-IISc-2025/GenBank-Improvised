@@ -270,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const query_subclass = featureSearchSubclass.value;
 
             const searchArray = ParserFeatures(rawGbData, query_subclass, query_searchword);
+            console.log(searchArray);
 
             renderSummary();
             renderFeaturesTable();
