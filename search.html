@@ -7,12 +7,11 @@ title: Search
   :root {
     --primary-color: #005a9c;
     --primary-hover: #00477a;
-    --background-color: #f4f7f9;
     --card-background: #ffffff;
     --text-color: #333333;
     --secondary-text-color: #666666;
     --border-color: #e0e0e0;
-    --shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
   }
 
   /* Reset for this component */
@@ -23,18 +22,23 @@ title: Search
   /* The main container for your search app */
   .biorxiv-search-container {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 2em auto; /* Added margin for better spacing on the page */
     padding: 2em;
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--background-color);
+    background-color: transparent; /* Removed the background color */
     color: var(--text-color);
     line-height: 1.6;
+    border: 1px solid var(--border-color); /* Added a border for definition */
+    border-radius: 16px; /* Rounded corners for the container */
+    box-shadow: var(--shadow); /* Apply the enhanced shadow */
   }
 
   .biorxiv-search-container header {
     text-align: center;
-    margin-bottom: 2.5em;
+    margin-bottom: 2em;
+    padding-bottom: 1.5em; /* Added padding */
+    border-bottom: 1px solid var(--border-color); /* Added a separator line */
   }
 
   .biorxiv-search-container h1 {
@@ -92,9 +96,10 @@ title: Search
     background-color: var(--card-background);
     padding: 1.5em;
     border: 1px solid var(--border-color);
+    border-left: 5px solid var(--primary-color); /* Accent border */
     margin-bottom: 1em;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -114,7 +119,7 @@ title: Search
   .biorxiv-search-container .result-details {
     font-size: 0.9em;
     color: var(--secondary-text-color);
-    background-color: var(--background-color);
+    background-color: #f9fafb; /* Slightly different bg for details */
     padding: 0.75em;
     border-radius: 8px;
     margin-top: 0.5em;
@@ -162,7 +167,12 @@ title: Search
   }
 
   @media (max-width: 600px) {
-    .biorxiv-search-container { padding: 1em; }
+    .biorxiv-search-container { 
+        padding: 1em;
+        margin: 1em; /* Adjust margin for mobile */
+        border: none; /* Remove border on mobile for a cleaner look */
+        box-shadow: none; /* Remove shadow on mobile */
+    }
     .biorxiv-search-container .search-controls { flex-direction: column; }
     .biorxiv-search-container header { margin-bottom: 1.5em; }
   }
@@ -283,14 +293,3 @@ title: Search
     summaryListDiv.addEventListener("click", handleResultClick);
   });
 </script>
-
-
-<!-- Pagination -->
-<div class="bottompagination">
-    <div class="pointerup">
-        <i class="fa fa-caret-up"></i>
-    </div>
-    <span class="navigation" role="navigation">
-        {% include pagination.html %}
-    </span>
-</div>
