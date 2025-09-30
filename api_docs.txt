@@ -1,6 +1,6 @@
 This document provides comprehensive documentation for the "backend" of the whole operation.
 
-The Javascript code embedded is a module designed to interact with the NCBI API.
+The Javascript code embedded is designed to interact with the NCBI API.
 It provides functions to fetch and process biological data in various formats such as
 FASTA, GenBank, and GenBank XML. This file is essential for handling API requests
 and processing the responses efficiently.
