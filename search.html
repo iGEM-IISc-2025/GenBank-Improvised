@@ -274,33 +274,60 @@ title: Search
     }
 
     async function handleResultClick(event) {
-      // Logic is the same
-      const clickedButton = event.target.closest("button[data-format]");
-      if (!clickedButton) return;
-      
-      const parentLi = clickedButton.closest("li[data-uid]");
-      const uid = parentLi.dataset.uid;
-      const format = clickedButton.dataset.format;
-      const originalButtonText = clickedButton.textContent;
-      
-      clickedButton.textContent = "Loading...";
-      clickedButton.disabled = true;
-
-      try {
-        const recordData = await efetch(uid, format);
-        const mimeType = format === "gbseq" ? "application/xml" : "text/plain";
-        const blob = new Blob([recordData], { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        window.open(url, "_blank");
-        URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error(error);
-        alert(`Error fetching ${format.toUpperCase()} for ID ${uid}: ${error.message}`);
-      } finally {
-        clickedButton.textContent = originalButtonText;
-        clickedButton.disabled = false;
-      }
+    const parentLi = event.target.closest("li[data-uid]");
+    if (!parentLi) {
+        // If the click was outside of any result item, do nothing.
+        return;
     }
+
+    // Next, check if the click target was specifically a download button.
+    const clickedButton = event.target.closest("button[data-format]");
+
+    if (clickedButton) {
+        event.stopPropagation();
+        
+        const uid = parentLi.dataset.uid;
+        const format = clickedButton.dataset.format;
+        const originalButtonText = clickedButton.textContent;
+
+        // Provide immediate feedback to the user
+        clickedButton.textContent = "Downloading...";
+        clickedButton.disabled = true;
+
+        try {
+            // Fetch the file data from the API
+            const recordData = await efetch(uid, format);
+
+            // Create a Blob (a file in memory)
+            const blob = new Blob([recordData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+
+            // Create a temporary link to trigger the download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${uid}.${format}.txt`; // Sets the default filename
+            document.body.appendChild(a);
+            a.click(); // Programmatically click the link to start the download
+
+            // Clean up the temporary link and URL
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error(error);
+            alert(`Error downloading ${format.toUpperCase()} for ID ${uid}: ${error.message}`);
+        } finally {
+            // Restore the button to its original state
+            clickedButton.textContent = originalButtonText;
+            clickedButton.disabled = false;
+        }
+    } else {
+        const uid = parentLi.dataset.uid;
+        // We'll default to the 'gb' (GenBank) format for the detailed viewer page
+        const viewerUrl = `file-viewer.html?uid=${uid}&format=gb`;
+        window.open(viewerUrl, '_blank');
+    }
+}
 
     searchButton.addEventListener("click", handleSearch);
     summaryListDiv.addEventListener("click", handleResultClick);
