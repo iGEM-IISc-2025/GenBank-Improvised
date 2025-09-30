@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryGrid = document.getElementById('summary-grid');
     const featuresTbody = document.getElementById('features-tbody');
     const featureSearch = document.getElementById('feature-search');
+    const featureSearchSubclass = document.getElementById('feature-search-subclass');
     const sequencePre = document.getElementById('sequence-pre');
     const referencesPre = document.getElementById('references-pre');
     const copySeqBtn = document.getElementById('copy-seq-btn');
@@ -265,9 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
             rawGbData = await efetch(uid, 'gb');
             parsedData = parseGenBank(rawGbData);
 
-            //const query = featureSearch.value.toLowerCase();
+            const query_searchword = featureSearch.value;
+            const query_subclass = featureSearchSubclass.value;
 
-            //const searchArray = ParserFeatures();
+            const searchArray = ParserFeatures(rawGbData, query_subclass, query_searchword);
 
             renderSummary();
             renderFeaturesTable();
