@@ -324,7 +324,7 @@ title: Search
     } else {
         const uid = parentLi.dataset.uid;
         // We'll default to the 'gb' (GenBank) format for the detailed viewer page
-        const viewerUrl = `/GenBank-Improvised/file-viewer.html?uid=${uid}&format=gb`;
+        const viewerUrl = `/GenBank-Improvised/file-viewer?uid=${uid}&format=gb`;
         window.open(viewerUrl, '_blank');
     }
 }
