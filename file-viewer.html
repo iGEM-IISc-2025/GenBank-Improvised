@@ -72,6 +72,7 @@ title: File Viewer
 
 	/* styles for the feature search input bar */
 	#feature-search {
+        flex: 3;
 		width: 100%;
 		font-size: 1.1em;
 		padding: 0.75em;
@@ -87,6 +88,7 @@ title: File Viewer
 
 	/* styles for the feature search input bar */
 	#feature-search-subclass {
+        flex: 1;
 		width: 100%;
 		font-size: 1.1em;
 		padding: 0.75em;
@@ -207,6 +209,12 @@ title: File Viewer
 		background: #fff;
 		cursor: pointer;
 	}
+    #plasmid-map-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 550px;
+    }
 </style>
 
 <div class="viewer-container">
@@ -266,7 +274,23 @@ title: File Viewer
 		<pre class="data-box" id="references-pre">loading references...</pre>
 	</div>
 
+    <div class="viewer-container">
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="features">Features</button>
+        <button class="tab-btn" data-tab="sequence">Sequence</button>
+        <button class="tab-btn" data-tab="plasmid-map">Plasmid Map</button>
+        <button class="tab-btn" data-tab="raw-genbank">Raw GenBank</button>
+        <button class="tab-btn" data-tab="references">References</button>
+    </nav>
+    
+    <div id="plasmid-map" class="tab-content">
+        <div id="plasmid-map-container">
+            </div>
+    </div>
+</div>
+
 </div>
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/file-viewer.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/plasmid-renderer.js' | relative_url }}"></script>
