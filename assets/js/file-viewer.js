@@ -125,6 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             renderSequence();
             referencesPre.textContent = parsedData.references;
 
+            document.getElementById('raw-genbank-pre').textContent = rawGbData;
+
             // Attach event listeners now that data is loaded
             tabContainer.addEventListener('click', handleTabClick);
             featureSearch.addEventListener('input', handleFeatureSearch);

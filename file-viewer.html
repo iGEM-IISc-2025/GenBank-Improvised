@@ -5,91 +5,107 @@ title: File Viewer
 
 <style>
     :root {
-        --primary-color: #005a9c;
-        --primary-hover: #00477a;
-        --border-color: #e0e0e0;
-        --background-color: #f9fafb;
+        /* CHANGED: Neutral color scheme */
+        --border-color: #e5e7eb;
+        --background-color: #f8fafc;
         --card-background: #ffffff;
-        --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.06);
+        --text-color-primary: #1f2937;
+        --text-color-secondary: #4b5563;
+        --interactive-color: #3b82f6; /* A default blue for focus, can be changed later */
     }
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         margin: 0;
-        background-color: #f1f5f9; /* A slightly off-white background */
+        background-color: #f1f5f9;
+        color: var(--text-color-primary);
     }
 
-    .viewer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2em;
+    /* --- Page Header (No longer sticky) --- */
+    .page-header {
+        background-color: var(--card-background);
+        padding: 1.5em;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-bottom: 2em;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
-
-    /* Sticky Header */
-    .sticky-header {
-        position: sticky;
-        top: 0;
-        background-color: rgba(255,255,255,0.9);
-        backdrop-filter: blur(8px);
-        padding: 0.75em 2em;
-        border-bottom: 1px solid var(--border-color);
+    .header-top {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        z-index: 10;
+        align-items: flex-start;
+        margin-bottom: 1.5em;
     }
-    .sticky-header h1 {
-        font-size: 1.2em;
-        font-weight: 600;
-        color: #333;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .header-top h1 {
+        font-size: 1.5em;
+        margin: 0;
+        line-height: 1.3;
+        flex: 1; /* Allow title to take up space */
     }
     .download-actions button {
         font-size: 0.9rem;
         font-weight: 500;
         padding: 0.5em 1em;
         border-radius: 8px;
-        border: 1px solid var(--primary-color);
-        background-color: var(--primary-color);
-        color: white;
+        border: 1px solid #d1d5db; /* Neutral border */
+        background-color: #ffffff; /* Neutral background */
+        color: var(--text-color-primary); /* Neutral text */
         cursor: pointer;
         margin-left: 0.5em;
+        transition: background-color 0.2s;
     }
-    .download-actions button.secondary {
-        background-color: transparent;
-        color: var(--primary-color);
+     .download-actions button:hover {
+        background-color: var(--background-color);
+     }
+
+    /* --- Main Container --- */
+    .viewer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2em;
     }
 
-    /* Summary Card */
+    /* --- Feature Search (now in header) --- */
+    #feature-search {
+        width: 100%;
+        font-size: 1.1em;
+        padding: 0.75em;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    #feature-search:focus {
+        outline: none;
+        border-color: var(--interactive-color);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+
+    /* --- Summary Card --- */
     .summary-card {
         background: var(--card-background);
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 1.5em;
         margin-bottom: 2em;
-        box-shadow: var(--shadow-light);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
     .summary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1em;
     }
-    .summary-item {
-        font-size: 0.95em;
-    }
+    .summary-item { font-size: 0.95em; }
     .summary-item strong {
         display: block;
-        color: #555;
+        color: var(--text-color-secondary);
         font-weight: 500;
         margin-bottom: 0.25em;
     }
     .summary-item span {
         font-weight: 600;
-        color: #111;
+        color: var(--text-color-primary);
     }
 
-    /* Tab Navigation */
+    /* --- Tab Navigation --- */
     .tab-nav {
         display: flex;
         border-bottom: 1px solid var(--border-color);
@@ -102,33 +118,36 @@ title: File Viewer
         cursor: pointer;
         font-size: 1em;
         font-weight: 500;
-        color: #555;
+        color: var(--text-color-secondary);
         border-bottom: 3px solid transparent;
-        margin-bottom: -1px; /* Overlap border */
+        margin-bottom: -1px;
     }
     .tab-btn.active {
-        color: var(--primary-color);
-        border-bottom-color: var(--primary-color);
+        color: var(--text-color-primary);
+        border-bottom-color: var(--text-color-primary);
     }
-    .tab-content {
-        display: none;
-    }
-    .tab-content.active {
-        display: block;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
     
-    /* Features Table */
-    #feature-search {
-        width: 100%;
-        font-size: 1em;
-        padding: 0.75em;
-        border-radius: 8px;
+    /* --- Features & Sequence Views --- */
+    .data-box, #sequence-view {
+        background-color: var(--background-color);
         border: 1px solid var(--border-color);
-        margin-bottom: 1em;
+        border-radius: 8px;
+        padding: 1.5em;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.95em;
+        color: #333;
+    }
+    #sequence-view {
+        position: relative;
+        white-space: pre-wrap;
+        word-wrap: break-word;
     }
     .features-table {
         width: 100%;
         border-collapse: collapse;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif; /* Use standard font */
         font-size: 0.9em;
     }
     .features-table th, .features-table td {
@@ -143,20 +162,6 @@ title: File Viewer
     .features-table tbody tr:hover {
         background-color: #eef2ff;
     }
-
-    /* Sequence View */
-    #sequence-view {
-        background-color: var(--background-color);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 1.5em;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        font-family: "Courier New", Courier, monospace;
-        font-size: 0.95em;
-        color: #333;
-        position: relative;
-    }
     #copy-seq-btn {
         position: absolute;
         top: 1em;
@@ -170,15 +175,18 @@ title: File Viewer
     }
 </style>
 
-<div class="sticky-header">
-    <h1 id="file-title">Loading record...</h1>
-    <div class="download-actions">
-        <button id="download-fasta-btn" class="secondary">Download FASTA</button>
-        <button id="download-gb-btn">Download GenBank</button>
-    </div>
-</div>
-
 <div class="viewer-container">
+
+    <header class="page-header">
+        <div class="header-top">
+            <h1 id="file-title">Loading record...</h1>
+            <div class="download-actions">
+                <button id="download-fasta-btn" class="secondary">Download FASTA</button>
+                <button id="download-gb-btn">Download GenBank</button>
+            </div>
+        </div>
+        <input type="text" id="feature-search" placeholder="🔍 Search features in this file (e.g., 'kinase', '1..500')...">
+    </header>
 
     <div class="summary-card">
         <div class="summary-grid" id="summary-grid">
@@ -188,11 +196,10 @@ title: File Viewer
     <nav class="tab-nav">
         <button class="tab-btn active" data-tab="features">Features</button>
         <button class="tab-btn" data-tab="sequence">Sequence</button>
-        <button class="tab-btn" data-tab="references">References</button>
+        <button class="tab-btn" data-tab="raw-genbank">Raw GenBank</button>
     </nav>
     
     <div id="features" class="tab-content active">
-        <input type="text" id="feature-search" placeholder="Search features in this file...">
         <div style="overflow-x:auto;">
             <table class="features-table">
                 <thead>
@@ -215,11 +222,10 @@ title: File Viewer
         </div>
     </div>
 
-    <div id="references" class="tab-content">
-        <pre id="references-pre">References will be displayed here.</pre>
+    <div id="raw-genbank" class="tab-content">
+        <pre class="data-box" id="raw-genbank-pre">Loading raw file...</pre>
     </div>
 </div>
-
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/file-viewer.js' | relative_url }}" defer></script>
