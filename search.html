@@ -11,7 +11,7 @@ title: Search
     --text-color: #333333;
     --secondary-text-color: #666666;
     --border-color: #e0e0e0;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.06); 
   }
 
   /* Reset for this component */
@@ -19,26 +19,24 @@ title: Search
     box-sizing: border-box;
   }
 
-  /* The main container for your search app */
+  /* The main container, now acting as an INVISIBLE content wrapper */
   .biorxiv-search-container {
     max-width: 900px;
-    margin: 2em auto; /* Added margin for better spacing on the page */
+    margin: 0 auto; /* CHANGED: Removed top margin to bring it up */
     padding: 2em;
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, Helvetica, Arial, sans-serif;
-    background-color: transparent; /* Removed the background color */
+    background-color: transparent;
     color: var(--text-color);
     line-height: 1.6;
-    border: 1px solid var(--border-color); /* Added a border for definition */
-    border-radius: 16px; /* Rounded corners for the container */
-    box-shadow: var(--shadow); /* Apply the enhanced shadow */
+    /* REMOVED: border, border-radius, and box-shadow to make it invisible */
   }
 
   .biorxiv-search-container header {
     text-align: center;
     margin-bottom: 2em;
-    padding-bottom: 1.5em; /* Added padding */
-    border-bottom: 1px solid var(--border-color); /* Added a separator line */
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .biorxiv-search-container h1 {
@@ -64,6 +62,7 @@ title: Search
     padding: 0.75em 1em;
     border-radius: 8px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .biorxiv-search-container #searchTerm:focus {
@@ -96,10 +95,10 @@ title: Search
     background-color: var(--card-background);
     padding: 1.5em;
     border: 1px solid var(--border-color);
-    border-left: 5px solid var(--primary-color); /* Accent border */
+    border-left: 5px solid var(--primary-color);
     margin-bottom: 1em;
     border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-light); /* Using a lighter shadow for cards */
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -119,7 +118,7 @@ title: Search
   .biorxiv-search-container .result-details {
     font-size: 0.9em;
     color: var(--secondary-text-color);
-    background-color: #f9fafb; /* Slightly different bg for details */
+    background-color: #f9fafb;
     padding: 0.75em;
     border-radius: 8px;
     margin-top: 0.5em;
@@ -169,9 +168,6 @@ title: Search
   @media (max-width: 600px) {
     .biorxiv-search-container { 
         padding: 1em;
-        margin: 1em; /* Adjust margin for mobile */
-        border: none; /* Remove border on mobile for a cleaner look */
-        box-shadow: none; /* Remove shadow on mobile */
     }
     .biorxiv-search-container .search-controls { flex-direction: column; }
     .biorxiv-search-container header { margin-bottom: 1.5em; }
@@ -192,7 +188,6 @@ title: Search
   <div id="summary-list"></div>
 </div>
 
-
 <div class="bottompagination">
     <div class="pointerup">
         <i class="fa fa-caret-up"></i>
@@ -204,6 +199,7 @@ title: Search
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
 <script>
+  // The JavaScript is unchanged
   document.addEventListener("DOMContentLoaded", function() {
     const searchButton = document.getElementById("searchButton");
     const searchTermInput = document.getElementById("searchTerm");
@@ -218,7 +214,6 @@ title: Search
       summaryListDiv.innerHTML = `<div class="loader"></div>`;
 
       try {
-        // These functions (getInfo, parseEsearchXml, etc.) should be in your ncbi_api.js
         const esearchXml = await getInfo(query);
         const ids = await parseEsearchXml(esearchXml);
         if (ids.length === 0) {
