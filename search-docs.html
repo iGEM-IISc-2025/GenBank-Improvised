@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Search Docs
+title: Docs
 ---
 
 <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
@@ -17,13 +17,13 @@ title: Search Docs
 
 	.docs-sidebar {
 		position: sticky;
-		top: 50px;
+		top: 50px; /* Adjust if your navbar height is different */
 		width: 256px;
 		height: calc(100vh - 120px);
 		flex-shrink: 0;
 		overflow-y: auto;
 		padding-right: 1.5rem;
-		scrollbar-width: none;
+		scrollbar-width: none; /* For Firefox */
 	}
 	.docs-sidebar::-webkit-scrollbar {
 		display: none;
@@ -95,12 +95,17 @@ title: Search Docs
 	.docs-article .lead { font-size: 1.125rem; color: #4b5563; margin-top: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; }
 	.docs-article h2 { font-size: 1.5rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
 	.docs-article h3 { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-top: 2rem; margin-bottom: 0.75rem; }
-	.docs-article p { font-size: 1rem; line-height: 1.75rem; color: #374151; margin-bottom: 1rem; }
+    .docs-article p { font-size: 1rem; line-height: 1.75rem; color: #374151; margin-bottom: 1rem; }
 	
-	/* Article Links */
-	.docs-article a { color: #8A2BE2; font-weight: 500; text-decoration: none; }
-	.docs-article a:hover { text-decoration: underline; }
-
+	/* Callout Blocks */
+	.callout { padding: 1rem; margin: 1.25rem 0; border-radius: 0.5rem; border-left-width: 4px; }
+	.callout-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+	.callout-header svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+	.callout p { margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; line-height: 1.6; }
+	.callout-note { background-color: #eff6ff; border-color: #3b82f6; }
+	.callout-note .callout-header { color: #1e40af; }
+	.callout-note p { color: #1c3d8e; }
+	
 	/* Code Blocks */
 	.docs-article pre { position: relative; background-color: #1f2937; color: #d1d5db; padding: 1rem; margin: 1.25rem 0 1.5rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.875rem; padding-top: 3.5rem; }
 	.code-header { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; background-color: #374151; color: #9ca3af; padding: 0.5rem 1rem; font-size: 0.8rem; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
@@ -120,44 +125,51 @@ title: Search Docs
 				<p class="lead">A powerful, intuitive search algorithm for finding features within GenBank files, designed for accuracy and ease of use.</p>
 			</header>
 
-			<section id="user-experience" data-aos="fade-up">
-				<h2>How to Use It</h2>
-				<p>Let's explain how you can use our search through an example. Say you want to search for a gene, like <strong>traN</strong>, in an organism's GenBank entry, like <i>P. putida</i>.</p>
-				<p>You need to provide two things: the <strong>searchword</strong> and an optional <strong>subclass</strong>. The searchword is self-explanatory: it is the word you are looking for. The "subclass" term is a term we invented to narrow down your search.</p>
-				<p>To understand what a subclass means, we need to look at a typical .gb file. Take this snippet from the FEATURES section:</p>
+			<section id="introduction" data-aos="fade-up">
+				<h2>The Challenge: Finding Data in Dense Files</h2>
+				<p>GenBank files are incredibly data-rich, but their dense, text-based format makes finding specific information difficult. A simple text search often isn't enough, as researchers need to look for specific features like genes or CDS, and spelling errors can lead to missed results.</p>
+				<p>Our project introduces an intelligent search layer on top of standard GenBank files. This tool allows users to perform targeted, error-tolerant searches to quickly locate the exact features they need.</p>
+			</section>
+
+			<section id="how-it-works" data-aos="fade-up">
+				<h2>How to Use Our Search</h2>
+				<p>Let's walk through an example. Imagine you want to find the <strong>traN</strong> gene within the GenBank record for <i>P. putida</i>.</p>
+				<p>You provide the <strong>searchword</strong> (e.g., "traN") and have the option to specify a <strong>subclass</strong> to narrow your search. If you select "gene" as the subclass, our tool will only look for "traN" within gene annotations, ignoring other sections. If you leave it blank, it searches the entire file.</p>
+				<div class="callout callout-note">
+					<div class="callout-header">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
+						<strong>Error Tolerance is Key</strong>
+					</div>
+					<p>Our search isn't just looking for exact matches. It finds words that are a close match, so even minor typos won't prevent you from getting the results you need. The output is a list of matches, ranked by how closely they match your search term.</p>
+				</div>
+			</section>
+
+			<section id="technology" data-aos="fade-up">
+				<h2>The Technology Behind It</h2>
+				<p>Our tool operates in a few simple steps. First, it fetches the requested .gb file. Then, it processes the file line by line, identifying the "subclass" of each line and comparing its contents to your search query.</p>
+				
+				<h3 id="subclasses-explained">Understanding Subclasses</h3>
+				<p>We use the term "subclass" to refer to the primary feature types in a GenBank file. This allows for highly specific searches. The most common subclasses are:</p>
+				<ul>
+					<li><strong>Source:</strong> General information about the entire sequence (organism, strain, etc.).</li>
+					<li><strong>Gene:</strong> Marks the location of a specific gene.</li>
+					<li><strong>CDS (Coding Sequence):</strong> Contains the specific nucleotide sequence that codes for a protein.</li>
+				</ul>
 				<pre><code>  source           1..128921
 				   /organism="Pseudomonas putida"
-				   /mol_type="genomic DNA"
   gene             complement(1..867)
 				   /locus_tag="HXC77_RS00005"
   CDS              complement(1..867)
-				   /locus_tag="HXC77_RS00005"</code></pre>
-				<p>As you can see, there is a clear difference between terms like "source", "gene", and "CDS", and their actual data, like "/organism="Pseudomonas putida"". We call the terms in the first group "subclasses". If you provide a subclass, the code searches only within entries belonging to that subclass. If not, it searches the entire file.</p>
-				<p>The output is a list of line numbers in the file where your searchword was found, ordered by relevance. We check for words that are a close match, so even if you make a minor spelling mistake, you'll still get the results you're looking for.</p>
+				   /product="Replication initiation protein"</code></pre>
+
+				<h3 id="levenshtein-distance">Measuring Closeness with Levenshtein Distance</h3>
+				<p>To provide error-tolerant results, we calculate the <strong>Levenshtein distance</strong> between your searchword and words found in the file. This distance is the minimum number of single-character edits (insertions, deletions, substitutions) needed to change one word into the other.</p>
+				<p>Our tolerance for errors is dynamic. We use the formula <strong>4 * (1 - 2^(-a/3))</strong>, where 'a' is the word length. This allows more potential typos for longer words, up to a reasonable maximum limit of 4 edits.</p>
 			</section>
 
-			<section id="code-overview" data-aos="fade-up">
-				<h2>How the Code Works</h2>
-				<p>Once you enter a search term for a specific GenBank entry, our tool fetches the corresponding .gb file. The code then goes through this file line by line.</p>
-				<p>For each line, it first determines the subclass. If a subclass was provided and it doesn't match the current line's subclass, the line is ignored. Otherwise, the code iterates over the line, comparing slices of text to your searchword using the Levenshtein distance algorithm.</p>
-				<p>If a word in the file is "close enough" (its Levenshtein distance is below a set limit), we record the line number, the matched word, and its distance. Once the entire file is processed, this collection of results is displayed, sorted by the Levenshtein distance, with the closest matches appearing first.</p>
-			</section>
-
-			<section id="levenshtein-distance" data-aos="fade-up">
-				<h2>Levenshtein Distance</h2>
-				<p>The Levenshtein distance between two words is the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one word into the other. We use an iterative algorithm to calculate this value.</p>
-				<p>The longer a word is, the more spelling mistakes are possible. To account for this, our "close enough" limit for the distance is dynamic. We use the formula <strong>4 * (1 - 2^(-a/3))</strong>, where 'a' is the length of the shorter word. This allows the tolerance for errors to grow with word length, up to a maximum of 4, which we decided was a reasonable cap.</p>
-			</section>
-
-			<section id="subclasses" data-aos="fade-up">
-				<h2>Subclasses Explained</h2>
-				<p>As mentioned, "subclasses" are the primary feature types listed in a GenBank file, such as "source", "gene", and "CDS". Here are some of the most common ones:</p>
-				<h3>Source</h3>
-				<p>This subclass contains general information about the entire sequence, including the organism, molecule type, and strain.</p>
-				<h3>Gene</h3>
-				<p>This is an annotation that simply marks the location of a specific gene within the sequence.</p>
-				<h3>CDS (Coding Sequence)</h3>
-				<p>This is a subset of a gene that contains the specific nucleotide sequence that codes for a protein. It's often the most detailed part of a gene annotation.</p>
+			<section id="conclusion" data-aos="fade-up">
+				<h2>Conclusion</h2>
+				<p>By combining a targeted subclass system with an error-tolerant matching algorithm, our tool provides a fast, flexible, and intuitive way to navigate the dense information within GenBank files, significantly improving the user experience for researchers.</p>
 			</section>
 		</article>
 	</main>
@@ -174,7 +186,7 @@ title: Search Docs
 			const header = document.createElement('div');
 			header.className = 'code-header';
 			const title = document.createElement('span');
-			title.textContent = 'GenBank Snippet'; // changed title for context
+			title.textContent = 'GenBank Snippet';
 			const copyButton = document.createElement('button');
 			copyButton.className = 'copy-button';
 			copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
@@ -192,13 +204,17 @@ title: Search Docs
 		});
 
 		// --- dynamic sidebar & scrollspy ---
-		// updated the navstructure to match the new content
+		// UPDATED navStructure to match the new, logical flow
 		const navStructure = [
-			{ id: 'user-experience', title: 'How to Use It' },
-			{ id: 'code-overview', title: 'How the Code Works' },
-			{ id: 'levenshtein-distance', title: 'Levenshtein Distance' },
-			{ id: 'subclasses', title: 'Subclasses Explained' }
+			{ id: 'introduction', title: 'Introduction' },
+			{ id: 'how-it-works', title: 'How to Use It' },
+			{ id: 'technology', title: 'The Technology', children: [
+				{ id: 'subclasses-explained', title: 'Subclasses' },
+				{ id: 'levenshtein-distance', title: 'Levenshtein Distance' }
+			]},
+			{ id: 'conclusion', title: 'Conclusion' }
 		];
+
 		const navContainer = document.getElementById('docs-nav');
 		function createNav(items, isSubList = false) {
 			const list = document.createElement('ul');
@@ -239,6 +255,7 @@ title: Search Docs
 			});
 		});
 
+		// observer and scrollspy logic remains the same
 		const allLinks = document.querySelectorAll('.docs-sidebar nav a');
 		const allSubLists = document.querySelectorAll('.docs-sidebar .sub-list');
 		const sections = document.querySelectorAll("main section, main h3, main h4");
@@ -292,7 +309,6 @@ title: Search Docs
 					if (topParentLink) {
 						topParentLink.classList.add('active-section-link');
 					} else {
-						// if it's a top level link itself
 						activeLink.classList.add('active-section-link');
 					}
 				}
