@@ -1,0 +1,306 @@
+---
+layout: default
+title: Docs
+---
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<style>
+	/* General Layout & Structure */
+	.docs-layout {
+		display: flex;
+		flex-direction: row;
+		max-width: 1400px;
+		margin: 0 auto 4rem auto;
+		padding: 0 2rem;
+	}
+
+	.docs-sidebar {
+		position: sticky;
+		top: 50px; /* Adjust if your navbar height is different */
+		width: 256px;
+		height: calc(100vh - 120px);
+		flex-shrink: 0;
+		overflow-y: auto;
+		padding-right: 1.5rem;
+		scrollbar-width: none; /* For Firefox */
+	}
+	.docs-sidebar::-webkit-scrollbar {
+		display: none;
+	}
+
+	@media (max-width: 1024px) {
+		.docs-sidebar {
+			display: none;
+		}
+	}
+
+	/* Sidebar Navigation Links */
+	.docs-sidebar nav a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 8px 12px;
+		border-radius: 6px;
+		color: #4b5563;
+		transition: all 0.2s ease;
+		font-size: 0.9rem;
+		font-weight: 500;
+		text-decoration: none;
+	}
+
+	.docs-sidebar nav a:hover {
+		background-color: #f3f4f6;
+		color: #1f2937;
+	}
+
+	.active-section-link {
+		background-color: #eef2ff !important;
+		color: #4338ca !important;
+		font-weight: 600 !important;
+	}
+
+	.active-subsection-link {
+		color: #4338ca !important;
+		font-weight: 600 !important;
+	}
+
+	.sub-list {
+		padding-left: 12px;
+		margin-left: 8px;
+		border-left: 1px solid #e5e7eb;
+		overflow: hidden;
+		max-height: 1000px;
+		transition: max-height 0.4s ease-in-out;
+	}
+
+	.sub-list.collapsed { max-height: 0; }
+
+	.collapse-icon {
+		transition: transform 0.3s ease;
+		width: 1rem;
+		height: 1rem;
+		color: #9ca3af;
+	}
+
+	a[aria-expanded="false"] .collapse-icon { transform: rotate(-90deg); }
+
+	/* Main Content Typography */
+	.docs-main { 
+		flex-grow: 1; 
+		min-width: 0;
+		padding-left: 2rem;
+	}
+	.docs-article h1 { font-size: 2.25rem; font-weight: 800; color: #111827; }
+	.docs-article .lead { font-size: 1.125rem; color: #4b5563; margin-top: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; }
+	.docs-article h2 { font-size: 1.5rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
+	.docs-article h3 { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-top: 2rem; margin-bottom: 0.75rem; }
+	.docs-article p { font-size: 1rem; line-height: 1.75rem; color: #374151; margin-bottom: 1rem; }
+	
+	/* Article Links */
+	.docs-article a { color: #8A2BE2; font-weight: 500; text-decoration: none; }
+	.docs-article a:hover { text-decoration: underline; }
+
+	/* Code Blocks */
+	.docs-article pre { position: relative; background-color: #1f2937; color: #d1d5db; padding: 1rem; margin: 1.25rem 0 1.5rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.875rem; padding-top: 3.5rem; }
+	.code-header { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; background-color: #374151; color: #9ca3af; padding: 0.5rem 1rem; font-size: 0.8rem; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
+	.copy-button { background-color: transparent; color: #9ca3af; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.5rem; }
+	.copy-button:hover { background-color: #4b5563; color: #e5e7eb; }
+</style>
+
+<div class="docs-layout">
+	<aside class="docs-sidebar">
+		<nav id="docs-nav"></nav>
+	</aside>
+
+	<main class="docs-main">
+		<article class="docs-article">
+			<header id="top">
+				<h1>Intelligent Feature Search</h1>
+				<p class="lead">A powerful, intuitive search algorithm for finding features within GenBank files, designed for accuracy and ease of use.</p>
+			</header>
+
+			<section id="user-experience" data-aos="fade-up">
+				<h2>How to Use It</h2>
+				<p>Let's explain how you can use our search through an example. Say you want to search for a gene, like <strong>traN</strong>, in an organism's GenBank entry, like <i>P. putida</i>.</p>
+				<p>You need to provide two things: the <strong>searchword</strong> and an optional <strong>subclass</strong>. The searchword is self-explanatory: it is the word you are looking for. The "subclass" term is a term we invented to narrow down your search.</p>
+				<p>To understand what a subclass means, we need to look at a typical .gb file. Take this snippet from the FEATURES section:</p>
+				<pre><code>  source           1..128921
+				   /organism="Pseudomonas putida"
+				   /mol_type="genomic DNA"
+  gene             complement(1..867)
+				   /locus_tag="HXC77_RS00005"
+  CDS              complement(1..867)
+				   /locus_tag="HXC77_RS00005"</code></pre>
+				<p>As you can see, there is a clear difference between terms like "source", "gene", and "CDS", and their actual data, like "/organism="Pseudomonas putida"". We call the terms in the first group "subclasses". If you provide a subclass, the code searches only within entries belonging to that subclass. If not, it searches the entire file.</p>
+				<p>The output is a list of line numbers in the file where your searchword was found, ordered by relevance. We check for words that are a close match, so even if you make a minor spelling mistake, you'll still get the results you're looking for.</p>
+			</section>
+
+			<section id="code-overview" data-aos="fade-up">
+				<h2>How the Code Works</h2>
+				<p>Once you enter a search term for a specific GenBank entry, our tool fetches the corresponding .gb file. The code then goes through this file line by line.</p>
+				<p>For each line, it first determines the subclass. If a subclass was provided and it doesn't match the current line's subclass, the line is ignored. Otherwise, the code iterates over the line, comparing slices of text to your searchword using the Levenshtein distance algorithm.</p>
+				<p>If a word in the file is "close enough" (its Levenshtein distance is below a set limit), we record the line number, the matched word, and its distance. Once the entire file is processed, this collection of results is displayed, sorted by the Levenshtein distance, with the closest matches appearing first.</p>
+			</section>
+
+			<section id="levenshtein-distance" data-aos="fade-up">
+				<h2>Levenshtein Distance</h2>
+				<p>The Levenshtein distance between two words is the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one word into the other. We use an iterative algorithm to calculate this value.</p>
+				<p>The longer a word is, the more spelling mistakes are possible. To account for this, our "close enough" limit for the distance is dynamic. We use the formula <strong>4 * (1 - 2^(-a/3))</strong>, where 'a' is the length of the shorter word. This allows the tolerance for errors to grow with word length, up to a maximum of 4, which we decided was a reasonable cap.</p>
+			</section>
+
+			<section id="subclasses" data-aos="fade-up">
+				<h2>Subclasses Explained</h2>
+				<p>As mentioned, "subclasses" are the primary feature types listed in a GenBank file, such as "source", "gene", and "CDS". Here are some of the most common ones:</p>
+				<h3>Source</h3>
+				<p>This subclass contains general information about the entire sequence, including the organism, molecule type, and strain.</p>
+				<h3>Gene</h3>
+				<p>This is an annotation that simply marks the location of a specific gene within the sequence.</p>
+				<h3>CDS (Coding Sequence)</h3>
+				<p>This is a subset of a gene that contains the specific nucleotide sequence that codes for a protein. It's often the most detailed part of a gene annotation.</p>
+			</section>
+		</article>
+	</main>
+</div>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+
+		// --- code block copy button ---
+		document.querySelectorAll('main article pre').forEach(block => {
+			const code = block.querySelector('code');
+			if (!code) return;
+			const header = document.createElement('div');
+			header.className = 'code-header';
+			const title = document.createElement('span');
+			title.textContent = 'GenBank Snippet'; // changed title for context
+			const copyButton = document.createElement('button');
+			copyButton.className = 'copy-button';
+			copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+			header.appendChild(title);
+			header.appendChild(copyButton);
+			block.prepend(header);
+			copyButton.addEventListener('click', () => {
+				navigator.clipboard.writeText(code.innerText).then(() => {
+					copyButton.innerHTML = `<span>Copied!</span>`;
+					setTimeout(() => {
+						copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+					}, 2000);
+				});
+			});
+		});
+
+		// --- dynamic sidebar & scrollspy ---
+		// updated the navstructure to match the new content
+		const navStructure = [
+			{ id: 'user-experience', title: 'How to Use It' },
+			{ id: 'code-overview', title: 'How the Code Works' },
+			{ id: 'levenshtein-distance', title: 'Levenshtein Distance' },
+			{ id: 'subclasses', title: 'Subclasses Explained' }
+		];
+		const navContainer = document.getElementById('docs-nav');
+		function createNav(items, isSubList = false) {
+			const list = document.createElement('ul');
+			list.className = isSubList ? 'sub-list collapsed' : 'space-y-1 mt-4';
+			items.forEach(item => {
+				const listItem = document.createElement('li');
+				const link = document.createElement('a');
+				link.href = `#${item.id}`;
+				if (item.children) {
+					const subListId = `sublist-${item.id}`;
+					link.setAttribute('data-toggle', 'collapse');
+					link.setAttribute('aria-expanded', 'false');
+					link.setAttribute('aria-controls', subListId);
+					link.innerHTML = `<span>${item.title}</span><svg class="collapse-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
+					listItem.appendChild(link);
+					const subList = createNav(item.children, true);
+					subList.id = subListId;
+					listItem.appendChild(subList);
+				} else { link.textContent = item.title; listItem.appendChild(link); }
+				list.appendChild(listItem);
+			});
+			return list;
+		}
+		if (navContainer) {
+			const title = document.createElement('h2');
+			title.className = 'text-lg font-bold text-gray-900';
+			title.textContent = 'On this page';
+			navContainer.appendChild(title);
+			const mainNavList = createNav(navStructure);
+			navContainer.appendChild(mainNavList);
+		}
+		document.querySelectorAll('.docs-sidebar nav a[data-toggle]').forEach(toggle => {
+			toggle.addEventListener('click', e => {
+				e.preventDefault();
+				const targetElement = document.getElementById(toggle.getAttribute('aria-controls'));
+				const isCollapsed = targetElement.classList.toggle('collapsed');
+				toggle.setAttribute('aria-expanded', !isCollapsed);
+			});
+		});
+
+		const allLinks = document.querySelectorAll('.docs-sidebar nav a');
+		const allSubLists = document.querySelectorAll('.docs-sidebar .sub-list');
+		const sections = document.querySelectorAll("main section, main h3, main h4");
+		
+		const observer = new IntersectionObserver(entries => {
+			let topmostVisibleEntry = null;
+			for (const entry of entries) {
+				if (entry.isIntersecting && (!topmostVisibleEntry || entry.boundingClientRect.top < topmostVisibleEntry.boundingClientRect.top)) {
+					topmostVisibleEntry = entry;
+				}
+			}
+			if (topmostVisibleEntry) {
+				const activeId = topmostVisibleEntry.target.id;
+				const activeLink = document.querySelector(`.docs-sidebar nav a[href="#${activeId}"]`);
+
+				allLinks.forEach(l => l.classList.remove('active-section-link', 'active-subsection-link'));
+				
+				if (activeLink) {
+					allSubLists.forEach(list => {
+						if (!list.contains(activeLink)) {
+							list.classList.add('collapsed');
+							const parentToggle = list.previousElementSibling;
+							if (parentToggle && parentToggle.matches('[data-toggle]')) {
+								parentToggle.setAttribute('aria-expanded', 'false');
+							}
+						}
+					});
+
+					let parent = activeLink;
+					while(parent && parent.closest('.docs-sidebar')) {
+						if (parent.matches('a')) {
+							if(parent.nextElementSibling && parent.nextElementSibling.matches('.sub-list')) {
+								parent.classList.add('active-section-link');
+							} else if (parent.closest('.sub-list')) {
+								parent.classList.add('active-subsection-link');
+							}
+						}
+						
+						const parentList = parent.closest('.sub-list.collapsed');
+						if(parentList) {
+							parentList.classList.remove('collapsed');
+							const parentToggle = parentList.previousElementSibling;
+							if (parentToggle) {
+								parentToggle.setAttribute('aria-expanded', 'true');
+							}
+						}
+						parent = parent.parentElement;
+					}
+
+					const topParentLink = activeLink.closest('ul:not(.sub-list) > li > a');
+					if (topParentLink) {
+						topParentLink.classList.add('active-section-link');
+					} else {
+						// if it's a top level link itself
+						activeLink.classList.add('active-section-link');
+					}
+				}
+			}
+		}, { rootMargin: "-40% 0px -59% 0px", threshold: [0, 1] });
+
+		sections.forEach(section => { if (section.id) observer.observe(section); });
+
+		AOS.init({ duration: 600, once: true, offset: 50 });
+	});
+</script>
