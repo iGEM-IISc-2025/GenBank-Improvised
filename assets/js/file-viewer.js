@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- ELEMENT REFERENCES ---
     const fileTitle = document.getElementById('file-title');
     const summaryGrid = document.getElementById('summary-grid');
     const featuresTbody = document.getElementById('features-tbody');
@@ -14,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let rawGbData = '';
     let parsedData = {};
 
-    // --- NEW & IMPROVED PARSER ---
     function parseGenBank(gbText) {
         const data = {
             definition: gbText.match(/DEFINITION\s+(.*)/)?.[1] || 'N/A',
@@ -42,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const [type, location] = lines[0].trim().split(/\s+/);
             const qualifiers = lines.slice(1).map(l => l.trim().replace(/"/g, ''));
 
-            // 3. Intelligently find the most important detail (gene or product)
+            // 3. Intelligently find the most important detail (gene)
             let primaryDetail = '';
             const geneQualifier = qualifiers.find(q => q.startsWith('/gene='));
             const productQualifier = qualifiers.find(q => q.startsWith('/product='));
@@ -52,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (productQualifier) {
                 primaryDetail = productQualifier.split('=')[1];
             } else {
-                primaryDetail = qualifiers[0] || 'No details'; // Fallback
+                primaryDetail = qualifiers[0] || 'No details';
             }
 
             data.features.push({
@@ -65,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return data;
     }
 
-    // --- RENDER FUNCTIONS --- (No changes needed here)
     function renderSummary() {
         summaryGrid.innerHTML = `
             <div class="summary-item"><strong>Definition</strong><span id="summary-definition">${parsedData.definition}</span></div>
@@ -96,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sequencePre.textContent = formattedSequence;
     }
     
-    // --- EVENT HANDLERS & MAIN LOGIC --- (No changes needed here)
     function handleTabClick(e) {
         const clickedTab = e.target.closest('.tab-btn');
         if (!clickedTab) return;
