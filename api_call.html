@@ -252,17 +252,14 @@
             infoDiv.innerHTML = `
                         <strong>${summary.Title}</strong>
                         <div class="result-details">
-                            <strong>Accession:</strong> ${
-                              summary.AccessionVersion || "N/A"
-                            } | 
+                             <strong>Organism:</strong> ${
+                               summary.Organism || "N/A"
+                             } |
                             <strong>Type:</strong> ${
                               summary.Biomol || "N/A"
-                            } <br>
-                            <strong>Organism:</strong> ${
-                              summary.Organism || "N/A"
-                            } | 
-                            <strong>Length:</strong> ${
-                              summary.Length ? summary.Length + "bp" : "N/A"
+                            } <br> 
+                            <strong>Topology:</strong> ${
+                              summary.Topology || "N/A"
                             } | 
                             <strong>Updated:</strong> ${
                               summary.UpdateDate
