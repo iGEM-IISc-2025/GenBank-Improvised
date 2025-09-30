@@ -19,17 +19,15 @@ title: Search
     box-sizing: border-box;
   }
 
-  /* The main container, now acting as an INVISIBLE content wrapper */
   .biorxiv-search-container {
     max-width: 900px;
-    margin: 0 auto; /* CHANGED: Removed top margin to bring it up */
+    margin: 0 auto;
     padding: 2em;
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, Helvetica, Arial, sans-serif;
     background-color: transparent;
     color: var(--text-color);
     line-height: 1.6;
-    /* REMOVED: border, border-radius, and box-shadow to make it invisible */
   }
 
   .biorxiv-search-container header {
@@ -98,7 +96,7 @@ title: Search
     border-left: 5px solid var(--primary-color);
     margin-bottom: 1em;
     border-radius: 12px;
-    box-shadow: var(--shadow-light); /* Using a lighter shadow for cards */
+    box-shadow: var(--shadow-light);
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -121,7 +119,7 @@ title: Search
     background-color: #f9fafb;
     padding: 0.75em;
     border-radius: 8px;
-    margin-top: 0.5em;
+    margin-top: 0.3em;
   }
   
   .biorxiv-search-container .result-details strong {
@@ -181,12 +179,13 @@ title: Search
   </header>
 
   <div class="search-controls">
-    <input type="text" id="searchTerm" value="human insulin gene" placeholder="Enter search term..."/>
+    <input type="text" id="searchTerm" placeholder="Pseudomonas putida..."/>
     <button id="searchButton">Search</button>
   </div>
 
   <div id="summary-list"></div>
 </div>
+
 
 <div class="bottompagination">
     <div class="pointerup">
@@ -199,13 +198,31 @@ title: Search
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
 <script>
-  // The JavaScript is unchanged
   document.addEventListener("DOMContentLoaded", function() {
     const searchButton = document.getElementById("searchButton");
     const searchTermInput = document.getElementById("searchTerm");
     const summaryListDiv = document.getElementById("summary-list");
 
+    // --- NEW: Code for looping placeholders ---
+    const searchPlaceholders = [
+        "Pseudomonas putida...",
+        "Human insulin gene...",
+        "CRISPR Cas9...",
+        "Green Fluorescent Protein...",
+        "pBR322 plasmid complete sequence..."
+    ];
+    let placeholderIndex = 0;
+
+    setInterval(() => {
+        // Cycle to the next placeholder in the array
+        placeholderIndex = (placeholderIndex + 1) % searchPlaceholders.length;
+        // Update the input's placeholder text
+        searchTermInput.placeholder = searchPlaceholders[placeholderIndex];
+    }, 3000); // Change placeholder every 3 seconds (3000 milliseconds)
+    // --- END of new code ---
+
     async function handleSearch() {
+      // Logic is the same
       const query = searchTermInput.value;
       if (!query) {
         summaryListDiv.innerHTML = "<p>Please enter a search term.</p>";
@@ -257,6 +274,7 @@ title: Search
     }
 
     async function handleResultClick(event) {
+      // Logic is the same
       const clickedButton = event.target.closest("button[data-format]");
       if (!clickedButton) return;
       
