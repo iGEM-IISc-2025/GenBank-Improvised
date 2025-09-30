@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let rawGbData = '';
     let parsedData = {};
 
-    // --- PARSER ---
+    // --- NEW & IMPROVED PARSER ---
     function parseGenBank(gbText) {
         const data = {
             definition: gbText.match(/DEFINITION\s+(.*)/)?.[1] || 'N/A',
@@ -25,20 +25,47 @@ document.addEventListener('DOMContentLoaded', () => {
             references: (gbText.split('REFERENCE')[1] || '').split('FEATURES')[0] || 'No references found.'
         };
 
-        const featuresText = gbText.split(/FEATURES\s+Location\/Qualifiers/)[1]?.split('ORIGIN')[0];
-        if (featuresText) {
-            const featureEntries = featuresText.trim().split(/\n\s{5}(?=\w)/);
-            featureEntries.forEach(entry => {
-                const lines = entry.trim().split('\n');
-                const [type, location] = lines[0].trim().split(/\s+/);
-                const details = lines.slice(1).map(l => l.trim().replace(/"/g, '')).join('; ');
-                data.features.push({ type, location, details });
-            });
+        // 1. Reliably find the features text block between 'FEATURES' and 'ORIGIN'
+        const featuresStartIndex = gbText.indexOf('FEATURES');
+        const originStartIndex = gbText.indexOf('ORIGIN');
+        if (featuresStartIndex === -1 || originStartIndex === -1) {
+            return data; // Return if sections are missing
         }
+        const featuresText = gbText.substring(featuresStartIndex, originStartIndex);
+
+        // 2. Split the block into individual feature entries
+        const featureEntries = featuresText.trim().split(/\n\s{5}(?=\w)/);
+        featureEntries.shift(); // Remove the "Location/Qualifiers" header line
+
+        featureEntries.forEach(entry => {
+            const lines = entry.trim().split('\n');
+            const [type, location] = lines[0].trim().split(/\s+/);
+            const qualifiers = lines.slice(1).map(l => l.trim().replace(/"/g, ''));
+
+            // 3. Intelligently find the most important detail (gene or product)
+            let primaryDetail = '';
+            const geneQualifier = qualifiers.find(q => q.startsWith('/gene='));
+            const productQualifier = qualifiers.find(q => q.startsWith('/product='));
+
+            if (geneQualifier) {
+                primaryDetail = geneQualifier.split('=')[1];
+            } else if (productQualifier) {
+                primaryDetail = productQualifier.split('=')[1];
+            } else {
+                primaryDetail = qualifiers[0] || 'No details'; // Fallback
+            }
+
+            data.features.push({
+                type,
+                location,
+                details: primaryDetail
+            });
+        });
+
         return data;
     }
 
-    // --- RENDER FUNCTIONS ---
+    // --- RENDER FUNCTIONS --- (No changes needed here)
     function renderSummary() {
         summaryGrid.innerHTML = `
             <div class="summary-item"><strong>Definition</strong><span id="summary-definition">${parsedData.definition}</span></div>
@@ -51,6 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderFeaturesTable() {
+        if (parsedData.features.length === 0) {
+            featuresTbody.innerHTML = `<tr><td colspan="3">No features could be parsed from this file.</td></tr>`;
+            return;
+        }
         featuresTbody.innerHTML = parsedData.features.map(f => `
             <tr>
                 <td>${f.type}</td>
@@ -64,8 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const formattedSequence = parsedData.sequence.replace(/(.{10})/g, "$1 ").replace(/(.{66})/g, "$1\n");
         sequencePre.textContent = formattedSequence;
     }
-
-    // --- EVENT HANDLERS ---
+    
+    // --- EVENT HANDLERS & MAIN LOGIC --- (No changes needed here)
     function handleTabClick(e) {
         const clickedTab = e.target.closest('.tab-btn');
         if (!clickedTab) return;
@@ -107,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     }
     
-    // --- MAIN LOGIC ---
     async function main() {
         const params = new URLSearchParams(window.location.search);
         const uid = params.get('uid');
@@ -124,10 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
             renderFeaturesTable();
             renderSequence();
             referencesPre.textContent = parsedData.references;
-
             document.getElementById('raw-genbank-pre').textContent = rawGbData;
 
-            // Attach event listeners now that data is loaded
             tabContainer.addEventListener('click', handleTabClick);
             featureSearch.addEventListener('input', handleFeatureSearch);
             copySeqBtn.addEventListener('click', handleCopySequence);
