@@ -144,6 +144,111 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
+
+
+    function levenshteinDistance(word1, word2){
+        a = String(word1);
+        b = String(word2);
+
+        const len_a = a.length;
+        const len_b = b.length;
+
+        const maxdist = len_a + len_b;
+
+        const da = Object.create(null);
+
+        const d = new Array(len_a + 2);
+
+        for (let i = 0; i < len_a + 2; i++) d[i] = new Array(len_b + 2).fill(0);
+        for (let i = 0; i < len_a + 2; i++) d[i][0] = maxdist;
+        for (let j = 0; j < len_b + 2; j++) d[0][j] = maxdist;
+        d[1][1] = 0;
+        for (let i = 1; i < len_a + 2; i++) d[i][1] = i - 1;
+        for (let j = 1; j < len_b + 2; j++) d[1][j] = j - 1;
+        for (let i = 1; i <= len_a; i++) {
+            let db = 0;
+            for (let j = 1; j <= len_b; j++) {
+            const i1 = da[b[j - 1]] || 0;
+            const j1 = db;
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            if (cost === 0) db = j;
+            d[i + 1][j + 1] = Math.min(
+                d[i][j] + cost,
+                d[i + 1][j] + 1,
+                d[i][j + 1] + 1,
+                d[i1][j1] + (i - i1 - 1) + 1 + (j - j1 - 1)
+            );
+            }
+            da[a[i - 1]] = i;
+        }
+
+        return d[len_a + 1][len_b + 1];
+    }
+
+    function ParserFeatures(fileContent, target_subclass = "", target_word = "") {
+        const lines = fileContent.split(/\r?\n/);
+        let in_feature = false;
+        target_subclass = (target_subclass || "").trim().toUpperCase();
+        const matches = [];
+        let line_number = 0;
+        let in_correct_subclass = true;
+
+        for (let idx = 0; idx < lines.length; idx++) {
+            const line = lines[idx] || "";
+            // Check for start/end of FEATURES section
+            if (line.startsWith("FEATURES")) in_feature = true;
+            else if (line.startsWith("ORIGIN")) in_feature = false;
+
+            if (target_subclass === "") {
+            const line_content = line.slice(21);
+            let words = line_content.replace(/^\/+/, "").split("=");
+            let words2 = words.length > 2 ? words[2].split(/\s+/) : [];
+            words = words.concat(words2);
+            for (let word of words) {
+                word = word.replace(/^"+|"+$/g, "");
+                const a = Math.max(target_word.length, word.length);
+                const b = Math.pow(a, 1 / 2) * (1 - Math.pow(10, -a));
+                const c = levenshteinDistance(target_word, word);
+                if (c <= b) {
+                matches.push([line_number, line.trim(), word, target_word, c]);
+                }
+            }
+            line_number++;
+            continue;
+            }
+
+            if (in_feature) {
+            const leftSlice = (line.slice(0, 20) || "").trim().toUpperCase();
+            const a = Math.min(target_subclass.length, leftSlice.length);
+            const b = 4 * (1 - Math.pow(2, -a / 3));
+            if (levenshteinDistance(leftSlice, target_subclass) <= b) in_correct_subclass = true;
+            else if (!/^\s*$/.test(line.slice(0, 20))) in_correct_subclass = false;
+
+            if (in_correct_subclass) {
+                const line_content = line.slice(21);
+                let newline = line_content.replace(/^\/+/, "");
+                let words = newline.split("=");
+                for (let word of words) {
+                word = word.replace(/^"+|"+$/g, "");
+                const a = Math.max(target_word.length, word.length);
+                const b = Math.pow(a, 1 / 2) * (1 - Math.pow(10, -a));
+                let c = levenshteinDistance(target_word, word);
+                let l = [];
+                for (let i = 0; i <= word.length - target_word.length; i++) {
+                    let ld = levenshteinDistance(target_word, word.slice(i, i + target_word.length));
+                    if (ld <= 2) l.push(ld);
+                }
+                if (l.length > 0) c = Math.min(...l);
+                if (c <= b) {
+                    matches.push([line_number, line.trim(), word, target_word, c]);
+                }
+                }
+            }
+            }
+            line_number++;
+        }
+        return matches;
+    }
     
     // the main function that runs when the page loads
     async function main() {
@@ -159,6 +264,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // fetches the data, then parses it, then renders everything
             rawGbData = await efetch(uid, 'gb');
             parsedData = parseGenBank(rawGbData);
+
+            //const query = featureSearch.value.toLowerCase();
+
+            //const searchArray = ParserFeatures();
 
             renderSummary();
             renderFeaturesTable();
@@ -186,3 +295,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // runs the main function
     main();
 });
+

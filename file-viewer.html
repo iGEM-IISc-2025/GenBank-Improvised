@@ -84,6 +84,21 @@ title: File Viewer
 		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 	}
 
+	/* styles for the feature search input bar */
+	#feature-search-subclass {
+		width: 100%;
+		font-size: 1.1em;
+		padding: 0.75em;
+		border-radius: 8px;
+		border: 1px solid var(--border-color);
+	}
+	/* styles for the feature search bar when it's in focus */
+	#feature-search-subclass:focus {
+		outline: none;
+		border-color: var(--interactive-color);
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+	}
+
 
 	/* styles for the summary information card */
 	.summary-card {
@@ -204,6 +219,7 @@ title: File Viewer
 			</div>
 		</div>
 		<input type="text" id="feature-search" placeholder="search features in this file...">
+		<input type="text" id="feature-search-subclass" placeholder="enter the subclass...">
 	</header>
 
 	<div class="summary-card">
