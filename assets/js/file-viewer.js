@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             references: (gbText.split('REFERENCE')[1] || '').split('FEATURES')[0] || 'No references found.'
         };
 
-        const featuresText = gbText.split('FEATURES               Location/Qualifiers')[1]?.split('ORIGIN')[0];
+        const featuresText = gbText.split(/FEATURES\s+Location\/Qualifiers/)[1]?.split('ORIGIN')[0];
         if (featuresText) {
             const featureEntries = featuresText.trim().split(/\n\s{5}(?=\w)/);
             featureEntries.forEach(entry => {

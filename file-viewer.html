@@ -185,7 +185,7 @@ title: File Viewer
                 <button id="download-gb-btn">Download GenBank</button>
             </div>
         </div>
-        <input type="text" id="feature-search" placeholder="🔍 Search features in this file (e.g., 'kinase', '1..500')...">
+        <input type="text" id="feature-search" placeholder="Search features in this file...">
     </header>
 
     <div class="summary-card">
@@ -197,6 +197,7 @@ title: File Viewer
         <button class="tab-btn active" data-tab="features">Features</button>
         <button class="tab-btn" data-tab="sequence">Sequence</button>
         <button class="tab-btn" data-tab="raw-genbank">Raw GenBank</button>
+        <button class="tab-btn" data-tab="references">References</button>
     </nav>
     
     <div id="features" class="tab-content active">
@@ -225,6 +226,11 @@ title: File Viewer
     <div id="raw-genbank" class="tab-content">
         <pre class="data-box" id="raw-genbank-pre">Loading raw file...</pre>
     </div>
+
+    <div id="references" class="tab-content">
+        <pre class="data-box" id="references-pre">Loading references...</pre>
+    </div>
+
 </div>
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
