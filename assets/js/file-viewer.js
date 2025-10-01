@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return data;
     }
 
-    // Levenshtein distance function
     function levenshteinDistance(word1, word2) {
         const a = String(word1);
         const b = String(word2);
