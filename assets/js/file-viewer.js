@@ -92,60 +92,98 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function ParserFeatures(fileContent, target_subclass = "", target_word = "") {
+        // Split file content into lines
         const lines = fileContent.split(/\r?\n/);
-        let in_feature = false;
+        let in_Descrivtion_section = true;
         target_subclass = (target_subclass || "").trim().toUpperCase();
         const matches = [];
-        let line_number = 0;
+        let line_number = 1;
         let in_correct_subclass = true;
+        let spaces_before = 10;
+        let exit = false;
 
-        for (let idx = 0; idx < lines.length; idx++) {
-            const line = lines[idx] || "";
-            if (line.startsWith("FEATURES")) in_feature = true;
-            else if (line.startsWith("ORIGIN")) in_feature = false;
+        for (let idx = 0; idx < lines.length && !exit; idx++) {
+            let line = (lines[idx] || "").trim();
 
-            if (target_subclass === "") {
-                const line_content = line.slice(21);
-                let words = line_content.replace(/^\/+/, "").split("=");
-                let words2 = words.length > 2 ? words[2].split(/\s+/) : [];
-                words = words.concat(words2);
-                for (let word of words) {
-                    word = word.replace(/^"+|"+$/g, "");
-                    const a = Math.max(target_word.length, word.length);
-                    const b = Math.pow(a, 1 / 2) * (1 - Math.pow(10, -a));
-                    const c = levenshteinDistance(target_word, word);
-                    if (c <= b) {
-                        matches.push([line_number + 1, line.trim(), word, target_word, c]);
-                    }
+            // Check for start of FEATURES section
+            if (line.startsWith("FEATURES")) {
+                spaces_before = 21;
+            }
+            // Check for start of ORIGIN section
+            if (line.startsWith("ORIGIN")) {
+                in_Descrivtion_section = false;
+                break;
+            }
+
+            // If subclass is empty and in description section
+            if (target_subclass === "" && in_Descrivtion_section) {
+                if (target_word === "" && line_number > 0) {
+                    matches.push(["N/A", "N/A", "N/A", "N/A", "N/A"]);
+                    exit = true;
                 }
-            } else if (in_feature) {
-                const leftSlice = (line.slice(0, 20) || "").trim().toUpperCase();
-                const a = Math.min(target_subclass.length, leftSlice.length);
-                const b = 4 * (1 - Math.pow(2, -a / 3));
-                if (levenshteinDistance(leftSlice, target_subclass) <= b) in_correct_subclass = true;
-                else if (!/^\s*$/.test(line.slice(0, 20))) in_correct_subclass = false;
-
-                if (in_correct_subclass) {
-                    const line_content = line.slice(21);
-                    let newline = line_content.replace(/^\/+/, "");
-                    let words = newline.split("=");
-                    for (let word of words) {
-                        word = word.replace(/^"+|"+$/g, "");
-                        const a = Math.max(target_word.length, word.length);
-                        const b = Math.pow(a, 1 / 2) * (1 - Math.pow(10, -a));
-                        let c = levenshteinDistance(target_word, word);
-                        let l = [];
-                        for (let i = 0; i <= word.length - target_word.length; i++) {
-                            let ld = levenshteinDistance(target_word, word.slice(i, i + target_word.length));
-                            if (ld <= 2) l.push(ld);
-                        }
-                        if (l.length > 0) c = Math.min(...l);
-                        if (c <= b) {
-                            matches.push([line_number + 1, line.trim(), word, target_word, c]);
-                        }
+                const line_content = line.slice(spaces_before);
+                if (line_content !== "") {
+                    let word = line_content.replace(/^\/+/, "").replace(/"/g, "").replace(/=/g, " ");
+                    // Similarity threshold
+                    const a = Math.min(target_word.length, word.length);
+                    const b = Math.pow(a, 1 / 2) * (1 - Math.pow(2, -a / 3));
+                    let c = b + 1;
+                    let l = [];
+                    let short_word = word.length < target_word.length ? word : target_word;
+                    let long_word = word.length < target_word.length ? target_word : word;
+                    for (let i = 0; i <= long_word.length - short_word.length; i++) {
+                        let ld = levenshteinDistance(short_word, long_word.slice(i, i + short_word.length));
+                        if (ld <= b) l.push(ld);
                     }
+                    if (l.length < 3 && l.length > 0) {
+                        c = Math.min(...l);
+                        matches.push([line_number, line, word, target_word, c]);
+                    } else if (l.length >= 3) {
+                        matches.push([line_number, line, word, target_word, c + 2]);
+                    }
+            }
+            line_number++;
+            continue;
+        }
+
+        // If subclass is not empty and in description section
+        if (target_subclass !== "" && in_Descrivtion_section) {
+        // Similarity threshold for subclass
+        const leftSlice = line.slice(0, spaces_before).trim().toUpperCase();
+        const a = Math.min(target_subclass.length, leftSlice.length);
+        const b = 4 * (1 - Math.pow(2, -a / 3));
+        if (levenshteinDistance(leftSlice, target_subclass) <= b) {
+            in_correct_subclass = true;
+        } else if (!/^\s*$/.test(line.slice(0, spaces_before))) {
+            in_correct_subclass = false;
+        }
+        if (in_correct_subclass) {
+            const line_content = line.slice(spaces_before);
+            if (target_word === "" && line_number > 0) {
+                matches.push(["N/A", "N/A", "N/A", "N/A", "N/A"]);
+                exit = true;
+            } else if (line_content !== "") {
+                let word = line_content.replace(/^\/+/, "").replace(/"/g, "").replace(/=/g, " ");
+                // Similarity threshold for word matching
+                const a = Math.min(target_word.length, word.length);
+                const b = Math.pow(a, 1 / 2) * (1 - Math.pow(2, -a / 3));
+                let c = b + 1;
+                let l = [];
+                let short_word = word.length < target_word.length ? word : target_word;
+                let long_word = word.length < target_word.length ? target_word : word;
+                for (let i = 0; i <= long_word.length - short_word.length; i++) {
+                    let ld = levenshteinDistance(short_word, long_word.slice(i, i + short_word.length));
+                    if (ld <= b) l.push(ld);
+                }
+                if (l.length < 3 && l.length > 0) {
+                    c = Math.min(...l);
+                    matches.push([line_number, line, word, target_word, c]);
+                } else if (l.length >= 3) {
+                    matches.push([line_number, line, word, target_word, c + 2]);
                 }
             }
+        }
+        }
             line_number++;
         }
         return matches;
