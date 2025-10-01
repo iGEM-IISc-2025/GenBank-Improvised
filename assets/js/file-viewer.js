@@ -15,46 +15,64 @@ document.addEventListener('DOMContentLoaded', () => {
     let parsedData = {};
 
 
-    function parseGenBank(gbText) {
-        const data = {
-            definition: gbText.match(/DEFINITION\s+(.*)/)?.[1] || 'n/a',
-            accession: gbText.match(/ACCESSION\s+(.*)/)?.[1] || 'n/a',
-            organism: gbText.match(/ORGANISM\s+([\s\S]*?)\n\w/m)?.[1].replace(/\s+/g, ' ') || 'n/a',
-            sequence: (gbText.split('ORIGIN')[1] || '').replace(/[\d\s\/]/g, ''),
-            features: [],
-            references: (gbText.split('REFERENCE')[1] || '').split('FEATURES')[0] || 'no references found.'
-        };
+function parseGenBank(gbText) {
+    const data = {
+        definition: gbText.match(/DEFINITION\s+(.*)/)?.[1] || 'n/a',
+        accession: gbText.match(/ACCESSION\s+(.*)/)?.[1] || 'n/a',
+        organism: gbText.match(/ORGANISM\s+([\s\S]*?)\n\w/m)?.[1].replace(/\s+/g, ' ') || 'n/a',
+        sequence: (gbText.split('ORIGIN')[1] || '').replace(/[\d\s\/]/g, ''),
+        features: [],
+        references: (gbText.split('REFERENCE')[1] || '').split('FEATURES')[0] || 'no references found.'
+    };
 
-        const featuresStartIndex = gbText.indexOf('FEATURES');
-        const originStartIndex = gbText.indexOf('ORIGIN');
-        if (featuresStartIndex < 0 || originStartIndex < 0) {
-            return data;
-        }
-        const featuresText = gbText.substring(featuresStartIndex, originStartIndex);
-
-        const featureEntries = featuresText.trim().split(/\n\s{5}(?=\w)/);
-        featureEntries.shift();
-
-        featureEntries.forEach(entry => {
-            const lines = entry.trim().split('\n');
-            const [type, location] = lines[0].trim().split(/\s+/);
-            const qualifiers = lines.slice(1).map(l => l.trim().replace(/"/g, ''));
-            let primaryDetail = '';
-            const geneQualifier = qualifiers.find(q => q.startsWith('/gene='));
-            const productQualifier = qualifiers.find(q => q.startsWith('/product='));
-
-            if (geneQualifier) {
-                primaryDetail = geneQualifier.split('=')[1];
-            } else if (productQualifier) {
-                primaryDetail = productQualifier.split('=')[1];
-            } else {
-                primaryDetail = qualifiers[0] || 'no details';
-            }
-
-            data.features.push({ type, location, details: primaryDetail });
-        });
-        return data;
+    const featuresStartIndex = gbText.indexOf('FEATURES');
+    if (featuresStartIndex === -1) {
+        return data; // No features section, return early
     }
+
+    // Check if an ORIGIN tag exists to define the end of the features section
+    const originStartIndex = gbText.indexOf('ORIGIN');
+    let featuresText;
+
+    if (originStartIndex > -1) {
+        // If ORIGIN exists, get the text between FEATURES and ORIGIN
+        featuresText = gbText.substring(featuresStartIndex, originStartIndex);
+    } else {
+        // If ORIGIN does not exist, get all text from FEATURES to the end of the file
+        featuresText = gbText.substring(featuresStartIndex);
+    }
+
+    const featureEntries = featuresText.trim().split(/\n\s{5}(?=\w)/);
+    featureEntries.shift(); // removes the 'location/qualifiers' header line
+
+    featureEntries.forEach(entry => {
+        const lines = entry.trim().split('\n');
+        if (lines.length === 0 || !lines[0]) return; // Skip empty entries
+
+        const [type, location] = lines[0].trim().split(/\s+/);
+        const qualifiers = lines.slice(1).map(l => l.trim().replace(/"/g, ''));
+        let primaryDetail = '';
+        const geneQualifier = qualifiers.find(q => q.startsWith('/gene='));
+        const productQualifier = qualifiers.find(q => q.startsWith('/product='));
+
+        if (geneQualifier) {
+            primaryDetail = geneQualifier.split('=')[1];
+        } else if (productQualifier) {
+            primaryDetail = productQualifier.split('=')[1];
+        } else {
+            primaryDetail = qualifiers[0] || 'no details';
+        }
+
+        data.features.push({ type, location, details: primaryDetail });
+    });
+
+    // If no sequence was found via ORIGIN, set a placeholder message
+    if (data.sequence === '') {
+        data.sequence = 'Sequence data is not available in this record.';
+    }
+
+    return data;
+}
 
     function levenshteinDistance(word1, word2) {
         const a = String(word1);
