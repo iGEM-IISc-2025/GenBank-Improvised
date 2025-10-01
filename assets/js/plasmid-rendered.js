@@ -2,8 +2,8 @@ function drawPlasmidMap(data) {
     const container = document.getElementById('plasmid-map-container');
     container.innerHTML = ''; // Clear previous map
     
-    const width = 500, height = 500;
-    const radius = Math.min(width, height) / 2 - 80; // Increased margin for labels
+    const width = 1000, height = 500;
+    const radius = Math.min(width/2, height) / 2 - 80; // Increased margin for labels
 
     // 1. Create the main SVG element and set its size
     const svg = d3.create("svg")
