@@ -10,12 +10,10 @@ function drawPlasmidMap(data) {
         .attr("width", width)
         .attr("height", height);
 
-    // 2. Create a single group element 'g' and move it to the center.
     //    All other elements will be appended to this group.
     const g = svg.append("g")
         .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    // --- All subsequent .append() calls should be on 'g', not 'svg' ---
 
     // Plasmid backbone
     const arc = d3.arc()
@@ -78,7 +76,7 @@ function drawPlasmidMap(data) {
             featureGroup.append("path")
                 .attr("d", arrow)
                 .attr("fill", feature.color)
-                .attr("transform", `translate(${featureRadius * Math.cos(arrowPoint - Math.PI / 2)}, ${featureRadius * Math.sin(arrowPoint - Math.PI / 2)}) rotate(${arrowPoint * 180 / Math.PI})`);
+                .attr("transform", `translate(${featureRadius * Math.cos(arrowPoint - Math.PI / 2)}, ${featureRadius * Math.sin(arrowPoint - Math.PI / 2)}) rotate(${arrowPoint * 180 / Math.PI + 90 * feature.direction})`);
         }
 
         // Add text labels for features
