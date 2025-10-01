@@ -1,4 +1,8 @@
+import { parseGenBankXML } from './XML Parser.js';
+import { drawPlasmidMap } from './Circular Map View.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+    // --- ELEMENT REFERENCES ---
     const fileTitle = document.getElementById('file-title');
     const summaryGrid = document.getElementById('summary-grid');
     const featuresTbody = document.getElementById('features-tbody');
@@ -6,14 +10,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const featureSearchSubclass = document.getElementById('feature-search-subclass');
     const sequencePre = document.getElementById('sequence-pre');
     const referencesPre = document.getElementById('references-pre');
-    const copySeqBtn = document.getElementById('copy-seq-btn');
+    const rawGbPre = document.getElementById('raw-genbank-pre');
     const downloadGbBtn = document.getElementById('download-gb-btn');
     const downloadFastaBtn = document.getElementById('download-fasta-btn');
     const tabContainer = document.querySelector('.tab-nav');
 
-    let rawGbData = '';
-    let parsedData = {};
+    // --- MAIN LOGIC ---
+    async function main() {
+        const params = new URLSearchParams(window.location.search);
+        const uid = params.get('uid');
+        if (!uid) { /* ... error handling ... */ return; }
 
+        try {
+            // Fetch both text and XML data in parallel for efficiency
+            const [rawGbData, xmlString] = await Promise.all([
+                efetch(uid, 'gb'),      // Fetches plain text
+                efetch(uid, 'gb', 'xml') // Fetches XML
+            ]);
+
+            // --- Workflow 1: Process TEXT data for tables and text views ---
+            const parsedTextData = parseGenBank(rawGbData);
+            renderSummary(parsedTextData);
+            renderFeaturesTable(parsedTextData);
+            renderSequence(parsedTextData);
+            referencesPre.textContent = parsedTextData.references;
+            rawGbPre.textContent = rawGbData;
+            
+            // --- Workflow 2: Process XML data for the plasmid map ---
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+            const parsedXMLData = parseGenBankXML(xmlDoc);
+
+            if (parsedXMLData && parsedXMLData.features.length > 0) {
+                drawPlasmidMap(parsedXMLData);
+            } else {
+                document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
+            }
+
+            // --- Attach Event Listeners ---
+            tabContainer.addEventListener('click', handleTabClick);
+            featureSearch.addEventListener('input', () => handleFeatureSearch(parsedTextData, rawGbData));
+            featureSearchSubclass.addEventListener('input', () => handleFeatureSearch(parsedTextData, rawGbData));
+            downloadGbBtn.addEventListener('click', () => downloadFile(uid, 'gb', rawGbData));
+            downloadFastaBtn.addEventListener('click', () => {
+                const fastaContent = `>${parsedTextData.accession} ${parsedTextData.definition}\n${parsedTextData.sequence}`;
+                downloadFile(uid, 'fasta', fastaContent);
+            });
+
+        } catch (err) {
+            console.error("Failed to load or parse GenBank file:", err);
+            const container = document.querySelector('.viewer-container');
+            container.innerHTML = `<h1>Error</h1><p>Could not load data for UID: ${uid}.</p><pre>${err.message}</pre>`;
+        }
+    }
+
+    
+    // Fetches data from NCBI. Can get text or xml.
+    async function efetch(id, rettype, retmode = 'text') {
+        const baseUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+        const url = `${baseUrl}efetch.fcgi?db=nuccore&id=${id}&rettype=${rettype}&retmode=${retmode}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Fetch error: ${response.status}`);
+            return await response.text();
+        } catch (error) {
+            throw new Error(`Could not fetch data for ID ${id}: ${error.message}`);
+        }
+    }
 
     function parseGenBank(gbText) {
         const data = {
@@ -72,37 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         return data;
-    }
-
-    function formatDataForPlasmid(genbankData) {
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-        let colorIndex = 0;
-
-        const plasmidFeatures = genbankData.features
-            .map(feature => {
-                const locationMatch = feature.location.match(/(\d+)\.\.(\d+)/);
-                if (!locationMatch) return null;
-
-                const start = parseInt(locationMatch[1], 10);
-                const end = parseInt(locationMatch[2], 10);
-                const direction = feature.location.includes('complement') ? -1 : 1;
-                
-                return {
-                    start: start,
-                    end: end,
-                    direction: direction,
-                    label: feature.details,
-                    color: colorScale(colorIndex++)
-                };
-            })
-            .filter(f => f !== null);
-
-        return {
-            name: genbankData.accession,
-            length: genbankData.sequence.length,
-            sequence: genbankData.sequence,
-            features: plasmidFeatures
-        };
     }
 
     function levenshteinDistance(word1, word2) {
@@ -335,51 +367,5 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     }
     
-    async function main() {
-        const params = new URLSearchParams(window.location.search);
-        const uid = params.get('uid');
-        if (!uid) {
-            fileTitle.textContent = 'error: no uid provided.';
-            return;
-        }
-
-        try {
-            rawGbData = await efetch(uid, 'gb');
-            parsedData = parseGenBank(rawGbData);
-
-            renderSummary();
-            renderFeaturesTable(); // Initial render with the clean feature list
-            renderSequence();
-            referencesPre.textContent = parsedData.references;
-            document.getElementById('raw-genbank-pre').textContent = rawGbData;
-
-            const plasmidDataForMap = formatDataForPlasmid(parsedData);
-
-            console.log("Data being sent to plasmid map:", plasmidDataForMap);
-
-            if (typeof drawPlasmidMap === 'function' && plasmidDataForMap.features.length > 0) {
-                console.log("drawPlasmidMap function was called successfully.");
-                drawPlasmidMap(plasmidDataForMap);
-            } else {
-                document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
-            }
-
-            // Attach event listeners for both search inputs
-            tabContainer.addEventListener('click', handleTabClick);
-            featureSearch.addEventListener('input', handleFeatureSearch);
-            featureSearchSubclass.addEventListener('input', handleFeatureSearch);
-            copySeqBtn.addEventListener('click', handleCopySequence);
-            downloadGbBtn.addEventListener('click', () => downloadFile(`${parsedData.accession}.gb`, rawGbData));
-            downloadFastaBtn.addEventListener('click', () => {
-                const fastaContent = `>${parsedData.accession} ${parsedData.definition}\n${parsedData.sequence}`;
-                downloadFile(`${parsedData.accession}.fasta`, fastaContent);
-            });
-
-        } catch (err) {
-            console.error("failed to load or parse genbank file:", err);
-            document.body.innerHTML = `<h1>error</h1><p>could not load data for uid: ${uid}.</p><pre>${err.message}</pre>`;
-        }
-    }
-
     main();
 });
