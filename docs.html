@@ -8,32 +8,34 @@ title: Documentation
     .docs-hub-container {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 2em;
+        padding: 4em 2em; /* Added more vertical padding */
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     /* styles for the main header section */
     .docs-hub-header {
         text-align: center;
-        margin-bottom: 3em;
+        margin-bottom: 4em; /* Increased space below header */
     }
     .docs-hub-header h1 {
-        font-size: 2.5em;
-        font-weight: 700;
-        color: #1f2937;
+        font-size: 2.8em; /* Slightly larger title */
+        font-weight: 800; /* Bolder font */
+        color: #111827; /* Darker text */
+        letter-spacing: -0.025em; /* Tighter letter spacing */
     }
     .docs-hub-header p {
-        font-size: 1.1em;
+        font-size: 1.15em;
         color: #4b5563;
         max-width: 700px;
-        margin: 0.5em auto 0 auto;
+        margin: 0.75em auto 0 auto;
+        line-height: 1.7;
     }
 
     /* styles for the grid that holds the documentation cards */
     .docs-card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5em;
+        gap: 2em; /* Increased gap */
     }
 
     /* styles for each individual card link */
@@ -41,19 +43,29 @@ title: Documentation
         display: block;
         background-color: #ffffff;
         border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 1.5em;
+        border-radius: 16px; /* Larger radius */
+        padding: 2em; /* More padding */
         text-decoration: none;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        overflow: hidden;
     }
     .doc-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* NEW: styles for the icons */
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1em;
+        color: #3b82f6;
     }
 
     .doc-card h2 {
-        font-size: 1.25em;
-        font-weight: 600;
+        font-size: 1.3em;
+        font-weight: 700; /* Bolder titles */
         color: #111827;
         margin-top: 0;
     }
@@ -64,8 +76,13 @@ title: Documentation
         margin-bottom: 1em;
     }
     .doc-card .read-more {
-        font-weight: 500;
-        color: #3b82f6; /* using the interactive blue for links */
+        font-weight: 600; /* Bolder link text */
+        color: #3b82f6;
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+    .doc-card:hover .read-more {
+        transform: translateX(4px); /* Move arrow on hover */
     }
 </style>
 
@@ -81,29 +98,37 @@ title: Documentation
     <div class="docs-card-grid">
 
         <a href="{{ site.baseurl }}/api-docs" class="doc-card">
+            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+            </svg>
             <h2>API Interface</h2>
             <p>
-                Learn how our application communicates directly with NCBI's Entrez Programming Utilities (E-utilities) to fetch and display real-time data without a backend.
+                Learn how our application communicates directly with NCBI's E-utilities to fetch and display real-time data without a backend.
             </p>
             <span class="read-more">Read More &rarr;</span>
         </a>
 
         <a href="{{ site.baseurl }}/search-docs" class="doc-card">
+            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
             <h2>Intelligent Feature Search</h2>
             <p>
-                Discover our platform's core innovation: a powerful frontend parser and search algorithm that allows for instant filtering of genes, CDS, and more within any GenBank file.
+                Discover our platform's core innovation: a powerful frontend parser and search algorithm that allows for instant filtering of genes and CDS.
             </p>
             <span class="read-more">Read More &rarr;</span>
         </a>
 
         <a href="{{ site.baseurl }}/plasmid-docs" class="doc-card">
+            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.82m5.84-2.56a14.95 14.95 0 00-5.84-2.56m0 0a14.95 14.95 0 01-5.84-2.56m5.84 2.56v-4.82m0 0a6 6 0 00-5.84-7.38v4.82m5.84 2.56a14.95 14.95 0 005.84 2.56m0 0a14.95 14.95 0 015.84 2.56m-5.84-2.56a6 6 0 015.84 7.38v-4.82" />
+            </svg>
             <h2>Plasmid Visualisation</h2>
             <p>
-                Explore how we plan to convert raw sequence data into clear, interactive, and downloadable plasmid maps to visualize genetic constructs and their key components.
+                Explore how we convert raw sequence data into clear, interactive plasmid maps to visualize genetic constructs and their key components.
             </p>
             <span class="read-more">Read More &rarr;</span>
         </a>
 
     </div>
-
 </div>
