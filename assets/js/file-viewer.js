@@ -354,6 +354,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('raw-genbank-pre').textContent = rawGbData;
 
             const plasmidDataForMap = formatDataForPlasmid(parsedData);
+
+            console.log("Data being sent to plasmid map:", plasmidDataForMap);
+
             if (typeof drawPlasmidMap === 'function' && plasmidDataForMap.features.length > 0) {
                 drawPlasmidMap(plasmidDataForMap);
             } else {
