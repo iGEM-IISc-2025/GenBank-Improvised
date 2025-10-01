@@ -76,7 +76,7 @@ function drawPlasmidMap(data) {
             featureGroup.append("path")
                 .attr("d", arrow)
                 .attr("fill", feature.color)
-                .attr("transform", `translate(${featureRadius * Math.cos(arrowPoint - Math.PI / 2)}, ${featureRadius * Math.sin(arrowPoint - Math.PI / 2)}) rotate(${arrowPoint * 180 / Math.PI + 90 * feature.direction})scale(2`);
+                .attr("transform", `translate(${featureRadius * Math.cos(arrowPoint - Math.PI / 2)}, ${featureRadius * Math.sin(arrowPoint - Math.PI / 2)}) rotate(${arrowPoint * 180 / Math.PI + 90 * feature.direction}) scale(2)`);
         }
 
         // Add text labels for features
