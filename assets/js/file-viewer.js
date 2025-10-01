@@ -2,7 +2,6 @@ import { parseGenBankXML } from './XML Parser.js';
 import { drawPlasmidMap } from './Circular Map View.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- ELEMENT REFERENCES ---
     const fileTitle = document.getElementById('file-title');
     const summaryGrid = document.getElementById('summary-grid');
     const featuresTbody = document.getElementById('features-tbody');
@@ -15,11 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadFastaBtn = document.getElementById('download-fasta-btn');
     const tabContainer = document.querySelector('.tab-nav');
 
-    // --- MAIN LOGIC ---
+    // main
     async function main() {
         const params = new URLSearchParams(window.location.search);
         const uid = params.get('uid');
-        if (!uid) { /* ... error handling ... */ return; }
+        if (!uid) {return; }
 
         try {
             // Fetch both text and XML data in parallel for efficiency
@@ -28,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 efetch(uid, 'gb', 'xml') // Fetches XML
             ]);
 
-            // --- Workflow 1: Process TEXT data for tables and text views ---
+            // Process tes data for tables and text views
             const parsedTextData = parseGenBank(rawGbData);
             renderSummary(parsedTextData);
             renderFeaturesTable(parsedTextData);
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             referencesPre.textContent = parsedTextData.references;
             rawGbPre.textContent = rawGbData;
             
-            // --- Workflow 2: Process XML data for the plasmid map ---
+            // Process XML data for the plasmid map
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlString, "application/xml");
             const parsedXMLData = parseGenBankXML(xmlDoc);
@@ -47,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
             }
 
-            // --- Attach Event Listeners ---
+            // Attach Event Listeners
             tabContainer.addEventListener('click', handleTabClick);
             featureSearch.addEventListener('input', () => handleFeatureSearch(parsedTextData, rawGbData));
             featureSearchSubclass.addEventListener('input', () => handleFeatureSearch(parsedTextData, rawGbData));
