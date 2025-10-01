@@ -3,153 +3,217 @@ layout: default
 title: File Viewer
 ---
 
-<!-- d3.js library is required for the plasmid map -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
 <style>
-    /* sets up the color variables for the page */
-    :root {
-        --border-color: #e5e7eb;
-        --background-color: #f8fafc;
-        --card-background: #ffffff;
-        --text-color-primary: #1f2937;
-        --text-color-secondary: #4b5563;
-        --interactive-color: #3b82f6;
-    }
-    /* basic styles for the entire page body */
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        margin: 0;
-        background-color: #f1f5f9;
-        color: var(--text-color-primary);
-    }
+	/* sets up the color variables for the page */
+	:root {
+		--border-color: #ffffff;
+		--background-color: #ffffff;
+		--card-background: #ffffff;
+		--text-color-primary: #1f2937;
+		--text-color-secondary: #4b5563;
+		--interactive-color: #3b82f6;
+	}
+	/* basic styles for the entire page body */
+	body {
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		margin: 0;
+		background-color: #f1f5f9;
+		color: var(--text-color-primary);
+	}
 
-    /* styles for the main container that holds all content */
-    .viewer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 1em 2em 2em 2em; /* Adjusted padding */
-    }
+	/* styles for the main header box */
+	.page-header {
+		background-color: var(--card-background);
+		padding: 1.5em;
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		margin-bottom: 2em;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+	}
+	/* styles for the top part of the header containing the title and buttons */
+	.header-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 1.5em;
+	}
+	/* styles for the main title in the header */
+	.header-top h1 {
+		font-size: 1.5em;
+		margin: 0;
+		line-height: 1.3;
+		flex: 1; /* allow title to take up space */
+	}
+	/* styles for the download buttons */
+	.download-actions button {
+		font-size: 0.9rem;
+		font-weight: 500;
+		padding: 0.5em 1em;
+		border-radius: 8px;
+		border: 1px solid #d1d5db;
+		background-color: #ffffff;
+		color: var(--text-color-primary);
+		cursor: pointer;
+		margin-left: 0.5em;
+		transition: background-color 0.2s;
+	}
+	/* styles for the download buttons when hovered over */
+	.download-actions button:hover {
+		background-color: var(--background-color);
+	}
 
-    /* styles for the main header box */
-    .page-header {
-        background-color: var(--card-background);
-        padding: 1.5em;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        margin-bottom: 2em;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    }
-    .header-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-    .header-top h1 {
-        font-size: 1.5em;
-        margin: 0;
-        line-height: 1.3;
+	/* styles for the main container that holds all content */
+	.viewer-container {
+		max-width: 1200px;
+		margin: 0 auto; 
+		padding-bottom: 1em;
+        padding-top: -1em;
+	}
+
+	/* styles for the feature search input bar */
+	#feature-search {
+        flex: 3;
+		width: 100%;
+		font-size: 1.1em;
+		padding: 0.75em;
+		border-radius: 8px;
+		border: 1px solid var(--border-color);
+		flex:3;
+	}
+	/* styles for the feature search bar when it's in focus */
+	#feature-search:focus {
+		outline: none;
+		border-color: var(--interactive-color);
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+	}
+
+	/* styles for the feature search input bar */
+	#feature-search-subclass {
         flex: 1;
-    }
-    .download-actions button {
-        font-size: 0.9rem;
-        font-weight: 500;
-        padding: 0.5em 1em;
-        border-radius: 8px;
-        border: 1px solid #d1d5db;
-        background-color: #ffffff;
-        cursor: pointer;
-        margin-left: 0.5em;
-    }
-    
-    .search-controls {
-        display: flex;
-        gap: 1em;
-        margin-top: 1.5em;
-    }
-    #feature-search, #feature-search-subclass {
-        font-size: 1em;
-        padding: 0.75em;
-        border-radius: 6px;
-        border: 1px solid #d1d5db;
-        background-color: var(--background-color);
-    }
-    #feature-search { flex: 3; }
-    #feature-search-subclass { flex: 1; }
-    #feature-search:focus, #feature-search-subclass:focus {
-        outline: none;
-        border-color: var(--interactive-color);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    }
+		width: 100%;
+		font-size: 1.1em;
+		padding: 0.75em;
+		border-radius: 8px;
+		border: 1px solid var(--border-color);
+		flex: 1;
+	}
+	/* styles for the feature search bar when it's in focus */
+	#feature-search-subclass:focus {
+		outline: none;
+		border-color: var(--interactive-color);
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+	}
 
-    /* styles for the summary information card */
-    .summary-card {
-        background: var(--card-background);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5em;
-        margin-bottom: 2em;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    }
-    .summary-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1em;
-    }
-    .summary-item strong {
-        display: block;
-        color: var(--text-color-secondary);
-        font-weight: 500;
-        margin-bottom: 0.25em;
-    }
-    .summary-item span {
-        font-weight: 600;
-    }
 
-    /* styles for the tab navigation bar */
-    .tab-nav {
-        display: flex;
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 1.5em;
-    }
-    .tab-btn {
-        padding: 0.75em 1.5em;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        font-size: 1em;
-        font-weight: 500;
-        color: var(--text-color-secondary);
-        border-bottom: 3px solid transparent;
-        margin-bottom: -1px;
-    }
-    .tab-btn.active {
-        color: var(--text-color-primary);
-        border-bottom-color: var(--text-color-primary);
-    }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+	/* styles for the summary information card */
+	.summary-card {
+		background: var(--card-background);
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		padding: 1.5em;
+		margin-bottom: 2em;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+	}
+	/* styles for the grid layout within the summary card */
+	.summary-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1em;
+	}
+	/* styles for individual items in the summary grid */
+	.summary-item { font-size: 0.95em; }
+	.summary-item strong {
+		display: block;
+		color: var(--text-color-secondary);
+		font-weight: 500;
+		margin-bottom: 0.25em;
+	}
+	.summary-item span {
+		font-weight: 600;
+		color: var(--text-color-primary);
+	}
 
-    /* styles for data boxes and tables */
-    .data-box {
-        background-color: var(--background-color);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 1.5em;
-        font-family: "Courier New", Courier, monospace;
-        white-space: pre-wrap;
-    }
-    .features-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    .features-table th, .features-table td {
-        text-align: left;
-        padding: 0.75em;
-        border-bottom: 1px solid var(--border-color);
-    }
-    #plasmid-map-container {
+	/* styles for the tab navigation bar */
+	.tab-nav {
+		display: flex;
+		border-bottom: 1px solid var(--border-color);
+		margin-bottom: 1.5em;
+	}
+	/* styles for individual tab buttons */
+	.tab-btn {
+		padding: 0.75em 1.5em;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+		font-size: 1em;
+		font-weight: 500;
+		color: var(--text-color-secondary);
+		border-bottom: 3px solid transparent;
+		margin-bottom: -1px;
+	}
+	/* styles for the currently active tab button */
+	.tab-btn.active {
+		color: var(--text-color-primary);
+		border-bottom-color: var(--text-color-primary);
+	}
+	/* hides tab content by default */
+	.tab-content { display: none; }
+	/* shows the content of the active tab */
+	.tab-content.active { display: block; }
+
+	/* styles for the data boxes and the sequence view */
+	.data-box, #sequence-view {
+		background-color: var(--background-color);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		padding: 1.5em;
+		font-family: "Courier New", Courier, monospace;
+		font-size: 0.95em;
+		color: #333;
+	}
+	/* specific styles for the sequence view box */
+	#sequence-view {
+		position: relative;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+	}
+	/* styles for the features table */
+	.features-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+		font-size: 0.9em;
+	}
+	/* styles for the cells in the features table */
+	.features-table th, .features-table td {
+		text-align: left;
+		padding: 0.75em;
+		border-bottom: 1px solid var(--border-color);
+	}
+	/* styles for the header cells of the features table */
+	.features-table th {
+		background: var(--background-color);
+		font-weight: 600;
+	}
+	/* styles for table rows when hovered over */
+	.features-table tbody tr:hover {
+		background-color: #eef2ff;
+	}
+	/* styles for the copy sequence button */
+	#copy-seq-btn {
+		position: absolute;
+		top: 1em;
+		right: 1em;
+		font-size: 0.8em;
+		padding: 0.4em 0.8em;
+		border-radius: 6px;
+		border: 1px solid var(--border-color);
+		background: #fff;
+		cursor: pointer;
+	}
+	#plasmid-map-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -159,63 +223,70 @@ title: File Viewer
 
 <div class="viewer-container">
 
-    <header class="page-header">
-        <div class="header-top">
-            <h1 id="file-title">Loading record...</h1>
-            <div class="download-actions">
-                <button id="download-fasta-btn">Download FASTA</button>
-                <button id="download-gb-btn">Download GenBank</button>
-            </div>
-        </div>
-        <div class="search-controls">
-            <input type="text" id="feature-search" placeholder="Search for a gene or product...">
-            <input type="text" id="feature-search-subclass" placeholder="Filter by subclass (e.g., CDS)">
-        </div>
-    </header>
+	<header class="page-header">
+		<div class="header-top">
+			<h1 id="file-title">loading record...</h1>
+			<div class="download-actions">
+				<button id="download-fasta-btn" class="secondary">download fasta</button>
+				<button id="download-gb-btn">download genbank</button>
+			</div>
+		</div>
+		<input type="text" id="feature-search" placeholder="search features in this file...">
+		<input type="text" id="feature-search-subclass" placeholder="enter the subclass...">
+	</header>
 
-    <div class="summary-card">
-        <div class="summary-grid" id="summary-grid"></div>
-    </div>
+	<div class="summary-card">
+		<div class="summary-grid" id="summary-grid">
+			</div>
+	</div>
 
-    <nav class="tab-nav">
-        <button class="tab-btn active" data-tab="features">Features</button>
-        <button class="tab-btn" data-tab="sequence">Sequence</button>
-        <button class="tab-btn" data-tab="plasmid-map">Plasmid Map</button>
-        <button class="tab-btn" data-tab="raw-genbank">Raw GenBank</button>
-        <button class="tab-btn" data-tab="references">References</button>
-    </nav>
-    
-    <div id="features" class="tab-content active">
-        <div style="overflow-x:auto;">
-            <table class="features-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Location</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody id="features-tbody"></tbody>
-            </table>
-        </div>
-    </div>
+	<nav class="tab-nav">
+		<button class="tab-btn active" data-tab="features">Features</button>
+		<button class="tab-btn" data-tab="sequence">Sequence</button>
+		<button class="tab-btn" data-tab="raw-genbank">Raw GenBank</button>
+		<button class="tab-btn" data-tab="plasmid-map">Plasmid Map</button>
+		<button class="tab-btn" data-tab="references">References</button>
+	</nav>
+	
+	<div id="features" class="tab-content active">
+		<div style="overflow-x:auto;">
+			<table class="features-table">
+				<thead>
+					<tr>
+						<th>feature</th>
+						<th>location</th>
+						<th>details</th>
+					</tr>
+				</thead>
+				<tbody id="features-tbody">
+					</tbody>
+			</table>
+		</div>
+	</div>
 
-    <div id="sequence" class="tab-content">
-        <pre class="data-box" id="sequence-pre">Loading sequence...</pre>
-    </div>
+	<div id="sequence" class="tab-content">
+		<div id="sequence-view">
+			<button id="copy-seq-btn">copy</button>
+			<pre id="sequence-pre">loading sequence...</pre>
+		</div>
+	</div>
 
-    <div id="plasmid-map" class="tab-content">
+	<div id="raw-genbank" class="tab-content">
+		<pre class="data-box" id="raw-genbank-pre">loading raw file...</pre>
+	</div>
+
+	<div id="plasmid-map" class="tab-content">
         <div id="plasmid-map-container"></div>
     </div>
 
-    <div id="raw-genbank" class="tab-content">
-        <pre class="data-box" id="raw-genbank-pre">Loading raw file...</pre>
-    </div>
-
-    <div id="references" class="tab-content">
-        <pre class="data-box" id="references-pre">Loading references...</pre>
-    </div>
+	<div id="references" class="tab-content">
+		<pre class="data-box" id="references-pre">loading references...</pre>
+	</div>
     
 </div>
 
-<script type="module" src="{{ '/assets/js/file-viewer.js' | relative_url }}"></script>
+</div>
+
+<script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/plasmid-rendered.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/file-viewer.js' | relative_url }}" defer></script>

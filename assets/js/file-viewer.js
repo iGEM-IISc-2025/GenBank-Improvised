@@ -15,51 +15,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabContainer = document.querySelector('.tab-nav');
 
     // main
+
     async function main() {
         const params = new URLSearchParams(window.location.search);
         const uid = params.get('uid');
-        if (!uid) {return; }
+        if (!uid) {
+            fileTitle.textContent = 'error: no uid provided.';
+            return;
+        }
 
         try {
-            // Fetch both text and XML data in parallel for efficiency
-            const [rawGbData, xmlString] = await Promise.all([
-                efetch(uid, 'gb'),      // Fetches plain text
-                efetch(uid, 'gb', 'xml') // Fetches XML
-            ]);
+            rawGbData = await efetch(uid, 'gb');
+            parsedData = parseGenBank(rawGbData);
 
-            // Process tes data for tables and text views
-            const parsedTextData = parseGenBank(rawGbData);
-            renderSummary(parsedTextData);
-            renderFeaturesTable(parsedTextData);
-            renderSequence(parsedTextData);
-            referencesPre.textContent = parsedTextData.references;
-            rawGbPre.textContent = rawGbData;
-            
-            // Process XML data for the plasmid map
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlString, "application/xml");
-            const parsedXMLData = parseGenBankXML(xmlDoc);
+            renderSummary();
+            renderFeaturesTable(); // Initial render with the clean feature list
+            renderSequence();
+            referencesPre.textContent = parsedData.references;
+            document.getElementById('raw-genbank-pre').textContent = rawGbData;
 
-            if (parsedXMLData && parsedXMLData.features.length > 0) {
-                drawPlasmidMap(parsedXMLData);
+            const plasmidDataForMap = formatDataForPlasmid(parsedData);
+            if (typeof drawPlasmidMap === 'function' && plasmidDataForMap.features.length > 0) {
+                drawPlasmidMap(plasmidDataForMap);
             } else {
                 document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
             }
 
-            // Attach Event Listeners
+            // Attach event listeners
             tabContainer.addEventListener('click', handleTabClick);
-            featureSearch.addEventListener('input', () => handleFeatureSearch(parsedTextData, rawGbData));
-            featureSearchSubclass.addEventListener('input', () => handleFeatureSearch(parsedTextData, rawGbData));
-            downloadGbBtn.addEventListener('click', () => downloadFile(uid, 'gb', rawGbData));
+            featureSearch.addEventListener('input', handleFeatureSearch);
+            featureSearchSubclass.addEventListener('input', handleFeatureSearch);
+            copySeqBtn.addEventListener('click', handleCopySequence);
+            downloadGbBtn.addEventListener('click', () => downloadFile(parsedData.accession || uid, 'gb', rawGbData));
             downloadFastaBtn.addEventListener('click', () => {
-                const fastaContent = `>${parsedTextData.accession} ${parsedTextData.definition}\n${parsedTextData.sequence}`;
-                downloadFile(uid, 'fasta', fastaContent);
+                const fastaContent = `>${parsedData.accession || uid} ${parsedData.definition}\n${parsedData.sequence}`;
+                downloadFile(parsedData.accession || uid, 'fasta', fastaContent);
             });
 
         } catch (err) {
-            console.error("Failed to load or parse GenBank file:", err);
-            const container = document.querySelector('.viewer-container');
-            container.innerHTML = `<h1>Error</h1><p>Could not load data for UID: ${uid}.</p><pre>${err.message}</pre>`;
+            console.error("failed to load or parse genbank file:", err);
+            // CORRECTED ERROR MESSAGE: Uses 'uid' which is always defined.
+            document.body.innerHTML = `<h1>Error</h1><p>Could not load data for UID: ${uid}.</p><pre>${err.message}</pre>`;
         }
     }
 
