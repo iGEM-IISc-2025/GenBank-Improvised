@@ -74,36 +74,36 @@ document.addEventListener('DOMContentLoaded', () => {
         return data;
     }
 
-    // function formatDataForPlasmid(genbankData) {
-    //     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-    //     let colorIndex = 0;
+    function formatDataForPlasmid(genbankData) {
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        let colorIndex = 0;
 
-    //     const plasmidFeatures = genbankData.features
-    //         .map(feature => {
-    //             const locationMatch = feature.location.match(/(\d+)\.\.(\d+)/);
-    //             if (!locationMatch) return null;
+        const plasmidFeatures = genbankData.features
+            .map(feature => {
+                const locationMatch = feature.location.match(/(\d+)\.\.(\d+)/);
+                if (!locationMatch) return null;
 
-    //             const start = parseInt(locationMatch[1], 10);
-    //             const end = parseInt(locationMatch[2], 10);
-    //             const direction = feature.location.includes('complement') ? -1 : 1;
+                const start = parseInt(locationMatch[1], 10);
+                const end = parseInt(locationMatch[2], 10);
+                const direction = feature.location.includes('complement') ? -1 : 1;
                 
-    //             return {
-    //                 start: start,
-    //                 end: end,
-    //                 direction: direction,
-    //                 label: feature.details,
-    //                 color: colorScale(colorIndex++)
-    //             };
-    //         })
-    //         .filter(f => f !== null);
+                return {
+                    start: start,
+                    end: end,
+                    direction: direction,
+                    label: feature.details,
+                    color: colorScale(colorIndex++)
+                };
+            })
+            .filter(f => f !== null);
 
-    //     return {
-    //         name: genbankData.accession,
-    //         length: genbankData.sequence.length,
-    //         sequence: genbankData.sequence,
-    //         features: plasmidFeatures
-    //     };
-    // }
+        return {
+            name: genbankData.accession,
+            length: genbankData.sequence.length,
+            sequence: genbankData.sequence,
+            features: plasmidFeatures
+        };
+    }
 
     function levenshteinDistance(word1, word2) {
         const a = String(word1);
@@ -353,12 +353,15 @@ document.addEventListener('DOMContentLoaded', () => {
             referencesPre.textContent = parsedData.references;
             document.getElementById('raw-genbank-pre').textContent = rawGbData;
 
-            // const plasmidDataForMap = formatDataForPlasmid(parsedData);
-            // if (typeof drawPlasmidMap === 'function' && plasmidDataForMap.features.length > 0) {
-            //     drawPlasmidMap(plasmidDataForMap);
-            // } else {
-            //     document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
-            // }
+            const plasmidDataForMap = formatDataForPlasmid(parsedData);
+
+            console.log("Data being sent to plasmid map:", plasmidDataForMap);
+
+            if (typeof drawPlasmidMap === 'function' && plasmidDataForMap.features.length > 0) {
+                drawPlasmidMap(plasmidDataForMap);
+            } else {
+                document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
+            }
 
             // Attach event listeners for both search inputs
             tabContainer.addEventListener('click', handleTabClick);

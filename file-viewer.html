@@ -213,7 +213,7 @@ title: File Viewer
 		background: #fff;
 		cursor: pointer;
 	}
-    #plasmid-map-container {
+	#plasmid-map-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -276,8 +276,7 @@ title: File Viewer
 	</div>
 
 	<div id="plasmid-map" class="tab-content">
-        <div id="plasmid-map-container">
-        </div>
+        <div id="plasmid-map-container"></div>
     </div>
 
 	<div id="references" class="tab-content">
@@ -289,6 +288,5 @@ title: File Viewer
 </div>
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/plasmid-rendered.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/file-viewer.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/plasmid-renderer.js' | relative_url }}"></script>
-<script type="module" src="{{ '/assets/js/file-plasmid-viewer.js' | relative_url }}"></script>
