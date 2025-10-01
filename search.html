@@ -349,7 +349,7 @@ title: Search
     searchButton.addEventListener("click", handleSearch);
     searchTermInput.addEventListener("keydown", (event) =>{
       if (event.key === "Enter"){
-        console.log("Confirm");
+        handleSearch();
       }
     });
     summaryListDiv.addEventListener("click", handleResultClick);
