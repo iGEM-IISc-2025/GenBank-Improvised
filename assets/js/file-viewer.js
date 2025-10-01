@@ -358,6 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Data being sent to plasmid map:", plasmidDataForMap);
 
             if (typeof drawPlasmidMap === 'function' && plasmidDataForMap.features.length > 0) {
+                console.log("drawPlasmidMap function was called successfully.");
                 drawPlasmidMap(plasmidDataForMap);
             } else {
                 document.getElementById('plasmid-map-container').textContent = 'No features available to draw a plasmid map.';
