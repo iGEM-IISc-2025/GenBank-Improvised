@@ -1,0 +1,322 @@
+---
+layout: default
+title: Docs
+---
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<style>
+	/* General Layout & Structure */
+	.docs-layout {
+		display: flex;
+		flex-direction: row;
+		max-width: 1400px;
+		margin: 0 auto 4rem auto;
+		padding: 0 2rem;
+	}
+
+	.docs-sidebar {
+		position: sticky;
+		top: 50px; /* Adjust if your navbar height is different */
+		width: 256px;
+		height: calc(100vh - 120px);
+		flex-shrink: 0;
+		overflow-y: auto;
+		padding-right: 1.5rem;
+		scrollbar-width: none; /* For Firefox */
+	}
+	.docs-sidebar::-webkit-scrollbar {
+		display: none;
+	}
+
+	@media (max-width: 1024px) {
+		.docs-sidebar {
+			display: none;
+		}
+	}
+
+	/* Sidebar Navigation Links */
+	.docs-sidebar nav a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 8px 12px;
+		border-radius: 6px;
+		color: #4b5563;
+		transition: all 0.2s ease;
+		font-size: 0.9rem;
+		font-weight: 500;
+		text-decoration: none;
+	}
+
+	.docs-sidebar nav a:hover {
+		background-color: #f3f4f6;
+		color: #1f2937;
+	}
+
+	.active-section-link {
+		background-color: #eef2ff !important;
+		color: #4338ca !important;
+		font-weight: 600 !important;
+	}
+
+	.active-subsection-link {
+		color: #4338ca !important;
+		font-weight: 600 !important;
+	}
+
+	.sub-list {
+		padding-left: 12px;
+		margin-left: 8px;
+		border-left: 1px solid #e5e7eb;
+		overflow: hidden;
+		max-height: 1000px;
+		transition: max-height 0.4s ease-in-out;
+	}
+
+	.sub-list.collapsed { max-height: 0; }
+
+	.collapse-icon {
+		transition: transform 0.3s ease;
+		width: 1rem;
+		height: 1rem;
+		color: #9ca3af;
+	}
+
+	a[aria-expanded="false"] .collapse-icon { transform: rotate(-90deg); }
+
+	/* Main Content Typography */
+	.docs-main { 
+		flex-grow: 1; 
+		min-width: 0;
+		padding-left: 2rem;
+	}
+	.docs-article h1 { font-size: 2.25rem; font-weight: 800; color: #111827; }
+	.docs-article .lead { font-size: 1.125rem; color: #4b5563; margin-top: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; }
+	.docs-article h2 { font-size: 1.5rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
+	.docs-article h3 { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .docs-article p { font-size: 1rem; line-height: 1.75rem; color: #374151; margin-bottom: 1rem; }
+	
+	/* Callout Blocks */
+	.callout { padding: 1rem; margin: 1.25rem 0; border-radius: 0.5rem; border-left-width: 4px; }
+	.callout-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+	.callout-header svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+	.callout p { margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; line-height: 1.6; }
+	.callout-note { background-color: #eff6ff; border-color: #3b82f6; }
+	.callout-note .callout-header { color: #1e40af; }
+	.callout-note p { color: #1c3d8e; }
+	
+	/* Code Blocks */
+	.docs-article pre { position: relative; background-color: #1f2937; color: #d1d5db; padding: 1rem; margin: 1.25rem 0 1.5rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.875rem; padding-top: 3.5rem; }
+	.code-header { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; background-color: #374151; color: #9ca3af; padding: 0.5rem 1rem; font-size: 0.8rem; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
+	.copy-button { background-color: transparent; color: #9ca3af; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.5rem; }
+	.copy-button:hover { background-color: #4b5563; color: #e5e7eb; }
+</style>
+
+<div class="docs-layout">
+	<aside class="docs-sidebar">
+		<nav id="docs-nav"></nav>
+	</aside>
+
+	<main class="docs-main">
+		<article class="docs-article">
+			<header id="top">
+				<h1>Intelligent Feature Search</h1>
+				<p class="lead">A powerful, intuitive search algorithm for finding features within GenBank files, designed for accuracy and ease of use.</p>
+			</header>
+
+			<section id="introduction" data-aos="fade-up">
+				<h2>The Challenge: Finding Data in Dense Files</h2>
+				<p>GenBank files are incredibly data-rich, but their dense, text-based format makes finding specific information difficult. A simple text search often isn't enough, as researchers need to look for specific features like genes or CDS, and spelling errors can lead to missed results.</p>
+				<p>Our project introduces an intelligent search layer on top of standard GenBank files. This tool allows users to perform targeted, error-tolerant searches to quickly locate the exact features they need.</p>
+			</section>
+
+			<section id="how-it-works" data-aos="fade-up">
+				<h2>How to Use Our Search</h2>
+				<p>Let's walk through an example. Imagine you want to find the <strong>traN</strong> gene within the GenBank record for <i>P. putida</i>.</p>
+				<p>You provide the <strong>searchword</strong> (e.g., "traN") and have the option to specify a <strong>subclass</strong> to narrow your search. If you select "gene" as the subclass, our tool will only look for "traN" within gene annotations, ignoring other sections. If you leave it blank, it searches the entire file.</p>
+				<div class="callout callout-note">
+					<div class="callout-header">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
+						<strong>Error Tolerance is Key</strong>
+					</div>
+					<p>Our search isn't just looking for exact matches. It finds words that are a close match, so even minor typos won't prevent you from getting the results you need. The output is a list of matches, ranked by how closely they match your search term.</p>
+				</div>
+			</section>
+
+			<section id="technology" data-aos="fade-up">
+				<h2>The Technology Behind It</h2>
+				<p>Our tool operates in a few simple steps. First, it fetches the requested .gb file. Then, it processes the file line by line, identifying the "subclass" of each line and comparing its contents to your search query.</p>
+				
+				<h3 id="subclasses-explained">Understanding Subclasses</h3>
+				<p>We use the term "subclass" to refer to the primary feature types in a GenBank file. This allows for highly specific searches. The most common subclasses are:</p>
+				<ul>
+					<li><strong>Source:</strong> General information about the entire sequence (organism, strain, etc.).</li>
+					<li><strong>Gene:</strong> Marks the location of a specific gene.</li>
+					<li><strong>CDS (Coding Sequence):</strong> Contains the specific nucleotide sequence that codes for a protein.</li>
+				</ul>
+				<pre><code>  source           1..128921
+				   /organism="Pseudomonas putida"
+  gene             complement(1..867)
+				   /locus_tag="HXC77_RS00005"
+  CDS              complement(1..867)
+				   /product="Replication initiation protein"</code></pre>
+
+				<h3 id="levenshtein-distance">Measuring Closeness with Levenshtein Distance</h3>
+				<p>To provide error-tolerant results, we calculate the <strong>Levenshtein distance</strong> between your searchword and words found in the file. This distance is the minimum number of single-character edits (insertions, deletions, substitutions) needed to change one word into the other.</p>
+				<p>Our tolerance for errors is dynamic. We use the formula <strong>4 * (1 - 2^(-a/3))</strong>, where 'a' is the word length. This allows more potential typos for longer words, up to a reasonable maximum limit of 4 edits.</p>
+			</section>
+
+			<section id="conclusion" data-aos="fade-up">
+				<h2>Conclusion</h2>
+				<p>By combining a targeted subclass system with an error-tolerant matching algorithm, our tool provides a fast, flexible, and intuitive way to navigate the dense information within GenBank files, significantly improving the user experience for researchers.</p>
+			</section>
+		</article>
+	</main>
+</div>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+
+		// --- code block copy button ---
+		document.querySelectorAll('main article pre').forEach(block => {
+			const code = block.querySelector('code');
+			if (!code) return;
+			const header = document.createElement('div');
+			header.className = 'code-header';
+			const title = document.createElement('span');
+			title.textContent = 'GenBank Snippet';
+			const copyButton = document.createElement('button');
+			copyButton.className = 'copy-button';
+			copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+			header.appendChild(title);
+			header.appendChild(copyButton);
+			block.prepend(header);
+			copyButton.addEventListener('click', () => {
+				navigator.clipboard.writeText(code.innerText).then(() => {
+					copyButton.innerHTML = `<span>Copied!</span>`;
+					setTimeout(() => {
+						copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+					}, 2000);
+				});
+			});
+		});
+
+		// --- dynamic sidebar & scrollspy ---
+		// UPDATED navStructure to match the new, logical flow
+		const navStructure = [
+			{ id: 'introduction', title: 'Introduction' },
+			{ id: 'how-it-works', title: 'How to Use It' },
+			{ id: 'technology', title: 'The Technology', children: [
+				{ id: 'subclasses-explained', title: 'Subclasses' },
+				{ id: 'levenshtein-distance', title: 'Levenshtein Distance' }
+			]},
+			{ id: 'conclusion', title: 'Conclusion' }
+		];
+
+		const navContainer = document.getElementById('docs-nav');
+		function createNav(items, isSubList = false) {
+			const list = document.createElement('ul');
+			list.className = isSubList ? 'sub-list collapsed' : 'space-y-1 mt-4';
+			items.forEach(item => {
+				const listItem = document.createElement('li');
+				const link = document.createElement('a');
+				link.href = `#${item.id}`;
+				if (item.children) {
+					const subListId = `sublist-${item.id}`;
+					link.setAttribute('data-toggle', 'collapse');
+					link.setAttribute('aria-expanded', 'false');
+					link.setAttribute('aria-controls', subListId);
+					link.innerHTML = `<span>${item.title}</span><svg class="collapse-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
+					listItem.appendChild(link);
+					const subList = createNav(item.children, true);
+					subList.id = subListId;
+					listItem.appendChild(subList);
+				} else { link.textContent = item.title; listItem.appendChild(link); }
+				list.appendChild(listItem);
+			});
+			return list;
+		}
+		if (navContainer) {
+			const title = document.createElement('h2');
+			title.className = 'text-lg font-bold text-gray-900';
+			title.textContent = 'On this page';
+			navContainer.appendChild(title);
+			const mainNavList = createNav(navStructure);
+			navContainer.appendChild(mainNavList);
+		}
+		document.querySelectorAll('.docs-sidebar nav a[data-toggle]').forEach(toggle => {
+			toggle.addEventListener('click', e => {
+				e.preventDefault();
+				const targetElement = document.getElementById(toggle.getAttribute('aria-controls'));
+				const isCollapsed = targetElement.classList.toggle('collapsed');
+				toggle.setAttribute('aria-expanded', !isCollapsed);
+			});
+		});
+
+		// observer and scrollspy logic remains the same
+		const allLinks = document.querySelectorAll('.docs-sidebar nav a');
+		const allSubLists = document.querySelectorAll('.docs-sidebar .sub-list');
+		const sections = document.querySelectorAll("main section, main h3, main h4");
+		
+		const observer = new IntersectionObserver(entries => {
+			let topmostVisibleEntry = null;
+			for (const entry of entries) {
+				if (entry.isIntersecting && (!topmostVisibleEntry || entry.boundingClientRect.top < topmostVisibleEntry.boundingClientRect.top)) {
+					topmostVisibleEntry = entry;
+				}
+			}
+			if (topmostVisibleEntry) {
+				const activeId = topmostVisibleEntry.target.id;
+				const activeLink = document.querySelector(`.docs-sidebar nav a[href="#${activeId}"]`);
+
+				allLinks.forEach(l => l.classList.remove('active-section-link', 'active-subsection-link'));
+				
+				if (activeLink) {
+					allSubLists.forEach(list => {
+						if (!list.contains(activeLink)) {
+							list.classList.add('collapsed');
+							const parentToggle = list.previousElementSibling;
+							if (parentToggle && parentToggle.matches('[data-toggle]')) {
+								parentToggle.setAttribute('aria-expanded', 'false');
+							}
+						}
+					});
+
+					let parent = activeLink;
+					while(parent && parent.closest('.docs-sidebar')) {
+						if (parent.matches('a')) {
+							if(parent.nextElementSibling && parent.nextElementSibling.matches('.sub-list')) {
+								parent.classList.add('active-section-link');
+							} else if (parent.closest('.sub-list')) {
+								parent.classList.add('active-subsection-link');
+							}
+						}
+						
+						const parentList = parent.closest('.sub-list.collapsed');
+						if(parentList) {
+							parentList.classList.remove('collapsed');
+							const parentToggle = parentList.previousElementSibling;
+							if (parentToggle) {
+								parentToggle.setAttribute('aria-expanded', 'true');
+							}
+						}
+						parent = parent.parentElement;
+					}
+
+					const topParentLink = activeLink.closest('ul:not(.sub-list) > li > a');
+					if (topParentLink) {
+						topParentLink.classList.add('active-section-link');
+					} else {
+						activeLink.classList.add('active-section-link');
+					}
+				}
+			}
+		}, { rootMargin: "-40% 0px -59% 0px", threshold: [0, 1] });
+
+		sections.forEach(section => { if (section.id) observer.observe(section); });
+
+		AOS.init({ duration: 600, once: true, offset: 50 });
+	});
+</script>

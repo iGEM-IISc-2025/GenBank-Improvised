@@ -1,0 +1,109 @@
+---
+layout: default
+title: Documentation
+---
+
+<style>
+    /* basic styles for the docs hub page */
+    .docs-hub-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2em;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* styles for the main header section */
+    .docs-hub-header {
+        text-align: center;
+        margin-bottom: 3em;
+    }
+    .docs-hub-header h1 {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: #1f2937;
+    }
+    .docs-hub-header p {
+        font-size: 1.1em;
+        color: #4b5563;
+        max-width: 700px;
+        margin: 0.5em auto 0 auto;
+    }
+
+    /* styles for the grid that holds the documentation cards */
+    .docs-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5em;
+    }
+
+    /* styles for each individual card link */
+    .doc-card {
+        display: block;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5em;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .doc-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .doc-card h2 {
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #111827;
+        margin-top: 0;
+    }
+    .doc-card p {
+        font-size: 1em;
+        line-height: 1.6;
+        color: #4b5563;
+        margin-bottom: 1em;
+    }
+    .doc-card .read-more {
+        font-weight: 500;
+        color: #3b82f6; /* using the interactive blue for links */
+    }
+</style>
+
+<div class="docs-hub-container">
+
+    <header class="docs-hub-header">
+        <h1>Project Documentation</h1>
+        <p>
+            Our project reimagines the GenBank interface. We leverage modern frontend technologies to create a faster, more intuitive, and user-centric platform for biological data analysis.
+        </p>
+    </header>
+
+    <div class="docs-card-grid">
+
+        <a href="{{ site.baseurl }}/api-docs" class="doc-card">
+            <h2>API Interface</h2>
+            <p>
+                Learn how our application communicates directly with NCBI's Entrez Programming Utilities (E-utilities) to fetch and display real-time data without a backend.
+            </p>
+            <span class="read-more">Read More &rarr;</span>
+        </a>
+
+        <a href="{{ site.baseurl }}/search-docs" class="doc-card">
+            <h2>Intelligent Feature Search</h2>
+            <p>
+                Discover our platform's core innovation: a powerful frontend parser and search algorithm that allows for instant filtering of genes, CDS, and more within any GenBank file.
+            </p>
+            <span class="read-more">Read More &rarr;</span>
+        </a>
+
+        <a href="{{ site.baseurl }}/plasmid-docs" class="doc-card">
+            <h2>Plasmid Visualisation</h2>
+            <p>
+                Explore how we plan to convert raw sequence data into clear, interactive, and downloadable plasmid maps to visualize genetic constructs and their key components.
+            </p>
+            <span class="read-more">Read More &rarr;</span>
+        </a>
+
+    </div>
+
+</div>

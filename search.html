@@ -1,0 +1,357 @@
+---
+layout: default
+title: Search
+---
+
+<style>
+  :root {
+    --primary-color: #005a9c;
+    --primary-hover: #00477a;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --secondary-text-color: #666666;
+    --border-color: #e0e0e0;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.06); 
+  }
+
+  /* Reset for this component */
+  .biorxiv-search-container * {
+    box-sizing: border-box;
+  }
+
+  .biorxiv-search-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2em;
+    padding-top: 0;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Helvetica, Arial, sans-serif;
+    background-color: transparent;
+    color: var(--text-color);
+    line-height: 1.6;
+  }
+
+  .biorxiv-search-container header {
+    text-align: center;
+    margin-bottom: 2em;
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .biorxiv-search-container h1 {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.25em;
+  }
+
+  .biorxiv-search-container header p {
+    font-size: 1.1em;
+    color: var(--secondary-text-color);
+  }
+
+  .biorxiv-search-container .search-controls {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 2.5em;
+  }
+
+  .biorxiv-search-container #searchTerm {
+    flex-grow: 1;
+    font-size: 1rem;
+    padding: 0.75em 1em;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .biorxiv-search-container #searchTerm:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.2);
+  }
+
+  .biorxiv-search-container #searchButton {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75em 1.5em;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .biorxiv-search-container #searchButton:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .biorxiv-search-container #summary-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .biorxiv-search-container #summary-list li {
+    background-color: var(--card-background);
+    padding: 1.5em;
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--primary-color);
+    margin-bottom: 1em;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .biorxiv-search-container #summary-list li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .biorxiv-search-container .result-info strong {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #222;
+  }
+
+  .biorxiv-search-container .result-details {
+    font-size: 0.9em;
+    color: var(--secondary-text-color);
+    background-color: #f9fafb;
+    padding: 0.75em;
+    border-radius: 8px;
+    margin-top: 0.4em;
+  }
+  
+  .biorxiv-search-container .result-details strong {
+    font-weight: 500;
+    color: #444;
+    font-size: 1em;
+  }
+
+  .biorxiv-search-container .result-actions button {
+    font-size: 0.9em;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #fdfdfd;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    margin-right: 0.5em;
+  }
+  .biorxiv-search-container .result-actions button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+  }
+  .biorxiv-search-container .result-actions button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #fff;
+  }
+
+  .biorxiv-search-container .loader {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 2em auto;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 600px) {
+    .biorxiv-search-container { 
+        padding: 1em;
+    }
+    .biorxiv-search-container .search-controls { flex-direction: column; }
+    .biorxiv-search-container header { margin-bottom: 1.5em; }
+  }
+</style>
+
+<div class="biorxiv-search-container">
+  <header>
+    <h1>BioSearch</h1>
+    <p>An intuitive interface to the NCBI Nucleotide Database.</p>
+  </header>
+
+  <div class="search-controls">
+    <input type="text" id="searchTerm" placeholder="Pseudomonas putida..."/>
+    <button id="searchButton">Search</button>
+  </div>
+
+  <div id="summary-list"></div>
+</div>
+
+
+<div class="bottompagination">
+    <div class="pointerup">
+        <i class="fa fa-caret-up"></i>
+    </div>
+    <span class="navigation" role="navigation">
+        {% include pagination.html %}
+    </span>
+</div>
+
+<script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchButton = document.getElementById("searchButton");
+    const searchTermInput = document.getElementById("searchTerm");
+    const summaryListDiv = document.getElementById("summary-list");
+
+    const searchPlaceholders = [
+        "Pseudomonas putida...",
+        "Human insulin gene...",
+        "CRISPR Cas9...",
+        "Green Fluorescent Protein...",
+        "pBR322 plasmid..."
+    ];
+    
+    // Animation settings
+    const typeSpeed = 50; // ms per character
+    const deleteSpeed = 30; // ms per character
+    const pauseTime = 1500; // ms to pause after typing
+
+    let placeholderIndex = 0;
+
+    // Helper function to create a delay
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Main animation loop function
+    async function animatePlaceholder() {
+        while (true) {
+            const currentText = searchPlaceholders[placeholderIndex];
+
+            // Typing animation
+            for (let i = 0; i < currentText.length; i++) {
+                searchTermInput.placeholder = currentText.substring(0, i + 1);
+                await sleep(typeSpeed);
+            }
+
+            // Pause after typing is complete
+            await sleep(pauseTime);
+
+            // Deleting animation
+            for (let i = currentText.length; i > 0; i--) {
+                searchTermInput.placeholder = currentText.substring(0, i - 1);
+                await sleep(deleteSpeed);
+            }
+            
+            // Move to the next placeholder in the array
+            placeholderIndex = (placeholderIndex + 1) % searchPlaceholders.length;
+        }
+    }
+
+    // Start the animation
+    animatePlaceholder();
+
+    async function handleSearch() {
+      const query = searchTermInput.value;
+      if (!query) {
+        summaryListDiv.innerHTML = "<p>Please enter a search term.</p>";
+        return;
+      }
+      summaryListDiv.innerHTML = `<div class="loader"></div>`;
+
+      try {
+        const esearchXml = await getInfo(query);
+        const ids = await parseEsearchXml(esearchXml);
+        if (ids.length === 0) {
+          summaryListDiv.innerHTML = "<p>No results found for your query.</p>";
+          return;
+        }
+
+        const summaries = await esummary(ids);
+        summaryListDiv.innerHTML = "";
+        const ul = document.createElement("ul");
+
+        summaries.forEach((summary) => {
+          const li = document.createElement("li");
+          li.dataset.uid = summary.Uid;
+
+          li.innerHTML = `
+            <div class="result-info">
+              <strong>${summary.Title}</strong>
+              <div class="result-details">
+                <strong>Accession:</strong> ${summary.AccessionVersion || "N/A"} | 
+                <strong>Type:</strong> ${summary.Biomol || "N/A"} <br>
+                <strong>Organism:</strong> ${summary.Organism || "N/A"} | 
+                <strong>Length:</strong> ${summary.Length ? summary.Length + "bp" : "N/A"} | 
+                <strong>Updated:</strong> ${summary.UpdateDate ? summary.UpdateDate.split(" ")[0] : "N/A"}
+              </div>
+            </div>
+            <div class="result-actions">
+              <button data-format="gb">GenBank</button>
+              <button data-format="fasta">FASTA</button>
+              <button data-format="gbseq">GenBank XML</button>
+            </div>
+          `;
+          ul.appendChild(li);
+        });
+
+        summaryListDiv.appendChild(ul);
+      } catch (error) {
+        console.error(error);
+        summaryListDiv.innerHTML = `<p style="color: red; text-align: center;">An error occurred: ${error.message}</p>`;
+      }
+    }
+
+    async function handleResultClick(event) {
+        const parentLi = event.target.closest("li[data-uid]");
+        if (!parentLi) {
+            return;
+        }
+
+        const clickedButton = event.target.closest("button[data-format]");
+
+        if (clickedButton) {
+            event.stopPropagation();
+            
+            const uid = parentLi.dataset.uid;
+            const format = clickedButton.dataset.format;
+            const originalButtonText = clickedButton.textContent;
+
+            clickedButton.textContent = "Downloading...";
+            clickedButton.disabled = true;
+
+            try {
+                const recordData = await efetch(uid, format);
+                const blob = new Blob([recordData], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${uid}.${format}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error(error);
+                alert(`Error downloading ${format.toUpperCase()} for ID ${uid}: ${error.message}`);
+            } finally {
+                clickedButton.textContent = originalButtonText;
+                clickedButton.disabled = false;
+            }
+        } else {
+            const uid = parentLi.dataset.uid;
+            const viewerUrl = `/GenBank-Improvised/file-viewer?uid=${uid}&format=gb`;
+            window.open(viewerUrl, '_blank');
+        }
+    }
+
+    searchButton.addEventListener("click", handleSearch);
+    searchTermInput.addEventListener("keydown", (event) =>{
+      if (event.key === "Enter"){
+        handleSearch();
+      }
+    });
+    summaryListDiv.addEventListener("click", handleResultClick);
+  });
+</script>
