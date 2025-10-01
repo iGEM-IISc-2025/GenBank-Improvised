@@ -11,7 +11,7 @@ title: Search
     --text-color: #333333;
     --secondary-text-color: #666666;
     --border-color: #e0e0e0;
-    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.06); 
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.06);
   }
 
   /* Reset for this component */
@@ -61,7 +61,7 @@ title: Search
     padding: 0.75em 1em;
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .biorxiv-search-container #searchTerm:focus {
@@ -122,7 +122,7 @@ title: Search
     border-radius: 8px;
     margin-top: 0.4em;
   }
-  
+
   .biorxiv-search-container .result-details strong {
     font-weight: 500;
     color: #444;
@@ -160,16 +160,24 @@ title: Search
     margin: 2em auto;
   }
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   @media (max-width: 600px) {
-    .biorxiv-search-container { 
-        padding: 1em;
+    .biorxiv-search-container {
+      padding: 1em;
     }
-    .biorxiv-search-container .search-controls { flex-direction: column; }
-    .biorxiv-search-container header { margin-bottom: 1.5em; }
+    .biorxiv-search-container .search-controls {
+      flex-direction: column;
+    }
+    .biorxiv-search-container header {
+      margin-bottom: 1.5em;
+    }
   }
 </style>
 
@@ -180,38 +188,37 @@ title: Search
   </header>
 
   <div class="search-controls">
-    <input type="text" id="searchTerm" placeholder="Pseudomonas putida..."/>
+    <input type="text" id="searchTerm" placeholder="Pseudomonas putida..." />
     <button id="searchButton">Search</button>
   </div>
 
   <div id="summary-list"></div>
 </div>
 
-
 <div class="bottompagination">
-    <div class="pointerup">
-        <i class="fa fa-caret-up"></i>
-    </div>
-    <span class="navigation" role="navigation">
-        {% include pagination.html %}
-    </span>
+  <div class="pointerup">
+    <i class="fa fa-caret-up"></i>
+  </div>
+  <span class="navigation" role="navigation">
+    {% include pagination.html %}
+  </span>
 </div>
 
 <script src="{{ '/assets/js/ncbi_api.js' | relative_url }}"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("searchButton");
     const searchTermInput = document.getElementById("searchTerm");
     const summaryListDiv = document.getElementById("summary-list");
 
     const searchPlaceholders = [
-        "Pseudomonas putida...",
-        "Human insulin gene...",
-        "CRISPR Cas9...",
-        "Green Fluorescent Protein...",
-        "pBR322 plasmid..."
+      "Pseudomonas putida...",
+      "Human insulin gene...",
+      "CRISPR Cas9...",
+      "Green Fluorescent Protein...",
+      "pBR322 plasmid...",
     ];
-    
+
     // Animation settings
     const typeSpeed = 50; // ms per character
     const deleteSpeed = 30; // ms per character
@@ -221,32 +228,32 @@ title: Search
 
     // Helper function to create a delay
     function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+      return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     // Main animation loop function
     async function animatePlaceholder() {
-        while (true) {
-            const currentText = searchPlaceholders[placeholderIndex];
+      while (true) {
+        const currentText = searchPlaceholders[placeholderIndex];
 
-            // Typing animation
-            for (let i = 0; i < currentText.length; i++) {
-                searchTermInput.placeholder = currentText.substring(0, i + 1);
-                await sleep(typeSpeed);
-            }
-
-            // Pause after typing is complete
-            await sleep(pauseTime);
-
-            // Deleting animation
-            for (let i = currentText.length; i > 0; i--) {
-                searchTermInput.placeholder = currentText.substring(0, i - 1);
-                await sleep(deleteSpeed);
-            }
-            
-            // Move to the next placeholder in the array
-            placeholderIndex = (placeholderIndex + 1) % searchPlaceholders.length;
+        // Typing animation
+        for (let i = 0; i < currentText.length; i++) {
+          searchTermInput.placeholder = currentText.substring(0, i + 1);
+          await sleep(typeSpeed);
         }
+
+        // Pause after typing is complete
+        await sleep(pauseTime);
+
+        // Deleting animation
+        for (let i = currentText.length; i > 0; i--) {
+          searchTermInput.placeholder = currentText.substring(0, i - 1);
+          await sleep(deleteSpeed);
+        }
+
+        // Move to the next placeholder in the array
+        placeholderIndex = (placeholderIndex + 1) % searchPlaceholders.length;
+      }
     }
 
     // Start the animation
@@ -280,11 +287,12 @@ title: Search
             <div class="result-info">
               <strong>${summary.Title}</strong>
               <div class="result-details">
-                <strong>Accession:</strong> ${summary.AccessionVersion || "N/A"} | 
-                <strong>Type:</strong> ${summary.Biomol || "N/A"} <br>
                 <strong>Organism:</strong> ${summary.Organism || "N/A"} | 
-                <strong>Length:</strong> ${summary.Length ? summary.Length + "bp" : "N/A"} | 
-                <strong>Updated:</strong> ${summary.UpdateDate ? summary.UpdateDate.split(" ")[0] : "N/A"}
+                <strong>Type:</strong> ${summary.Biomol || "N/A"} <br>
+                <strong>Topology:</strong> ${summary.Topology || "N/A"} | 
+                <strong>Updated:</strong> ${
+                  summary.UpdateDate ? summary.UpdateDate.split(" ")[0] : "N/A"
+                }
               </div>
             </div>
             <div class="result-actions">
@@ -304,51 +312,55 @@ title: Search
     }
 
     async function handleResultClick(event) {
-        const parentLi = event.target.closest("li[data-uid]");
-        if (!parentLi) {
-            return;
+      const parentLi = event.target.closest("li[data-uid]");
+      if (!parentLi) {
+        return;
+      }
+
+      const clickedButton = event.target.closest("button[data-format]");
+
+      if (clickedButton) {
+        event.stopPropagation();
+
+        const uid = parentLi.dataset.uid;
+        const format = clickedButton.dataset.format;
+        const originalButtonText = clickedButton.textContent;
+
+        clickedButton.textContent = "Downloading...";
+        clickedButton.disabled = true;
+
+        try {
+          const recordData = await efetch(uid, format);
+          const blob = new Blob([recordData], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${uid}.${format}.txt`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error(error);
+          alert(
+            `Error downloading ${format.toUpperCase()} for ID ${uid}: ${
+              error.message
+            }`
+          );
+        } finally {
+          clickedButton.textContent = originalButtonText;
+          clickedButton.disabled = false;
         }
-
-        const clickedButton = event.target.closest("button[data-format]");
-
-        if (clickedButton) {
-            event.stopPropagation();
-            
-            const uid = parentLi.dataset.uid;
-            const format = clickedButton.dataset.format;
-            const originalButtonText = clickedButton.textContent;
-
-            clickedButton.textContent = "Downloading...";
-            clickedButton.disabled = true;
-
-            try {
-                const recordData = await efetch(uid, format);
-                const blob = new Blob([recordData], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${uid}.${format}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error(error);
-                alert(`Error downloading ${format.toUpperCase()} for ID ${uid}: ${error.message}`);
-            } finally {
-                clickedButton.textContent = originalButtonText;
-                clickedButton.disabled = false;
-            }
-        } else {
-            const uid = parentLi.dataset.uid;
-            const viewerUrl = `/GenBank-Improvised/file-viewer?uid=${uid}&format=gb`;
-            window.open(viewerUrl, '_blank');
-        }
+      } else {
+        const uid = parentLi.dataset.uid;
+        const viewerUrl = `/GenBank-Improvised/file-viewer?uid=${uid}&format=gb`;
+        window.open(viewerUrl, "_blank");
+      }
     }
 
     searchButton.addEventListener("click", handleSearch);
-    searchTermInput.addEventListener("keydown", (event) =>{
-      if (event.key === "Enter"){
+    searchTermInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
         handleSearch();
       }
     });
