@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plasmid Viewer</title>
+    <!-- D3.js library for circular map visualization -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .view-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #005f73;
+        }
+        #drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            grid-column: 1 / -1;
+            margin-bottom: 20px;
+        }
+        #drop-zone:hover, #drop-zone.dragover {
+            background-color: hsl(0, 0%, 87%);
+        }
+        #plasmid-map-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        #sequence-view-container {
+            height: 600px;
+            overflow-y: auto;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .sequence-line {
+            display: flex;
+            align-items: flex-end;
+        }
+        .line-number {
+            color: #999;
+            width: 60px;
+            text-align: right;
+            padding-right: 10px;
+            flex-shrink: 0;
+        }
+        .sequence-chunk {
+            flex-grow: 1;
+        }
+        .feature-annotation {
+            position: absolute;
+            height: 10px;
+            z-index: 1;
+        }
+        .feature-label {
+            position: absolute;
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="drop-zone">
+        <p>Drag & Drop your GenBank XML file here, or click to select a file.</p>
+        <input type="file" id="file-input" accept=".xml" style="display: none;">
+    </div>
+
+    <div class="view-container" id="plasmid-map-view">
+        <h2>Circular Map View</h2>
+        <div id="plasmid-map-container"></div>
+    </div>
+
+    <div class="view-container" id="text-editor-view">
+        <h2>Sequence View</h2>
+        <div id="sequence-view-container"></div>
+    </div>
+
+    <!-- Main script that orchestrates the application -->
+    <script type="module" src="MainApplicationLogic.js"></script>
+</body>
+</html>
