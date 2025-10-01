@@ -8,7 +8,12 @@ function drawPlasmidMap(data) {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", `translate(${width / 2},${height / 2})`);
+        .attr("transform", `translate(${width / 2},${height / 2})`)
+        .attr("width", width)      // Add this line
+        .attr("height", height);   // Add this line
+
+       const g = svg.append("g")
+        .attr("transform",  `translate(${width / 2}, ${height / 2})`);
 
     // Plasmid backbone
     const arc = d3.arc()
@@ -17,7 +22,7 @@ function drawPlasmidMap(data) {
         .startAngle(0)
         .endAngle(2 * Math.PI);
 
-    svg.append("path")
+    g.append("path")
         .attr("d", arc)
         .attr("stroke", "black")
         .attr("stroke-width", 2)
