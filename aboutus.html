@@ -3,238 +3,210 @@ layout: default
 title: About Us
 ---
 
-<!-- Editor's Note Section -->
-<section class="editors-note text-center">
-    <h2><strong>What is GenBank-Improvised</strong></h2>
-    <br>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Reset & Font */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
 
+    a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
 
-    <!-- Improved Editors Note Content -->
-    <div class="editors-note-content">
-        <blockquote>
-            <h3>About Us — GenBank-Improved</h3>
-            <p>
-                We are a student team from the
-                <a href="https://iisc.ac.in/" target="_blank" rel="noopener">Indian Institute of Science (IISc),
-                    Bangalore</a>,
-                participating in the
-                <a href="https://igem.org/" target="_blank" rel="noopener">iGEM (International Genetically Engineered
-                    Machine) competition</a>.
-                Our project grew from a simple observation: many biologists and researchers face hurdles when navigating
-                sequence repositories like GenBank —
-                complex interfaces, steep learning curves, and difficulty retrieving or analyzing data.
-            </p>
+    a:hover {
+      text-decoration: underline;
+    }
 
-            <p>
-                To address these issues, we designed an <strong>improved, user-centered GenBank interface</strong> that
-                bridges the gap
-                between powerful bioinformatics resources and modern usability.
-            </p>
+    /* Intro Section */
+    .intro-section {
+      background: linear-gradient(135deg, #e0e7ff, #f5f3ff);
+      padding: 4em 2em;
+      text-align: center;
+      border-radius: 0 0 2rem 2rem;
+    }
 
-            <h4>What We Offer</h4>
-            <ul>
-                <li><strong>Improved Search and Navigation</strong> — Streamlined tools to help you quickly find the
-                    sequences you need.</li>
-                <li><strong>Interactive Visualizations</strong> — Graphical representations to make sequence features
-                    easier to understand.</li>
-                <li><strong>Curated Insights</strong> — Highlighted annotations, summaries, and links to related
-                    studies.</li>
-                <li><strong>Simplified Design</strong> — A clean, modern interface that reduces complexity without
-                    losing scientific depth.</li>
-            </ul>
+    .intro-section h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 1rem;
+    }
 
-            <h4>Our Mission</h4>
-            <p>
-                Our goal is to <em>make biological databases more accessible, efficient, and inclusive</em>.
-                Science should not be limited by technical barriers—every user, from undergraduate students to
-                experienced researchers,
-                should be able to explore sequence data with confidence and ease.
-            </p>
+    .intro-section p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #374151;
+    }
 
-            <h4>Acknowledgments</h4>
-            <p>
-                This initiative is part of our <strong>iGEM project at IISc Bangalore</strong>.
-                We thank our mentors, collaborators, and the wider iGEM community for their guidance and support.
-            </p>
+    /* About Section */
+    .about-section {
+      max-width: 1000px;
+      margin: 3em auto;
+      padding: 0 1.5em;
+    }
 
-            <h4>References</h4>
-            <ol>
-                <li><a href="https://www.ncbi.nlm.nih.gov/genbank/" target="_blank" rel="noopener">GenBank — NCBI</a>
-                </li>
-                <li><a href="https://www.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">National Center for
-                        Biotechnology Information (NCBI)</a></li>
-                <li><a href="https://iisc.ac.in/" target="_blank" rel="noopener">Indian Institute of Science (IISc),
-                        Bangalore</a></li>
-                <li><a href="https://igem.org/" target="_blank" rel="noopener">iGEM (International Genetically
-                        Engineered Machine)</a></li>
-            </ol>
-        </blockquote>
-    </div>
+    .about-section h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1e1b4b;
+      margin-bottom: 0.8em;
+    }
 
+    .about-section ul {
+      list-style: disc;
+      padding-left: 1.5em;
+      color: #374151;
+    }
 
-    <div class="row">
-        <div class="col-md-6">
-            <!-- Editor 1 -->
-            <div class="editor-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/Editor1.jpg" alt="Shloak Vatsal" class="editor-image">
-                <p class="editor-name"><a href="https://quarks-iisc.github.io//blog/blank.html"><strong>Shloak
-                            Vatsal</strong></a></strong></p>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <!-- Editor 2 -->
-            <div class="editor-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/Editor2.jpeg" alt="Aviral Sood" class="editor-image">
-                <p class="editor-name"><strong>Aviral Sood</strong></p>
-            </div>
-        </div>
-    </div>
+    blockquote {
+      background: #ffffff;
+      padding: 1.5em 2em;
+      border-left: 4px solid #6366f1;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
 
-    <br>
-    <br>
-    <br>
+    /* Team Section */
+    .team-section {
+      background: white;
+      padding: 4em 2em;
+      text-align: center;
+    }
 
-    <!--
-    <p class="edition-text">
-        Check out the previous issues of Quarks:
-    </p>
-    <ul class="edition-list">
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition1.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 1</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition2.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 2</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition3.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 3</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition4.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 4</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition5.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 5</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition6.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 6</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition7.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 7</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition8.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 8</a></li>
-        <li><a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition9.pdf" target="_blank" rel="noopener noreferrer">Quarks Edition 9</a></li>
-    </ul>
--->
+    .team-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 2rem;
+    }
 
-    <p class="edition-text">Check out the previous issues of Quarks:</p>
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
-    <div class="edition-container">
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition1.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 1</a>
-            <p>Explore our first edition!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition2.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 2</a>
-            <p>Dive into our second edition!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition3.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 3</a>
-            <p>Discover Edition 3!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition4.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 4</a>
-            <p>Browse through Edition 4!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition5.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 5</a>
-            <p>Take a look at Edition 5!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition6.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 6</a>
-            <p>Explore Edition 6!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition7.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 7</a>
-            <p>Edition 7 is here!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition8.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 8</a>
-            <p>Check out Edition 8!</p>
-        </div>
-        <div class="edition-card">
-            <a href="https://quarks-iisc.github.io/blog/PreviousEditions/edition9.pdf" target="_blank"
-                rel="noopener noreferrer">Quarks Edition 9</a>
-            <p>Don’t miss Edition 9!</p>
-        </div>
-    </div>
+    .team-card {
+      background: #f9fafb;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
 
+    .team-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
 
+    .team-card p {
+      margin: 0;
+      padding: 0.75rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
 
+    /* References */
+    .about-section ol {
+      padding-left: 1.5em;
+    }
+  </style>
+</head>
 
+<!-- Intro -->
+<section class="intro-section">
+  <h2>What is GenBank-Improved?</h2>
+  <p>
+    GenBank-Improved is a project by students at the
+    <a href="https://iisc.ac.in/" target="_blank">Indian Institute of Science (IISc), Bangalore</a> as part of the
+    <a href="https://igem.org/" target="_blank">iGEM competition</a>.  
+    We aim to make navigating genetic sequence databases easier, faster, and more intuitive for researchers.
+  </p>
 </section>
 
+<!-- About -->
+<section class="about-section">
+  <blockquote>
+    <h3>Our Mission</h3>
+    <p>
+      Many biologists struggle with GenBank’s complexity. Our interface is designed to bridge the gap between powerful
+      bioinformatics data and modern usability.
+    </p>
 
-<!-- The Team Section -->
-<section class="the-team text-center">
-    <h2 style="font-family: 'Roboto', sans-serif; font-weight: 600; color: #2c3e50;">The Team</h2>
-    <div class="row">
-        <div class="col-md-3">
-            Team Member 1
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team1.jpg" alt="Team Member 1"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Aditya Nandan</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 2
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team2.jpg" alt="Team Member 2"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Vedanta Mahour</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 3
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team3.jpg" alt="Team Member 3"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Shivansh Verma</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 4
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team4.jpg" alt="Team Member 4"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Soham Acharya</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 5
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team5.jpg" alt="Team Member 5"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Thrayambhakesh H</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 6
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team6.jpg" alt="Team Member 6"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Divyansh Arora</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 7
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team7.jpg" alt="Team Member 7"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Ryan</strong></p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            Team Member 8
-            <div class="team-member-inner-rectangle">
-                <img src="{{site.baseurl}}/assets/images/Members/team8.jpg" alt="Team Member 8"
-                    class="team-member-image">
-                <p class="team-member-name"><strong>Govind Agarwal</strong></p>
-            </div>
-        </div>
+    <h3>What We Offer</h3>
+    <ul>
+      <li><strong>Improved Search & Navigation</strong> — Quickly find sequences you need.</li>
+      <li><strong>Interactive Visualizations</strong> — Graphical views of features and annotations.</li>
+      <li><strong>Curated Insights</strong> — Highlights, summaries, and links to related studies.</li>
+      <li><strong>Clean UI</strong> — Minimalist design that doesn’t compromise on depth.</li>
+    </ul>
+
+    <h3>Acknowledgments</h3>
+    <p>
+      This project is part of iGEM IISc Bangalore. We thank our mentors, collaborators, and the iGEM community.
+    </p>
+
+    <h3>References</h3>
+    <ol>
+      <li><a href="https://www.ncbi.nlm.nih.gov/genbank/" target="_blank">GenBank — NCBI</a></li>
+      <li><a href="https://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a></li>
+      <li><a href="https://iisc.ac.in/" target="_blank">Indian Institute of Science</a></li>
+      <li><a href="https://igem.org/" target="_blank">iGEM</a></li>
+    </ol>
+  </blockquote>
+</section>
+
+<!-- Team -->
+<section class="team-section">
+  <h2>The Team</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team1.jpg" alt="Aditey Nandan">
+      <p>Aditey Nandan</p>
     </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team2.jpg" alt="Vedanta Mahour">
+      <p>Vedanta Mahour</p>
+    </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team3.jpg" alt="Shivansh Verma">
+      <p>Shivansh Verma</p>
+    </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team4.jpg" alt="Soham Acharya">
+      <p>Soham Acharya</p>
+    </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team5.jpg" alt="Thrayambhakesh H">
+      <p>Thrayambhakesh H</p>
+    </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team6.jpg" alt="Divyansh Arora">
+      <p>Divyansh Arora</p>
+    </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team7.jpg" alt="Ryan Ray">
+      <p>Ryan Ray</p>
+    </div>
+    <div class="team-card">
+      <img src="{{site.baseurl}}/assets/images/Members/team8.jpg" alt="Govind Agarwal">
+      <p>Govind Agarwal</p>
+    </div>
+  </div>
 </section>
