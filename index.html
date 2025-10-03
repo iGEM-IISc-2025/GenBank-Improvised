@@ -5,31 +5,144 @@ title: Home
 
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ====== BASIC LAYOUT UTILS ====== */
+    .container {
+      max-width: 80rem; /* ~1280px */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .absolute {
+      position: absolute;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ====== COLORS & TYPOGRAPHY ====== */
+    body {
+      background-color: #ffffff;
+      color: #1f2937; /* gray-800 */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    }
+
+    h1.hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      h1.hero-title {
+        font-size: 3.5rem;
+      }
+    }
+
+    h2.hero-subtitle {
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: #374151; /* gray-700 */
+      max-width: 40rem;
+      margin: 0 auto 1.5rem;
+      line-height: 1.5;
+    }
+
+    p.hero-text {
+      color: #4b5563; /* gray-600 */
+      line-height: 1.7;
+      max-width: 48rem;
+      margin: 0 auto;
+      font-size: 1rem;
+    }
+
+    p.hero-text + p.hero-text {
+      margin-top: 1rem;
+    }
+
+    a.link {
+      color: #4f46e5; /* indigo-600 */
+      text-decoration: none;
+    }
+
+    a.link:hover {
+      text-decoration: underline;
+    }
+
+    /* ====== HERO SECTION ====== */
+    .hero-section {
+      background: linear-gradient(to bottom right, #eef2ff, #ffffff, #f5f3ff);
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gradient-orb {
+      position: absolute;
+      top: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16rem;
+      height: 16rem;
+      background: linear-gradient(to bottom right, #ddd6fe, #c7d2fe);
+      opacity: 0.4;
+      filter: blur(60px);
+      border-radius: 9999px;
+      pointer-events: none;
+    }
+
+    /* ====== PAGINATION ====== */
+    .bottompagination {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+
+    .pointerup {
+      font-size: 1.25rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 
 {% if page.url == "/" %}
 
 <!-- HERO SECTION -->
-<section class="relative bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-20">
-  <div class="max-w-5xl mx-auto text-center px-6">
-    <h1 class="text-5xl md:text-6xl font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">
-      GenBank-Improved
-    </h1>
-    <h2 class="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-6">
+<section class="hero-section">
+  <div class="container text-center">
+    <h1 class="hero-title">GenBank-Improved</h1>
+    <h2 class="hero-subtitle">
       An intuitive interface for the NCBI nucleotide database, with improved searching and visualizations.
     </h2>
 
-    <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto text-base md:text-lg">
+    <p class="hero-text">
       Welcome to <strong>GenBank-Improved</strong>, an enhanced platform built on the foundation of
-      <a href="https://www.ncbi.nlm.nih.gov/genbank/" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">GenBank</a>,
+      <a href="https://www.ncbi.nlm.nih.gov/genbank/" class="link" target="_blank" rel="noopener">GenBank</a>,
       one of the world’s most widely used repositories for genetic sequence data. GenBank, maintained by the
-      <a href="https://www.ncbi.nlm.nih.gov/" class="text-indigo-600 hover:underline" target="_blank" rel="noopener">National Center for Biotechnology Information (NCBI)</a>,
+      <a href="https://www.ncbi.nlm.nih.gov/" class="link" target="_blank" rel="noopener">National Center for Biotechnology Information (NCBI)</a>,
       hosts DNA, RNA, and protein sequences submitted by scientists worldwide and is foundational to research
       in molecular biology, medicine, biotechnology, and evolutionary studies.
     </p>
 
-    <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto mt-4 text-base md:text-lg">
+    <p class="hero-text">
       While GenBank provides a wealth of information, navigating and interpreting its vast resources can be
       challenging. GenBank-Improved was created to make this data
       <em>more accessible, intuitive, and researcher-friendly</em>, helping students, educators, and scientists
@@ -37,31 +150,11 @@ title: Home
     </p>
   </div>
 
-  <!-- Decorative gradient orb -->
-  <div class="absolute top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-gradient-to-br from-purple-200 to-indigo-200 opacity-40 blur-3xl rounded-full pointer-events-none"></div>
-</section>
-
-<!-- TAB SECTIONS (OPTIONAL) -->
-<section class="max-w-5xl mx-auto px-6 mt-10">
-  <div class="flex justify-center space-x-6 border-b pb-2 mb-6">
-    <button id="featured-tab" class="tab-button font-semibold border-b-2 border-black">Featured</button>
-    <button id="latest-tab" class="tab-button text-gray-600 hover:text-black">Latest</button>
-    <button id="previous-tab" class="tab-button text-gray-600 hover:text-black">Previous</button>
-  </div>
-
-  <div id="featured-section">
-    <p class="text-center text-gray-500">Highlight some featured datasets or tools here.</p>
-  </div>
-  <div id="latest-section" class="hidden">
-    <p class="text-center text-gray-500">Latest content will go here.</p>
-  </div>
-  <div id="previous-section" class="hidden">
-    <p class="text-center text-gray-500">Previous content will go here.</p>
-  </div>
+  <div class="gradient-orb"></div>
 </section>
 
 <!-- PAGINATION -->
-<div class="bottompagination mt-10">
+<div class="bottompagination">
   <div class="pointerup"><i class="fa fa-caret-up"></i></div>
   <span class="navigation" role="navigation">
     {% include pagination.html %}
@@ -69,31 +162,3 @@ title: Home
 </div>
 
 {% endif %}
-
-<script>
-  function toggleTab(tabName) {
-    const sections = {
-      featured: document.getElementById('featured-section'),
-      latest: document.getElementById('latest-section'),
-      previous: document.getElementById('previous-section')
-    };
-
-    const tabs = {
-      featured: document.getElementById('featured-tab'),
-      latest: document.getElementById('latest-tab'),
-      previous: document.getElementById('previous-tab')
-    };
-
-    // Hide all
-    Object.values(sections).forEach(s => s.classList.add('hidden'));
-    Object.values(tabs).forEach(t => t.classList.remove('border-black', 'font-semibold', 'text-black'));
-
-    // Show selected
-    sections[tabName].classList.remove('hidden');
-    tabs[tabName].classList.add('border-black', 'font-semibold', 'text-black');
-  }
-
-  document.getElementById('featured-tab').onclick = () => toggleTab('featured');
-  document.getElementById('latest-tab').onclick = () => toggleTab('latest');
-  document.getElementById('previous-tab').onclick = () => toggleTab('previous');
-</script>
