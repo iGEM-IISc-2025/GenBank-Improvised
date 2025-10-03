@@ -24,10 +24,22 @@ title: About Us
 
     /* Intro Section */
     .intro-section {
-      background: linear-gradient(135deg, #e0e7ff, #f5f3ff);
-      padding: 4em 2em;
-      text-align: center;
-      border-radius: 0 0 2rem 2rem;
+    background: white;
+    padding: 4em 2em;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb; /* subtle separator */
+    }
+
+    .intro-section::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    z-index: -1;
     }
 
     .intro-section h2 {
@@ -167,7 +179,6 @@ title: About Us
       <li><a href="https://www.ncbi.nlm.nih.gov/genbank/" target="_blank">GenBank — NCBI</a></li>
       <li><a href="https://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a></li>
       <li><a href="https://iisc.ac.in/" target="_blank">Indian Institute of Science</a></li>
-      <li><a href="https://igem.org/" target="_blank">iGEM</a></li>
     </ol>
   </blockquote>
 </section>
